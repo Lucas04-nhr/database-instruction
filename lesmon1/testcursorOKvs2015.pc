@@ -1,0 +1,69 @@
+//proc code=cpp test.pc test.cpp
+
+#include "stdafx.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "sqlca.h"
+//#include"CssCheckBill.h"
+
+int main(){
+struct sqlca sqlca; //必须要有
+EXEC SQL BEGIN DECLARE SECTION;
+    char strsql[512]={0};
+    char user[20]={0};
+    char pwd[20] ={0};
+    char dbname[20]={0};
+    char stdname[7];
+    char TotalMoney[15]={0};
+    char TotalRecord[15]={0};
+EXEC SQL END DECLARE SECTION;
+
+strcpy_s(user,"c##drugdbuser");
+strcpy_s(pwd,"wtsgyh1972");
+strcpy_s(dbname,"drugdb");
+
+//这句是连接数据库的操作
+EXEC SQL CONNECT :user IDENTIFIED BY :pwd USING :dbname;
+printf("Connect to oracle!");
+
+EXEC SQL select count(A.STD_D) ,sum(B.STD_TIMES)
+INTO :TotalRecord, :TotalMoney //INTO绑定变量
+from DRUGCOURSEUSER A , PRACSTAT B
+WHERE A.STD_D = B.STD_D;
+
+//设置捕获异常信息标志
+//EXEC SQL WHENEVER SQLERROR goto ORA_ERR; ////发生异常的时候推出整个程序,
+//if(0 >= ::snprintf(strsql,sizeof(strsql), "select STD_NAME from DRUGCOURSEUSER" )){
+//    printf("%s snprintf create sql fail !\n", __FUNCTION__);
+//    return -1;
+//}
+
+strcpy_s(strsql,"select STD_NAME from DRUGCOURSEUSER");
+
+//动态游标方式获取查询结果
+EXEC SQL PREPARE SqlCountTimes FROM :strsql;
+EXEC SQL DECLARE CurRegion CURSOR FOR SqlCountTimes; //CURSOR FOR可以直接跟SQL语句
+EXEC SQL OPEN CurRegion;
+
+do{
+EXEC SQL FETCH CurRegion INTO :stdname;
+    if (sqlca.sqlcode ==1403) 
+        break;
+    printf("stdname=%s, len=%d\n",stdname, strlen(stdname));
+}while(1);
+
+//关闭异常捕获信息
+EXEC SQL whenever sqlerror stop;
+EXEC SQL CLOSE CurRegion;
+
+//设置回滚事物
+EXEC SQL rollback work release;
+return sqlca.sqlcode;
+//ORA_ERR:
+//printf("sqlca.sqlcode=%d, sqlca.sqlerrp=%s\n",sqlca.sqlcode, sqlca.sqlerrp);
+//return sqlca.sqlcode;
+
+return 0 ;
+
+}

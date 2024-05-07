@@ -1,0 +1,1448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="zh-CN" pageEncoding="UTF-8">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div align="center">
+      <h2 align="left"> 本科教学-数据库技术及应用(CENTOS环境)</h2>
+      <h1>上机器练习二&nbsp; 非关系数据库MongoDB基础<br>
+      </h1>
+      <p align="left">一 上机内容: <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+        1. MONGODB及图形管理界面简介; GO语言简介及基本语法<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+        2. MONGODB及图形界面基本操作<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+        3. 使用GO语言进行简单的数据库访问以及基于GO的web前后端数据库技术<br>
+        二 上机目的: 了解非关系数据MongoDBnosql，非关系数据库的基本思想.<br>
+        三 利用VSCODE进行调试GO语言及数据库访问.<br>
+      </p>
+      <h1> </h1>
+    </div>
+    准备工作: 本次上机将使用GO语言(即golang)访问mongodb数据库, 相关环境列于下表中:<br>
+    <br>
+    <table width="1595" height="360" align="center" cellspacing="2"
+      cellpadding="2" border="1">
+      <tbody>
+        <tr>
+          <td valign="top">操作系统: CENTOS 7.9<br>
+          </td>
+          <td valign="top">操作系统: WIN7 (git shell bash)</td>
+        </tr>
+        <tr>
+          <td valign="top">软件版本： CENTOS 7.9支持4.4.18</td>
+          <td valign="top">win7 最高版为4.2.23, </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="color: rgb(36, 64, 179);
+              display: inline-block;" class=" ">MongoDB及可视化管理工具</span><span
+              style="color: rgb(36, 64, 179); display: inline-block;"
+              class=" ">安装</span>
+            <pre><pre>MongoDB:<br></pre></pre>
+            mongodb-compass: mongodb-compass-1.36.2.x86_64.rpm<br>
+            <pre><pre># rpm -vih mongodb-compass-1.36.2.x86_64.rpm</pre></pre>
+          </td>
+          <td valign="top"><span style="color: rgb(36, 64, 179);
+              display: inline-block;" class=" ">MongoDB及可视化管理工具</span><span
+              style="color: rgb(36, 64, 179); display: inline-block;"
+              class=" ">安装</span><br>
+            mongodb-compass-1.36.2-win32-x64.exe<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">启动服务: <br>
+            cd /opt/mongodbrhel7/bin<br>
+            # ./mongod -f ../etc/mongoDB.conf (use config file,
+            可以用root但不建议，记得用chonw -R catalyst /o/opt/mongodbrhel7!!!)<br>
+            # ./mongod --dbpath /opt/mongodbrhel7/data/ --port
+            27017&nbsp; (just from cmdline)<br>
+            # ./mongod --configsvr --dbpath /opt/mongodbrhel7/data/
+            --port 27017<br>
+          </td>
+          <td valign="top">启动服务(git shell bash): <br>
+            cd /e/mongodbwinx8664enterprise4223/bin/<br>
+            $ ./mongod.exe --config
+            "E:\mongodbwinx8664enterprise4223\mongo.conf"&nbsp; win7 <br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">#/opt/mongodbrhel7/bin/mongo<br>
+          </td>
+          <td valign="top">$mongo&nbsp; (换一个终端)<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    注: 上表中启动mongod启动时候几个参数说明<br>
+    --configsvr&nbsp; 以配置server启动<br>
+    --shardsvr 表示该server以shard server启动<br>
+    -smallfiles
+    主要用于开发(mongodb默认启动会先建一个64m数据库文件，最大达2GB。用"--smallfiles"只预分配16m数据库文
+    件，最大达512MB。生产环境不建议用该参数)<br>
+    启动成功会显示: child process started successfully,&nbsp; okkk<br>
+    然后使用浏览器输入:&nbsp;&nbsp;&nbsp; http://127.0.0.1:27017/&nbsp;&nbsp;
+    =&gt;&nbsp;&nbsp; 结果显示:&nbsp; It looks like you are trying to access
+    MongoDB over HTTP on the native driver port.(表示成功启动)<br>
+    <pre><pre><br></pre></pre>
+    <h2 align="center">第一部分 MONGODB及图形管理工具简介</h2>
+    <h3 id="how-is-a-mongodb-database-structured" class="has-anchor-hash
+      wb-sc-0 j-wbsc-title" data-index="0"
+      style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0)
+      !important; outline: none !important; margin: 0px 0px 10px;
+      padding: 0px 0px 0px 12px; font-size: 20px; font-weight: 700;
+      color: rgb(37, 49, 55); line-height: 30px; position: relative;
+      font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+      Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;,
+      STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro
+      Hei&quot;, sans-serif; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; letter-spacing: normal;
+      orphans: 2; text-align: start; text-indent: 0px; text-transform:
+      none; white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">MongoDB数据库简介:</h3>
+    <p style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0)
+      !important; outline: none !important; margin: 1em 0px 1.5em;
+      padding: 0px; color: rgb(102, 102, 102); font-family:
+      &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir,
+      &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti,
+      &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;,
+      sans-serif; font-size: 16px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-indent: 0px; text-transform: none; white-space:
+      normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width:
+      0px; background-color: rgb(255, 255, 255);
+      text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">MongoDB是无模式的NoSQL数据库，不需要
+      像关系数据库那样用SQL为表/数据库指定一个结构。<br>
+      NoSQL数据库实际上比<a href="https://www.wbolt.com/mongodb-vs-mysql.html"
+        style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0)
+        !important; outline: none !important; color: rgb(0, 102, 204);
+        cursor: pointer; text-decoration: none;">关系型</a>数据库更快：是由于索引、分片和
+      聚合管道等特性。<br>
+      MongoDB也因其快速的查询执行而闻名, 因此被各知名公司采用。</p>
+    <h3 id="how-is-a-mongodb-database-structured" class="has-anchor-hash
+      wb-sc-0 j-wbsc-title" data-index="0"
+      style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0)
+      !important; outline: none !important; margin: 0px 0px 10px;
+      padding: 0px 0px 0px 12px; font-size: 20px; font-weight: 700;
+      color: rgb(37, 49, 55); line-height: 30px; position: relative;
+      font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+      Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;,
+      STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro
+      Hei&quot;, sans-serif; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; letter-spacing: normal;
+      orphans: 2; text-align: start; text-indent: 0px; text-transform:
+      none; white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">MONGODB的结构化</h3>
+    <h4 id="documents" class="has-anchor-hash wb-sc-sub-0 j-wbsc-title"
+      data-index="1">1.
+      文档：MongoDB有文档数据模型，将数据存为JSON文档，文档自然地映射到应用程序代码中的对象，使开发人员更直接地使用它。</h4>
+    <h4 id="documents" class="has-anchor-hash wb-sc-sub-0 j-wbsc-title"
+      data-index="1">在关系型数据库表中，你必须添加一个列才能添加一个新字段。而JSON文档中的字段则不是这样的。JSON文
+      档中的字段可以因文档而异，所以它们不会被添加到数据库的每一条记录中。 </h4>
+    <p>文档可以存储像数组这样的结构，可以嵌套来表达层次关系。此外，MongoDB将文档转换为二进制JSON（BSON）类型。这确保了更快
+      的访问速度，并增加了对各种数据类型的支持，如字符串、整数、布尔型数字等等</p>
+    <h4 id="replica-sets" class="has-anchor-hash wb-sc-sub-1
+      j-wbsc-title" data-index="2">2. 复制集：MongoDB中创建新数据库时，系统会自动为你的数据再创建至
+      少两个副本，这些副本被称为“复制集”，它们之间不断复制数据，确保提高你的数据的可用性。它们还提供保护，防止在系统故障或计划维护期间出
+      现停机。</h4>
+    <h4 id="collections" class="has-anchor-hash wb-sc-sub-2
+      j-wbsc-title" data-index="3">3. 集合：一个集合是一组与一个数据库相关的文件，它们类似于关系型数据库中
+      的表。集合要灵活得多。首先，它们不依赖于一个模式。其次，这些文件不需要是相同的数据类型。</h4>
+    <p>要查看属于一个数据库的集合的列表，请使用<code>listCollections</code>命令。</p>
+    <h4 id="aggregation-pipelines" class="has-anchor-hash wb-sc-sub-3
+      j-wbsc-title" data-index="4">4. 聚合管道
+      使用这个框架来会几个运算符和表达式。它很灵活，因为它允许你处理、转换和分析任何结构的数据。</h4>
+    <p>正因为如此，MongoDB允许快速的数据流和跨越150个运算符和表达式的功能。它也有几个阶段，比如联合阶段，可以灵活地将多个集合的
+      结果放在一起。</p>
+    <h4 id="indexes" class="has-anchor-hash wb-sc-sub-4 j-wbsc-title"
+      data-index="5">5. 索引</h4>
+    <p>你可以对MongoDB文档中的任何字段进行索引，以提高其效率并改善查询速度。索引通过扫描索引来限制所检查的文档，从而节省时间。这不
+      比读取集合中的每一个文档要好得多吗？</p>
+    <p>你可以使用各种索引策略，包括多个字段的复合索引。例如，假设你有几个文档在不同的字段中包含了雇员的名字和姓氏。如果你希望返回姓和名，
+      你可以创建一个包括 “姓 “和 “名 “的索引。这比在 “姓 “和 “名 “上建立一个索引要好得多。</p>
+    <p>你可以利用性能顾问等工具来进一步了解哪些查询可以从索引中受益。</p>
+    <h4 id="sharding" class="has-anchor-hash wb-sc-sub-5 j-wbsc-title"
+      data-index="6">分片</h4>
+    <p>分片将一个单一的数据集分布在多个数据库中。然后，该数据集可以存储在多台机器上，以增加系统的总存储容量。这是因为它将较大的数据集分割
+      成较小的块，并将它们存储在不同的数据节点中。</p>
+    <p>MongoDB在集合层面对数据进行分片，将集合中的文档分布在集群中的分片上。这确保了可扩展性，允许该架构处理最大的应用程序。</p>
+    <p><br>
+    </p>
+    <h2 align="center">第二部分 GO语言及其应用基础</h2>
+    <h3>GO语言简介及基本语法</h3>
+    <p>Go 语言（又称 Golang）, 2009 年由 Google 首次开源，并在 2012 年正式发布 Go
+      稳定版的一种全新的编程语言，可以在不损失应用程序性能的情况下降低代码的复杂性。谷歌首席软件工程师罗布派克(Rob
+      Pike)说：我们之所以开发 Go，是因为过去10多年间软件开发的难度令人沮丧。Google 对 Go
+      寄予厚望，其设计是让软件充分发挥 多核心处理器同步多工
+      的优点，并可解决面向对象程序设计的麻烦。它具有现代的程序语言特色，如垃圾回收，帮助开发者处理琐碎但重要的内存管理问题。Go
+      的速度也非常快，几乎和 C 或 C++ 程序一样快，且能够快速开发应用程序。<br>
+    </p>
+    <p align="center"><img src="../hustdbroot/mondbdir/comparcodedev.png" alt=""
+        width="661" height="394"><br>
+      <span style="color: rgb(77, 77, 77); font-family: -apple-system,
+        &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+        &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+        &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px;
+        font-style: normal; font-variant-ligatures: no-common-ligatures;
+        font-variant-caps: normal; font-weight: 400; letter-spacing:
+        normal; orphans: 2; text-align: start; text-indent: 0px;
+        text-transform: none; white-space: normal; widows: 2;
+        word-spacing: 0px; -webkit-text-stroke-width: 0px;
+        background-color: rgb(255, 255, 255); text-decoration-thickness:
+        initial; text-decoration-style: initial; text-decoration-color:
+        initial; display: inline !important; float: none;">Go语言充分结合代码开发效
+        率与执行效率，可以如同开发Python代码（效率）一样编写C代码（性能）。</span></p>
+    <pre><pre><br><br><br><pre><br></pre></pre></pre>
+    <pre><pre><pre>3. VSCODE安装<br>解压: <br># chmod 4755 /opt/VSCode-linux-x64/chrome-sandbox  //否则运行时会提示: <br>FATAL:setuid_sandbox_host.cc(157)] The SUID sandbox helper binary was found, but is not configured correctly. <br>Rather than run without sandboxing I'm aborting now. <br>You need to make sure that /opt/VSCode-linux-x64/chrome-sandbox is owned by root and has mode 4755.<br># chown root /opt/VSCode-linux-x64/chrome-sandbox<br></pre>启动MONGODB服务器:<br>#./mongod.exe -version   //<span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">验证MongoDB的版本<br></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">[root@localhost bin]# ./mongod -version</span><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span></pre></pre>
+    <table width="492" height="259" align="center" cellspacing="2"
+      cellpadding="2" border="1">
+      <tbody>
+        <tr>
+          <td valign="top">
+            <div align="left"><span style="color: rgb(102, 102, 102);
+                font-family: &quot;PingFang SC&quot;, &quot;Microsoft
+                Yahei&quot;, Avenir, &quot;Segoe UI&quot;,
+                &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft
+                Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;,
+                sans-serif; font-size: 16px; font-style: normal;
+                font-variant-ligatures: normal; font-variant-caps:
+                normal; font-weight: 400; letter-spacing: normal;
+                orphans: 2; text-align: center; text-indent: 0px;
+                text-transform: none; white-space: normal; widows: 2;
+                word-spacing: 0px; -webkit-text-stroke-width: 0px;
+                background-color: rgb(255, 255, 255);
+                text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>CENTOS
+
+                  7.9</b></span>的版本信息:<br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>db
+                  version v4.4.18</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>Build
+
+                  Info: {</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;
+
+                  "version": "4.4.18",</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;
+
+                  "gitVersion":
+                  "8ed32b5c2c68ebe7f8ae2ebe8d23f36037a17dea",</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;
+
+                  "openSSLVersion": "OpenSSL 1.0.1e-fips 11 Feb 2013",</b></span><br>
+              <div> <span style="color: rgb(102, 102, 102);
+                  font-family: &quot;PingFang SC&quot;, &quot;Microsoft
+                  Yahei&quot;, Avenir, &quot;Segoe UI&quot;,
+                  &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft
+                  Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;,
+                  sans-serif; font-size: 16px; font-style: normal;
+                  font-variant-ligatures: normal; font-variant-caps:
+                  normal; font-weight: 400; letter-spacing: normal;
+                  orphans: 2; text-align: center; text-indent: 0px;
+                  text-transform: none; white-space: normal; widows: 2;
+                  word-spacing: 0px; -webkit-text-stroke-width: 0px;
+                  background-color: rgb(255, 255, 255);
+                  text-decoration-thickness: initial;
+                  text-decoration-style: initial; text-decoration-color:
+                  initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;
+
+                    "modules": [],</b></span><br>
+              </div>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;
+
+                  "allocator": "tcmalloc",</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;
+
+                  "environment": {</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                  "distmod": "rhel70",</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                  "distarch": "x86_64",</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                  "target_arch": "x86_64 "</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>&nbsp;&nbsp;&nbsp;
+
+                  }</b></span><br>
+              <span style="color: rgb(102, 102, 102); font-family:
+                &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;,
+                Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+                GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+                &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size:
+                16px; font-style: normal; font-variant-ligatures:
+                normal; font-variant-caps: normal; font-weight: 400;
+                letter-spacing: normal; orphans: 2; text-align: center;
+                text-indent: 0px; text-transform: none; white-space:
+                normal; widows: 2; word-spacing: 0px;
+                -webkit-text-stroke-width: 0px; background-color:
+                rgb(255, 255, 255); text-decoration-thickness: initial;
+                text-decoration-style: initial; text-decoration-color:
+                initial; display: inline !important; float: none;"><b>}</b></span></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pre><pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><br></span></pre></pre>
+    <div align="center"><span style="color: rgb(102, 102, 102);
+        font-family: &quot;PingFang SC&quot;, &quot;Microsoft
+        Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+        GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+        &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px;
+        font-style: normal; font-variant-ligatures: normal;
+        font-variant-caps: normal; font-weight: 400; letter-spacing:
+        normal; orphans: 2; text-align: center; text-indent: 0px;
+        text-transform: none; white-space: normal; widows: 2;
+        word-spacing: 0px; -webkit-text-stroke-width: 0px;
+        background-color: rgb(255, 255, 255); text-decoration-thickness:
+        initial; text-decoration-style: initial; text-decoration-color:
+        initial; display: inline !important; float: none;"></span><span
+        style="color: rgb(102, 102, 102); font-family: &quot;PingFang
+        SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe
+        UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft
+        Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif;
+        font-size: 16px; font-style: normal; font-variant-ligatures:
+        normal; font-variant-caps: normal; font-weight: 400;
+        letter-spacing: normal; orphans: 2; text-align: center;
+        text-indent: 0px; text-transform: none; white-space: normal;
+        widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+        background-color: rgb(255, 255, 255); text-decoration-thickness:
+        initial; text-decoration-style: initial; text-decoration-color:
+        initial; display: inline !important; float: none;"></span></div>
+    <pre><pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"># ./mongod -f ../etc/mongoDB.conf&nbsp;&nbsp;&nbsp;&nbsp; //启动服务端</span>server <br>$ netstat -lnpt | grep mongo &nbsp; &nbsp;//检查进程和端口<br>(Not all processes could be identified, non-owned process info will not be shown, you would have to be root to see it all.)<br>tcp        0      0 0.0.0.0:27017           0.0.0.0:*               LISTEN      2960/./bin/mongod  &nbsp; &nbsp; &nbsp;//看看是不是启动了？？？？
+<br>// 关闭MongoDB 方式一：<br>&nbsp; <span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">./mongod -f ../etc/mongoDB.conf </span>--shutdown&nbsp; &nbsp;//直接用启动命令后面加一个--shutdown即可<br>$ netstat -lnpt | grep mongo &nbsp; &nbsp;//检查mongoServer是否还工作？？？ 即mongod是否还在？？？<br><pre>// 关闭MongoDB 方式二：</pre>$ ./bin/mongo &nbsp; //启动mongoDB命令行界面Shell
+&gt; use admin<br>switched to db admin<br>&gt; db.shutdownServer()<br>&nbsp;server should be down...<br><pre>$ netstat -lnpt | grep mongo &nbsp; &nbsp;//再次检查mongoServer是否还工作？？？ 即mongod是否还在？？？</pre></pre></pre>
+    <pre><pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span><br></pre></pre>
+    <h2>启动mongoDB命令行界面Shell</h2>
+    <pre><pre>#/opt/mongodbrhel7/bin/mongo<br>$ ./mongo<br></pre></pre>
+    <table width="1442" height="590" align="center" cellspacing="2"
+      cellpadding="2" border="1">
+      <tbody>
+        <tr>
+          <td valign="top">
+            <pre><pre>CENTOS 7.9运行mongo后的结果:<br>MongoDB shell version v4.4.18<br>connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb<br>Implicit session: session { "id" : UUID("42e947a6-d80e-4816-b176-85df2644593d") }<br>MongoDB server version: 4.4.18<br>---<br>The server generated these startup warnings when booting: <br>        2023-04-08T21:52:41.178-04:00: You are running this process as the root user, which is not recommended &nbsp; <br>        2023-04-08T21:52:41.179-04:00: You are running on a NUMA machine. We suggest launching mongod like this to avoid performance problems: numactl --interleave=all mongod [other options]<br>        2023-04-08T21:52:41.179-04:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'<br>        2023-04-08T21:52:41.179-04:00: /sys/kernel/mm/transparent_hugepage/defrag is 'always'. We suggest setting it to 'never'<br>        2023-04-08T21:52:41.179-04:00: Soft rlimits too low<br>        2023-04-08T21:52:41.179-04:00:         currentValue: 1024<br>        2023-04-08T21:52:41.179-04:00:         recommendedMinimum: 64000<br>---<br>---<br>        Enable MongoDB's free cloud-based monitoring service, which will then receive and display<br>        metrics about your deployment (disk utilization, CPU, operation statistics, etc).<br><br>        The monitoring data will be available on a MongoDB website with a unique URL accessible to you<br>        and anyone you share the URL with. MongoDB may use this information to make product<br>        improvements and to suggest MongoDB products and deployment options to you.<br><br>        To enable free monitoring, run the following command: db.enableFreeMonitoring()<br>        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()<br>---<br>&gt; </pre></pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>MongoDB警告信息处理：</h2>
+    <p>1.启动用户警告： 2023-04-08T21:52:41.178-04:00: You are running this
+      process as the root user, which is not recommended<br>
+      表示：启动server尽量不要用root用户，用普通用户启动更安全。<br>
+      更改方法：<br>
+      创建mongodb专用的普通用户，将MongoDB的部署目录赋权给普通用户，用普通用户启动即可<br>
+      更改所有权： chown -R catalyst /opt/mongodbrhel7）<br>
+      查看日志文件：其中有：/opt/mongodbrhel7/data/WiredTiger.turtle: handle-open:
+      open: Permission denied， 删除即可。<br>
+      2.大内存页警告<br>
+      2023-04-08T21:52:41.179-04:00:
+      /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We
+      suggest setting it to 'never'<br>
+      2023-04-08T21:52:41.179-04:00:
+      /sys/kernel/mm/transparent_hugepage/defrag is 'always'. We suggest
+      setting it to 'never'<br>
+      是由于大内存设置了always，MongoDB建议使用never<br>
+      ]$ vi
+      /sys/kernel/mm/transparent_hugepage/enabled&nbsp;&nbsp;&nbsp;
+      //打开看看内容：&nbsp; [always] madvise never<br>
+      $ vi
+      /sys/kernel/mm/transparent_hugepage/defrag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      //打开看看内容：&nbsp; [always] madvise never<br>
+    </p>
+    <h4>临时关闭大内存页</h4>
+    <p># echo "never" &gt;
+      /sys/kernel/mm/transparent_hugepage/enabled&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      # vi /sys/kernel/mm/transparent_hugepage/enabled &nbsp; &nbsp;
+      //打开看看内容： always madvise [never]&nbsp;&nbsp;&nbsp; 怎么样？<br>
+      # echo "never" &gt; /sys/kernel/mm/transparent_hugepage/defrag<br>
+      # vi /sys/kernel/mm/transparent_hugepage/defrag<br>
+      注：另有脚本可永久关闭大内存页，看看官方文档：https://docs.mongodb.com/manual/tutorial
+      /transparent-huge-pages/<br>
+    </p>
+    <p>3.优化limit警告<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      2023-04-08T23:00:17.645-04:00: Soft rlimits too low<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      2023-04-08T23:00:17.645-04:00:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      currentValue: 1024<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      2023-04-08T23:00:17.645-04:00:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      recommendedMinimum: 64000<br>
+      提示的是limt设置的打开文件数太低<br>
+    </p>
+    <p># cat &gt;&gt; /etc/profile&lt;&lt;EOF&nbsp;&nbsp;&nbsp;&nbsp;
+      //需要root用户权限<br>
+      &gt; ulimit -f unlimited&nbsp;&nbsp;&nbsp; //此行及以下为输入行<br>
+      &gt; ulimit -u unlimited<br>
+      &gt; ulimit -v unlimited<br>
+      &gt; ulimit -n 64000<br>
+      &gt; ulimit -m unlimited<br>
+      &gt; ulimit -u 64000<br>
+      &gt; EOF<br>
+    </p>
+    <p># vi /etc/profile&nbsp;&nbsp;&nbsp;&nbsp; //看看有没有将上面的几行加进去？？？<br>
+      # source /etc/profile<br>
+    </p>
+    <pre><pre><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">MongoDB shell中执行命令来创建数据库、插入数据、编辑数据、发布管理命令和删除数据。<br></span><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>显示数据库： </strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong><br>&gt; show dbs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //show database names&nbsp;&nbsp; </strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>检查现有的数据库</strong></span>
+<span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>admin&nbsp;&nbsp; 0.000GB<br>config&nbsp; 0.000GB<br>local&nbsp;&nbsp; 0.000GB<br><br><br>创建你的数据库: </strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong><br>与SQL不同，MongoDB没有数据库创建命令。直接输入<code>use</code> 关键词即可切换到指定数据库。如果该数据库不存在，将创建新数据库，</strong></span><pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>如果该数据库已存在</strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>将链接到现有数据库。<br></strong></span><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>要启动名为 “</strong></span>hustbiodb<span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>”的数据库，请键入:<br>&gt;user hustbiodb&nbsp;&nbsp;&nbsp;&nbsp; =&gt; switched to db hustbiodb<br>&gt; show dbs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //</strong></span>看看huststd有没有？？？？ &nbsp;<br>创建的数据库没有显示？这是因为我们还没有将数值保存到数据库中<br><br>&gt; db &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>//</strong></span>看看huststd有没有？？？？ &nbsp;键入&nbsp;<code>db</code> 可确认刚创建的数据库<strong>: &nbsp; </strong><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>hustbiodb</strong></span>
+<span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong></strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong></strong></span></pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong><br></strong></span>https://www.wbolt.com/mongodb-create-database.html<br><br></pre></pre>
+    <h3 id="managing-your-mongodb-database" class="has-anchor-hash
+      wb-sc-2 j-wbsc-title" data-index="10">管理你的MongoDB数据库</h3>
+    <p>有效管理MongoDB数据库的巧妙方法： 可通过MongoDB-compass或通过集合来实现。</p>
+    <p>相比与关系型数据库定义明确的表，有指定的数据类型和列，但NoSQL有集合而不是表。<br>
+      这些集合没有任何结构，而且文档可以变化-----可有不同的数据类型和字段，而不需要在同一个集合中匹配另一个文档的格式。<br>
+    </p>
+    <p>创建一个名为 "Hustbiocol"的集合，并向其中添加一个文档。<br>
+    </p>
+    <div class="enlighter" style="">
+      <div class="">
+        <div><span class="enlighter-text"></span><span
+            class="enlighter-text"></span><span class="enlighter-m3"></span><span
+            class="enlighter-g1"></span><span class="enlighter-text"></span><span
+            class="enlighter-g1"></span><span class="enlighter-text"></span><span
+            class="enlighter-s0"></span><span class="enlighter-text"></span><span
+            class="enlighter-s0"></span><span class="enlighter-text"></span><span
+            class="enlighter-s0"></span><span class="enlighter-text"></span><span
+            class="enlighter-s0"></span><span class="enlighter-text"></span><span
+            class="enlighter-g1"></span><span class="enlighter-g1">输入以下行</span>：<br>
+          &gt;use Hustbiocol<br>
+          <span class="enlighter-g1">&gt;
+            db.Hustbiocol.insert(&nbsp;&nbsp;&nbsp; //</span><span
+            class="enlighter-g1">db “指的是当前连接的数据库。</span><span
+            class="enlighter-g1"><span class="enlighter-g1">Hustbiocol</span>是
+            数据库中新创建的集合。<br>
+            ... {<br>
+            ... "Huststdname":"Huster",<br>
+            ... "L</span>ife<span class="enlighter-g1">Dep":"Bioinfos"<br>
+            ... }<br>
+            ... )&nbsp;&nbsp;&nbsp; //记得这里的：</span> ）&nbsp;&nbsp; 结束！！！<br>
+          <span class="enlighter-g1">WriteResult({ "nInserted" : 1
+            })&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //</span><span
+            class="enlighter-g1">返回 <code>WriteResult({ "nInserted" : 1
+              })</code> &nbsp; 表示</span><span class="enlighter-g1"><span
+              class="enlighter-g1">插入成功</span> <br>
+            <br>
+            &gt; show dbs<br>
+            admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000GB<br>
+            config&nbsp;&nbsp;&nbsp;&nbsp; 0.000GB<br>
+            local&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000GB<br>
+            mongotest&nbsp; 0.000GB<br>
+          </span><span class="enlighter-g1">Hustbiocol&nbsp;
+            0.000GB&nbsp;&nbsp;&nbsp;&nbsp; //</span>看到这里没有？？？？
+          这个就是新建的数据库,其中还有个集合： Hustbiocol<br>
+          <br>
+          这里没有设主键，MongoDB会自动创建一个名为”_id “的主键字段，并为其设置一个默认值<br>
+          <span class="enlighter-g1"><br>
+          </span>检查JSON格式的集合：<span class="enlighter-text"></span><span
+            class="enlighter-text"><span class="enlighter-g1"></span><br>
+            &gt; db.Hustbiocol.find().forEach(printjson)<br>
+            {<br>
+            &nbsp;&nbsp;&nbsp; "_id" :
+            ObjectId("643279f7a32075d91a34014c"),&nbsp;&nbsp;&nbsp;&nbsp;
+            //</span><span class="enlighter-text">主键<br>
+            &nbsp;&nbsp;&nbsp; "Huststdname" : "Huster",<br>
+            &nbsp;&nbsp;&nbsp; "LifeDep" : "Bioinfos"<br>
+            }<br>
+            上面的内容是不是刚才输入的？？？？？？<br>
+            <br>
+            自定义主键：<br>
+            &gt; db.Hustbiocol.insert(<br>
+            ... {<br>
+            ... "_id" : 1,<br>
+            ... "Huststdname":"watis",<br>
+            ... "LifeDep":"Biosci"<br>
+            ... }<br>
+            ... )<br>
+            WriteResult({ "nInserted" : 1 })<br>
+            &gt;
+            db.Hustbiocol.find().forEach(printjson)&nbsp;&nbsp;&nbsp;
+            //再看看如何？？？？<br>
+          </span><span class="enlighter-g1"></span></div>
+      </div>
+    </div>
+    <pre><pre>这次的结果是不是集合中多了一个：主键， _id “值被设置为 “1”，而不是被自动分配一个值<br><br>启动数据库管理GUI： 数据可视化、性能分析，以及对数据、数据库和集合的CRUD（创建、读取、更新、删除）访问<pre><pre>$ mongodb-compass <br></pre></pre></pre></pre>
+    <div align="center"><img src="../hustdbroot/mondbdir/bootmoncompass.png" alt=""
+        width="360" height="321"><br>
+    </div>
+    <pre><pre><br>启动mongodb-compass可能会报错：<br>1. FATAL:electron_main_delegate.cc(299)] Running as root without --no-sandbox is not supported： 不能用root运行mongodb-compass<br>2. FATAL:setuid_sandbox_host.cc(157)] The SUID sandbox helper binary was found, but is not configured correctly. <br>Rather than run without sandboxing I'm aborting now. <br>You need to make sure that /usr/lib/mongodb-compass/chrome-sandbox is owned by root and has mode 4755.<br>表示： 需要<br># chmod 4755 /usr/lib/mongodb-compass/chrome-sandbox &nbsp; （需要root权限）
+<br>点击start:<br></pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="mondbdir/mondbcompgui.png" alt="" width="1073" height="393"></div>
+    <pre><pre><br>点击Connect:<br></pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="mondbdir/allmondb.png" alt="" width="1118" height="465"></div>
+    <pre><pre><br><br><br>GUI创建一个MongoDB数据库<br>1. 在GUI中点击带圈的加号，即可弹出：Create Database的窗口：<br>输入：<br>数据库的名称：Testdb<br>第一个集合名：testcol</pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="mondbdir/comcrdb.png" alt="" width="929" height="526"></div>
+    <pre><pre><br></pre></pre>
+    <pre><pre><code></code></pre></pre>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h1>
+    <pre><pre><br><pre>给数据库中插入更多文件：</pre>点击数据库名称: Testdb<br>点击集合的名称： testcol<br>即可看到GUI有侧有多个标签： Documents, Aggregations, Schema, Explain Plan, Indexes, Validation<br><strong>Documents</strong>标签。<br></pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="mondbdir/dbcoldoc.png" alt="" width="986" height="446"></div>
+    <pre><pre><br><br><br><br>然后，你可以点击<strong>Add Data</strong>按钮，将一个或多个文档插入你的集合中。<br></pre></pre>
+    <div class="enlighter" style="">
+      <div class="">
+        <div><span class="enlighter-text">{ _id: 1, item: { name:
+            "apple", code: "123" }, qty: 15, tags: [ "A", "B", "C" ] },</span></div>
+      </div>
+      <div class="">
+        <div><span class="enlighter-text">{ _id: 2, item: { name:
+            "banana", code: "123" }, qty: 20, tags: [ "B" ] },</span></div>
+      </div>
+      <div class="">
+        <div><span class="enlighter-text">{ _id: 3, item: { name:
+            "spinach", code: "456" }, qty: 25, tags: [ "A", "B" ] },</span></div>
+      </div>
+      <div class="">
+        <div><span class="enlighter-text">{ _id: 4, item: { name:
+            "lentils", code: "456" }, qty: 30, tags: [ "B", "A" ] },</span></div>
+      </div>
+      <div class="">
+        <div><span class="enlighter-text">{ _id: 5, item: { name:
+            "pears", code: "000" }, qty: 20, tags: [ [ "A", "B" ], "C" ]
+            },</span></div>
+      </div>
+      <div class="">
+        <div><span class="enlighter-text">{ _id: 6, item: { name:
+            "strawberry", code: "123" }, tags: [ "B" ] }</span></div>
+      </div>
+    </div>
+    <pre><pre>最后，单击 “<strong>Insert</strong>“，将文件添加到你的集合中。这就是一个文件的正文的样子<br><br>使用GO来访问mongodb:</pre></pre>
+    <h1> </h1>
+    <h1>CENTOS79安装GO以及三款GO语言小插件</h1>
+    <p>vi &#8203;$HOME/.bash_profile&#8203;<br>
+      export GOROOT=/opt/myoptgo<br>
+      export PATH=$PATH:$GOROOT/bin<br>
+      source ~/.bash_profile<br>
+    </p>
+    <p>$ go version<br>
+      go version go1.20.2 linux/amd64<br>
+    </p>
+    配置环境变量<br>
+    &#8203;&#8203;GOROOT&#8203;&#8203;&#8203; 和 &#8203;&#8203;GOPATH&#8203;&#8203;&#8203; 都是环境变量，其中 &#8203;&#8203;GOROOT&#8203;&#8203;&#8203; 是安装 Go 开发包的路径:
+    <h1>/opt/myoptgo</h1>
+    &#8203;&#8203;GOPATH&#8203;&#8203; 会有一个默认目录。<br>
+    <br>
+    由于 go1.11 之后使用 go mod 来管理依赖包，不再强制我们必须把代码写在 &#8203;&#8203;GOPATH/src&#8203;&#8203;
+    目录下，所以使用默认即可，无需修改<br>
+    <br>
+    配置 &#8203;&#8203;GOPROXY&#8203;<br>
+    $ go env -w GO111MODULE=on<br>
+    $ go env -w GOPROXY=https://goproxy.cn,direct<br>
+    <pre><pre><code><pre><br></pre></code></pre></pre>
+    <p>将要安装Go模块下的tools三个小插件，顺带把debug功能开启。<br>
+      gocode是代码自动补全程序；<br>
+      guru代码导航程序；<br>
+      godef代码跳转程序（ctrl+鼠标左击，查看定义的代码）；<br>
+      gdb64支持debug的程序。</p>
+    <h4>1、先来安装gocode</h4>
+    <p>打开CMD命令行，进入GO安装目录的src文件夹下，运行以下命令<br>
+    </p>
+    <code>$ cd /run/media/catalyst/MDDATA/goworkspaces/wtsgo/src/gomongo</code><code><br>
+      $ cd /opt/myoptgo/go/src/&nbsp; (again!!)<br>
+      #go get -u github.com/nsf/gocod</code><code></code>e<code>
+      &nbsp;&nbsp; #get gocode now <br>
+      ]$ /opt/myoptgo/go/bin/go get -u github.com/nsf/gocode<br>
+      go: downloading golang.org/x/net
+      v0.4.1-0.20230214201333-88ed8ca3307d<br>
+      go: downloading golang.org/x/crypto
+      v0.3.1-0.20221117191849-2c476679df9a<br>
+      go: downloading golang.org/x/crypto v0.7.0<br>
+      go: downloading golang.org/x/net v0.8.0<br>
+      go: downloading golang.org/x/sys v0.3.0<br>
+      go: downloading golang.org/x/text v0.5.0<br>
+      go: downloading golang.org/x/sys v0.7.0<br>
+      go: downloading golang.org/x/text v0.8.0<br>
+      go: added github.com/nsf/gocode v0.0.0-20230322162601-b672b49f3818<br>
+      go: upgraded golang.org/x/crypto
+      v0.3.1-0.20221117191849-2c476679df9a =&gt; v0.7.0<br>
+      go: upgraded golang.org/x/net v0.4.1-0.20230214201333-88ed8ca3307d
+      =&gt; v0.8.0<br>
+      go: upgraded golang.org/x/sys v0.3.0 =&gt; v0.7.0<br>
+      go: upgraded golang.org/x/text v0.5.0 =&gt; v0.8.0</code><code>
+      <pre><code>#go build github.com/nsf/gocode &nbsp; &nbsp;==&gt;&gt; &nbsp;/run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/main/gocode<br><br></code></pre>
+    </code>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      将gocode拷贝到Go安装目录的bin文件下<br>
+      $ mv gocode /opt/myoptgo/bin/<br>
+    </p>
+    <h4>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h4>
+    <h4>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h4>
+    <h4>2、安装guru</h4>
+    <p>$ /opt/myoptgo/go/bin/go get -u golang.org/x/tools/cmd/guru<br>
+      go: downloading golang.org/x/mod v0.10.0<br>
+      go: upgraded golang.org/x/mod v0.9.0 =&gt; v0.10.0<br>
+      go: upgraded golang.org/x/sys v0.6.0 =&gt; v0.7.0<br>
+      <br>
+    </p>
+    <p>$ /opt/myoptgo/go/bin/go build golang.org/x/tools/cmd/guru<br>
+      $ mv guru /opt/myoptgo/bin/<br>
+    </p>
+    <h4> </h4>
+    <h4>3、安装godef</h4>
+    <p>$ /opt/myoptgo/go/bin/go get github.com/rogpeppe/godef<br>
+      $ /opt/myoptgo/go/bin/go build github.com/rogpeppe/godef<br>
+    </p>
+    <p>OK: NOW HAVE
+      /run/media/catalyst/MDDATA/goworkspaces/wtsgo/src/gomongo/godef<br>
+      mv godef /opt/myoptgo/bin/</p>
+    <code>
+      <pre><br><br>$ /opt/myoptgo/bin/go build gomongo.go &nbsp;=&gt;<br><br></pre>
+    </code>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      /opt/myoptgo/go/pkg/tool/linux_amd64/compile: here have this
+      file!!!!!!!&nbsp;&nbsp; go: no such tool "compile"<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <h2>关于 <code>go get</code> 和 <code>go.mod</code></h2>
+    <p><code>go mod tidy</code> 删除掉无用的模块</p>
+    <code>
+      <pre><br><br>run in myeclipse:<br>有报错Resouce doesnt have a corresponding Go package<br><br>需要新建main路径<br><br><br><br>GO 框架:<br>https://github.com/zeromicro/go-zero<br><br>go get -u github.com/zeromicro/go-zero<br><br><br>运行VSCODE进行数据库访问:<br>$ ./code --no-sandbox  //CENTOS 7.9 OK!!!!!!!!!!!!!!!!<br></pre>
+    </code>
+    <div align="center"><img moz-do-not-send="true"
+        src="mondbdir/gitcn7.png" alt="" width="456" height="119"><br>
+      提示：安装git版本<br>
+      <h2>
+        <meta http-equiv="content-type" content="text/html; charset=GBK">
+      </h2>
+      <h2><code class="lang-bash hljs">
+          <ul>
+            <li><br>
+            </li>
+          </ul>
+        </code></h2>
+      <div class="post-content" itemprop="articleBody">
+        <pre class="loaded"><code class="lang-bash hljs"><div class="code-line" align="left"><div align="center"><span class="hljs-comment">安装GIT2.X版本<br></span><div align="left"><span class="hljs-comment">首先安装IUS源</span><br><span class="hljs-comment"></span></div><span class="hljs-comment"></span></div><span class="hljs-comment"># 官方网站 https://ius.io/setup</span>
+yum install https://repo.ius.io/ius-release-el7.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm<br>Running transaction<br>  正在安装    : ius-release-2-1.el7.ius.noarch                                                                                    1/1 <br>  验证中      : ius-release-2-1.el7.ius.noarch                                                                                    1/1 <br><br>已安装:<br>  ius-release.noarch 0:2-1.el7.ius  <br>#yum makecache &nbsp; //<code class="lang-bash hljs"><span class="hljs-comment"> 更新yum缓存<br>#yum search git<br>git.x86_64 : Fast Version Control System<br>git236.x86_64 : Fast Version Control System<br># yum remove git &nbsp; //</span></code>must remove first !!!!!<br><code class="lang-bash hljs"><span class="hljs-comment"></span></code>#yum install git236 &nbsp; <code class="lang-bash hljs"><span class="hljs-comment">// 安装git2.3.6</span></code></div></code><code class="lang-bash hljs"></code><code class="lang-bash hljs"><div class="code-line" align="left">#git --version &nbsp;//<code class="lang-bash hljs"><span class="hljs-comment"> 查看git版本</span></code>
+</div></code><code class="lang-bash hljs"></code></pre>
+      </div>
+      <br>
+      <br>
+      <div align="left">结果会打开主界面：<br>
+        <div align="center"><img moz-do-not-send="true"
+            src="mondbdir/insgovsc.png" alt="" width="758" height="570"><br>
+          安装GO支持：Go for Visual Studio Code<br>
+          <br>
+          <div align="left">打开一个GO目录：(now just a heweb.go)<br>
+            <br>
+            会提示Do you trust the authors of the files in this folder?
+            回答是肯定的。<br>
+          </div>
+          <br>
+        </div>
+        <br>
+      </div>
+      <img moz-do-not-send="true" src="mondbdir/trustitdir.png" alt=""
+        width="555" height="357"><br>
+      <br>
+      <div align="left">打开任何含有GO代码的目录或workspace：会自动激活这个 go for vscode
+        extension.<br>
+      </div>
+      <div align="left">&nbsp;The <a
+          href="https://github.com/golang/vscode-go/wiki/ui"
+          target="_blank" rel="noreferrer noopener nofollow">Go status
+          bar</a> appears in the bottom left corner of the window and
+        displays your Go version.<br>
+        he extension depends on <code>go</code>, <code>gopls</code>, <code>dlv</code>
+        and other optional tools. If any of the dependencies are
+        missing, the &#9888;&#65039; <code>Analysis Tools Missing</code> warning is
+        displayed. Click on the warning to download dependencies.<br>
+        <div align="center"><img moz-do-not-send="true"
+            src="mondbdir/dlvins.png" alt="" width="703" height="256"><br>
+        </div>
+      </div>
+    </div>
+    <code>
+      <pre><code></code></pre>
+    </code><code></code><code></code><code></code><code></code><code></code><code></code>
+    <pre><br>RUN:<br>Starting: /home/catalyst/go/bin/dlv dap --listen=127.0.0.1:29830 --log-dest=3 from /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb<br>DAP server listening at: 127.0.0.1:29830<br>Build Error: go build -o /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb/__debug_bin -gcflags all=-N -l .<br>go: go.mod file not found in current directory or any parent directory; see 'go help modules' (exit status 1)<br><br>新建一个空文件： go.mod<br>再次RUN：会提示要运行：<br>$ go mod edit -module=example.com/mod &nbsp;//直接给go.mod中加入一行： module example.com/mod<br>再次RUN： OK？？？？！！！！！<br>Starting: /home/catalyst/go/bin/dlv dap --listen=127.0.0.1:33840 --log-dest=3 from /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb<br>DAP server listening at: 127.0.0.1:33840<br><br>在浏览器中输入：http://localhost:8090/hello： &nbsp;看看？？？？ <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; http://localhost:8090/world<br></pre>
+    <h1>请求处理: 1&nbsp; url参数处理(get) url.go</h1>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </p>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h1>
+    <p>package main<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "net/http"<br>
+      )<br>
+      <br>
+      func helloHandler(writer http.ResponseWriter, request
+      *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; method := request.Method<br>
+      &nbsp;&nbsp;&nbsp; println(method)<br>
+      &nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; url := request.URL<br>
+      &nbsp;&nbsp;&nbsp; values := url.Query()<br>
+      &nbsp;&nbsp;&nbsp; userName := values.Get("userName")<br>
+      &nbsp;&nbsp;&nbsp; password := values.Get("password")<br>
+      &nbsp;&nbsp;&nbsp; println(userName, password)<br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/hello", helloHandler)<br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      }<br>
+    </p>
+    <p>RUN：点RUN菜单中的RUN Withou Debugging:<br>
+    </p>
+    <p>VSCode的DebugConsole窗口显示：<br>
+      Starting: /home/catalyst/go/bin/dlv dap --listen=127.0.0.1:11417
+      --log-dest=3 from
+      /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb<br>
+      DAP server listening at: 127.0.0.1:11417<br>
+    </p>
+    <p>切换到浏览器访问：
+      http://localhost:8090/hello?userName=张三&amp;password=1234 <br>
+    </p>
+    <p>结果会在VSCodeDebugConsole窗口打印：<br>
+      GET&nbsp;&nbsp; //<br>
+      张三 1234&nbsp;&nbsp; // user / passwd<br>
+    </p>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h1>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <p><br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <h2>form参数处理</h2>
+    <p><br>
+      package main<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "html/template"<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "net/http"<br>
+      )<br>
+      <br>
+      func loginHandler(writer http.ResponseWriter, request
+      *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; // 获取请求方式<br>
+      &nbsp;&nbsp;&nbsp; method := request.Method<br>
+      &nbsp;&nbsp;&nbsp; println("请求方式", method)<br>
+      &nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; // 如果此处读取了body数据则ParseForm()读取不到数据了<br>
+      &nbsp;&nbsp;&nbsp; // body := request.Body<br>
+      &nbsp;&nbsp;&nbsp; // length := request.ContentLength<br>
+      &nbsp;&nbsp;&nbsp; // println("length", length)<br>
+      &nbsp;&nbsp;&nbsp; // if length &gt; 0 {<br>
+      &nbsp;&nbsp;&nbsp; // &nbsp;&nbsp;&nbsp; p := make([]byte, length)<br>
+      &nbsp;&nbsp;&nbsp; // &nbsp;&nbsp;&nbsp; body.Read(p)<br>
+      &nbsp;&nbsp;&nbsp; // &nbsp;&nbsp;&nbsp; println(string(p)) //
+      打印：userName1=faffa&amp;password1=fafaf<br>
+      &nbsp;&nbsp;&nbsp; // }<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; if request.Method == "GET" {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+      如果时get请求则加载login.html，(该login.html与go文件同目录)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t, _ :=
+      template.ParseFiles("login.html")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.Execute(writer, nil)<br>
+      &nbsp;&nbsp;&nbsp; } else {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 解析post url 参数<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; url := request.URL<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; values := url.Query()<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; userName :=
+      values.Get("userName")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; password :=
+      values.Get("password")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; println(userName, password)<br>
+      &nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 解析表单参数<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; request.ParseForm()<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; userName1 :=
+      request.Form.Get("userName1")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; password1 :=
+      request.Form.Get("password1")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; println(userName1,
+      password1)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      <br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/login", loginHandler)<br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      }<br>
+      <br>
+    </p>
+    <p>写一个html文件放到同一个目录中（用于client显示）：<br>
+      &lt;html&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;request
+      处理&lt;/title&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;form
+      action="login?userName=张三&amp;password=123" method="post"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      用户名：&lt;input type="text" name="userName1"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      密码：&lt;input type="password" name="password1"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &lt;input type="submit" value="登录"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+      &lt;/html&gt;<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <h2>header参数处理</h2>
+    <p>package main<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "fmt"<br>
+      &nbsp;&nbsp;&nbsp; "html/template"<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "net/http"<br>
+      )<br>
+      <br>
+      func headerHandler(writer http.ResponseWriter, request
+      *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; h := request.Header<br>
+      &nbsp;&nbsp;&nbsp; fmt.Print(h)<br>
+      &nbsp;&nbsp;&nbsp; println()<br>
+      &nbsp;&nbsp;&nbsp; println("---------")<br>
+      &nbsp;&nbsp;&nbsp; println(h.Get("User-Agent"))<br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/header", headerHandler)<br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      }</p>
+    <p>Starting: /home/catalyst/go/bin/dlv dap --listen=127.0.0.1:23687
+      --log-dest=3 from
+      /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb<br>
+      DAP server listening at: 127.0.0.1:23687<br>
+      map[Accept:[text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8]
+
+
+
+
+
+
+
+
+
+      Accept-Encoding:[gzip, deflate, br]
+      Accept-Language:[zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2]
+
+
+
+
+
+
+
+
+
+      Connection:[keep-alive] Sec-Fetch-Dest:[document]
+      Sec-Fetch-Mode:[navigate] Sec-Fetch-Site:[none]
+      Sec-Fetch-User:[?1] Upgrade-Insecure-Requests:[1]
+      User-Agent:[Mozilla/5.0 (X11; Linux x86_64; rv:102.0)
+      Gecko/20100101 Firefox/102.0]]<br>
+      <br>
+      ---------<br>
+      Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+      Firefox/102.0</p>
+    <p><br>
+    </p>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h1>
+    <h1>响应处理</h1>
+    <p>package main<br>
+    </p>
+    import (<br>
+    &nbsp;&nbsp;&nbsp; "fmt"<br>
+    &nbsp;&nbsp;&nbsp; "html/template"<br>
+    &nbsp;&nbsp;&nbsp; "log"<br>
+    &nbsp;&nbsp;&nbsp; "net/http"<br>
+    )<br>
+    <br>
+    func writerHandler(writer http.ResponseWriter, request
+    *http.Request) {<br>
+    &nbsp;&nbsp;&nbsp; htm := `&lt;html&gt;<br>
+    &nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;request
+    处理&lt;/title&gt;<br>
+    &nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+    &nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;form
+    action="login?userName=张三&amp;password=123" method="post"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    用户名：&lt;input type="text" name="userName1"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    密码：&lt;input type="password" name="password1"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &lt;input type="submit" value="登录"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>
+    &nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+    &lt;/html&gt;`<br>
+    &nbsp;&nbsp;&nbsp; // 响应报文头200成功<br>
+    &nbsp;&nbsp;&nbsp; writer.WriteHeader(200)<br>
+    &nbsp;&nbsp;&nbsp; // 响应报文体<br>
+    &nbsp;&nbsp;&nbsp; writer.Write([]byte(htm))<br>
+    }<br>
+    <br>
+    func main() {<br>
+    &nbsp;&nbsp;&nbsp; http.HandleFunc("/writer", writerHandler)<br>
+    &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090", nil)<br>
+    &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+    }<br>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h1>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h1>
+    <h1>四、cookie</h1>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      cookie是存储在浏览器端的会话信息，可存储在内容或硬盘。不设置过期时间存储在内容，设置了过期时间则存储在硬盘</p>
+    <p><br>
+      // 读取cookie<br>
+      func getCookie(writer http.ResponseWriter, request *http.Request)
+      {<br>
+      &nbsp;&nbsp;&nbsp; cookie, err := request.Cookie("userName")<br>
+      &nbsp;&nbsp;&nbsp; if err != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; println(cookie.Value)<br>
+      }<br>
+      // 设置cookie<br>
+      func setCookie(writer http.ResponseWriter, request *http.Request)
+      {<br>
+      &nbsp;&nbsp;&nbsp; cookie := http.Cookie{Name: "userName", Value:
+      "Saddam"}<br>
+      &nbsp;&nbsp;&nbsp; http.SetCookie(writer, &amp;cookie)<br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/setCookie", setCookie)<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/getCookie", getCookie)<br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      }</p>
+    <p><br>
+    </p>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      浏览器访问http://localhost:8090/setCookie设置cookie，访问http:
+      //localhost:8090/getCookie获取cookie控制台打印：Saddam。</p>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      cookie其他属性:</p>
+    <p>type Cookie struct {<br>
+      &nbsp;&nbsp;&nbsp; Name&nbsp; string<br>
+      &nbsp;&nbsp;&nbsp; Value string<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; Path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      string&nbsp;&nbsp;&nbsp; // optional<br>
+      &nbsp;&nbsp;&nbsp; Domain&nbsp;&nbsp;&nbsp;&nbsp;
+      string&nbsp;&nbsp;&nbsp; // optional<br>
+      &nbsp;&nbsp;&nbsp; Expires&nbsp;&nbsp;&nbsp; time.Time // optional<br>
+      &nbsp;&nbsp;&nbsp; RawExpires string&nbsp;&nbsp;&nbsp; // for
+      reading cookies only<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; // MaxAge=0 means no 'Max-Age' attribute
+      specified.<br>
+      &nbsp;&nbsp;&nbsp; // MaxAge&lt;0 means delete cookie now,
+      equivalently 'Max-Age: 0'<br>
+      &nbsp;&nbsp;&nbsp; // MaxAge&gt;0 means Max-Age attribute present
+      and given in seconds<br>
+      &nbsp;&nbsp;&nbsp; MaxAge&nbsp;&nbsp; int<br>
+      &nbsp;&nbsp;&nbsp; Secure&nbsp;&nbsp; bool<br>
+      &nbsp;&nbsp;&nbsp; HttpOnly bool<br>
+      &nbsp;&nbsp;&nbsp; SameSite SameSite<br>
+      &nbsp;&nbsp;&nbsp; Raw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; string<br>
+      &nbsp;&nbsp;&nbsp; Unparsed []string // Raw text of unparsed
+      attribute-value pairs<br>
+      }<br>
+      <br>
+    </p>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h1>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h1>
+    <h1>五、session实现</h1>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      相对cookie session是存储在服务的的会话信息。session拥有一个全局唯一的id和客户端关联。<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <h2>5.1 session id</h2>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      session id 使用sonyflake 生产，sonyflake的安装<br>
+      #go get github.com/sony/sonyflake<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <h2>5.2 session的存储</h2>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      session信息存储在redis，redis go客户端安装<br>
+      #go get github.com/gomodule/redigo/redis<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <h2>5.3 session过期</h2>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      session过期使用redis的数据过期实现</p>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h3>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h3>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <h2>5.4、实现代码</h2>
+    <h3> </h3>
+    <h3>5.4.1 session 操作代码<br>
+    </h3>
+    <p>package session<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "reflect"<br>
+      &nbsp;&nbsp;&nbsp; "strconv"<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; "github.com/gomodule/redigo/redis"<br>
+      &nbsp;&nbsp;&nbsp; "github.com/sony/sonyflake"<br>
+      )<br>
+      <br>
+      var flake *sonyflake.Sonyflake<br>
+      var redisCon *redis.Conn<br>
+      <br>
+      func init() {<br>
+      &nbsp;&nbsp;&nbsp; flake =
+      sonyflake.NewSonyflake(sonyflake.Settings{})<br>
+      &nbsp;&nbsp;&nbsp; redisCon = connRedis()<br>
+      }<br>
+      <br>
+      func connRedis() *redis.Conn {<br>
+      &nbsp;&nbsp;&nbsp; c, err := redis.Dial("tcp", "127.0.0.1:6379")<br>
+      &nbsp;&nbsp;&nbsp; if err != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; panic(err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; return &amp;c<br>
+      }<br>
+      <br>
+      type RedisHttpSession struct {<br>
+      &nbsp;&nbsp;&nbsp; id&nbsp;&nbsp;&nbsp;&nbsp; string<br>
+      &nbsp;&nbsp;&nbsp; expire int<br>
+      }<br>
+      <br>
+      func NewSession(expire int) *RedisHttpSession {<br>
+      &nbsp;&nbsp;&nbsp; id, err := flake.NextID()<br>
+      &nbsp;&nbsp;&nbsp; if err != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; sesssion := &amp;RedisHttpSession{id:
+      strconv.FormatUint(id, 10), expire: expire}<br>
+      &nbsp;&nbsp;&nbsp; sesssion.Set("expire", expire)<br>
+      &nbsp;&nbsp;&nbsp; return sesssion<br>
+      }<br>
+      <br>
+      func Session(sessionId string) *RedisHttpSession {<br>
+      &nbsp;&nbsp;&nbsp; session := &amp;RedisHttpSession{id: sessionId}<br>
+      &nbsp;&nbsp;&nbsp; v := session.GetValue("expire")<br>
+      &nbsp;&nbsp;&nbsp; if v == nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return nil<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; if e, ok := v.([]uint8); ok {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Println("sessionid",
+      session.id, "HGET key expire", "value is", string(e))<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; expire, _ :=
+      strconv.Atoi(string(e))<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; session.expire = expire<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; return session<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) GetId() string {<br>
+      &nbsp;&nbsp;&nbsp; return session.id<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) Fresh() {<br>
+      &nbsp;&nbsp;&nbsp; (*redisCon).Do("EXPIRE", session.id,
+      session.expire)<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) GetValue(key string) interface{}
+      {<br>
+      &nbsp;&nbsp;&nbsp; reply, err := (*redisCon).Do("HGET",
+      session.id, key)<br>
+      &nbsp;&nbsp;&nbsp; if reply != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t := reflect.TypeOf(reply)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; v := reflect.ValueOf(reply)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Println("sessionid",
+      session.id, "HGET key", key, "reply.name", t.Name(), "reply.kind",
+      t.Kind().String(), "reply.value", v.String(), "and error", err)<br>
+      &nbsp;&nbsp;&nbsp; } else {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Println("sessionid",
+      session.id, "HGET key", key, "and reply", reply, "and error", err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; return reply<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) Delete(key string) {<br>
+      &nbsp;&nbsp;&nbsp; (*redisCon).Do("DEL", session.id, key)<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) Set(key string, value
+      interface{}) {<br>
+      &nbsp;&nbsp;&nbsp; reply, err := (*redisCon).Do("HSET",
+      session.id, key, value)<br>
+      &nbsp;&nbsp;&nbsp; log.Println("sessionid", session.id, "HSET
+      key", key, "and value", value, "and reply", reply, "and error",
+      err)<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) Destroy() {<br>
+      &nbsp;&nbsp;&nbsp; (*redisCon).Do("DEL", session.id)<br>
+      }<br>
+      <br>
+    </p>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h3>
+    <h3>5.4.2 web服务</h3>
+    <p><br>
+      package main<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "net/http"<br>
+      &nbsp;&nbsp;&nbsp; "strconv"<br>
+      &nbsp;&nbsp;&nbsp; "text/template"<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; "fa.com/wms/session"<br>
+      )<br>
+      <br>
+      func login(w http.ResponseWriter, r *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; if r.Method == "GET" {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t, _ :=
+      template.ParseFiles("../template/login.html")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.Execute(w, nil)<br>
+      &nbsp;&nbsp;&nbsp; } else {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; r.ParseForm()<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; userName :=
+      r.Form.Get("userName")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sess :=
+      session.NewSession(60)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sess.Set("userName",
+      userName)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sess.Set("count", 0)<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cookie := http.Cookie{Name:
+      "redigosessionid", Value: sess.GetId()}<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 设置cookie保存sessionid<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; http.SetCookie(w,
+      &amp;cookie)<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; http.Redirect(w, r,
+      "/myCount", http.StatusFound)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      <br>
+      }<br>
+      <br>
+      func myCount(w http.ResponseWriter, r *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; cookie, _ := r.Cookie("redigosessionid")<br>
+      &nbsp;&nbsp;&nbsp; sessionid := cookie.Value<br>
+      &nbsp;&nbsp;&nbsp; sess := session.Session(sessionid)<br>
+      &nbsp;&nbsp;&nbsp; // session 超时重新登录<br>
+      &nbsp;&nbsp;&nbsp; if sess == nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; http.Redirect(w, r,
+      "/login", http.StatusFound)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; count := sess.GetValue("count")<br>
+      &nbsp;&nbsp;&nbsp; userName := sess.GetValue("userName")<br>
+      &nbsp;&nbsp;&nbsp; sess.Fresh()<br>
+      &nbsp;&nbsp;&nbsp; var sessUserName string<br>
+      &nbsp;&nbsp;&nbsp; if um, ok := userName.([]uint8); ok {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sessUserName = string(um)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; // 断言数据类型<br>
+      &nbsp;&nbsp;&nbsp; if i, ok := count.([]uint8); ok {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sessCount, _ :=
+      strconv.Atoi(string(i))<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sessCount += 1<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sess.Set("count", sessCount)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 加载html模板<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t, _ :=
+      template.ParseFiles("../template/count.html")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 准备模板数据<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; data :=
+      map[string]interface{}{"userName": sessUserName, "count":
+      sessCount}<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 渲染模板数据并相应页面<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.Execute(w, data)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      <br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/login", login)<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/myCount", myCount)<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; if err != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      }<br>
+    </p>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h3>
+    <h3>5.4.3 登录页面</h3>
+    <p><br>
+      &lt;html&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &lt;title&gt;登录&lt;/title&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;form
+      &gt;action&gt;="login" &gt;method&gt;&gt;="post"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      用户名：&lt;input &gt;type&gt;&gt;="text"
+      &gt;name&gt;&gt;="userName"&gt;&lt;br&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      密码：&lt;input &gt;type&gt;="password"
+      &gt;name&gt;&gt;="password"&gt;&lt;br&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &lt;input &gt;type&gt;="submit" &gt;value&gt;&gt;="登录"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+      &lt;/html&gt;<br>
+      <br>
+    </p>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h3>
+    <h3>5.4.4 session数据展示页面</h3>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      go html 模板：{{.userName}} {{.count}} 模板数据占位符，分别为 userName count 占位</p>
+    <p><br>
+      &lt;html&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &lt;title&gt;count&lt;/title&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      用户名{{.userName}} count{{.count}}<br>
+      &nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+      &lt;/html&gt;<br>
+    </p>
+    <pre><br><br>&nbsp;</pre>
+  </body>
+</html>

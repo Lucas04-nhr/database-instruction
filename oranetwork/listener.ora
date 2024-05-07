@@ -1,0 +1,146 @@
+#   listener.ora 的详细说明
+# 功能:  Network Listener startup parameter file example
+# NOTES
+#   This file contains all the parameters for listener.ora,
+#   and could be used to configure the listener by uncommenting
+#   and changing values.  Multiple listeners can be configured
+#   in one listener.ora, so listener.ora parameters take the form
+#   of SID_LIST_<lsnr>, where <lsnr> is the name of the listener
+#   this parameter refers to.  All parameters and values are
+#   case-insensitive.
+
+# <lsnr>
+#   This parameter specifies both the name of the listener, and
+#   it listening address(es). Other parameters for this listener
+#   us this name in place of <lsnr>.  
+# 如果没有给出,则<lsnr>缺省的名称是："LISTENER", 且带有缺省的地址，如下所示：
+#
+# LISTENER =
+#  (ADDRESS_LIST=
+#	(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))
+#	(ADDRESS=(PROTOCOL=ipc)(KEY=PNPKEY)))
+
+LISTENER =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 222.20.94.229)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))
+    )
+  )	
+
+# SID_LIST_<lsnr>
+#   List of services the listener knows about and can connect 
+#   clients to.  There is no default.  See the Net8 Administrator's
+#   Guide for more information.
+#
+# SID_LIST_LISTENER=
+#   (SID_LIST=
+#	(SID_DESC=
+#			#BEQUEATH CONFIG
+#          (GLOBAL_DBNAME=salesdb.mycompany)
+#          (SID_NAME=sid1)			
+#          (ORACLE_HOME=/private/app/oracle/product/8.0.3)
+           (PROGRAM = extproc)   //默认会安装一个： PL/SQL外部程序（ExtProc）条目，并放到listener.ora中，是oracle为调用外部程序默认配置的监听，通常是名为：
+                                           //ExtProc or PLSExtProc,但是一般不用他，可以直接删除这项，因为对ExtProc已经有多种攻击手段。
+                                            //PLSExtProc: pl/sql external procdure的意思，即在pl/sql中调用外部语句，如c, java写的过程。
+                                                        //现在oracle已全面支持JAVA，这个过时了，继续保留是为兼容老版本的oracle.
+#			#PRESPAWN CONFIG
+#         (PRESPAWN_MAX=20)
+#	  (PRESPAWN_LIST=
+#           (PRESPAWN_DESC=(PROTOCOL=tcp)(POOL_SIZE=2)(TIMEOUT=1))
+#         )
+#        )
+#       )
+SID_LIST_LISTENER=
+  (SID_LIST=
+      (SID_DESC=
+        #BEQUEATH CONFIG
+         (GLOBAL_DBNAME=drugdb)
+         (SID_NAME=drugdb)
+         (ORACLE_HOME=/opt/app/oracle/product/19.3.000/db_home)
+         (PROGRAM = extproc)
+        #PRESPAWN CONFIG
+        (PRESPAWN_MAX=20)
+        (PRESPAWN_LIST=
+          (PRESPAWN_DESC=(PROTOCOL=tcp)(POOL_SIZE=2)(TIMEOUT=1))
+        )
+       )
+      )
+	
+# PASSWORDS_<lsnr>
+#   Specifies a password to authenticate stopping the listener.
+#   Both encrypted and plain-text values can be set.  Encrypted passwords
+#   can be set and stored using lsnrctl.  
+#     LSNRCTL> change_password
+#       Will prompt for old and new passwords, and use encryption both
+#       to match the old password and to set the new one.
+#     LSNRCTL> set password
+#	Will prompt for the new password, for authentication with 
+#       the listener. The password must be set before running the next
+#       command.
+#     LSNRCTL> save_config
+#       Will save the changed password to listener.ora. These last two
+#       steps are not necessary if SAVE_CONFIG_ON_STOP_<lsnr> is ON.
+#       See below.
+#
+# Default: NONE
+#
+# PASSWORDS_LISTENER = 20A22647832FB454      # "foobar"
+PASSWORDS_LISTENER = wtsgyh1972 
+
+# SAVE_CONFIG_ON_STOP_<lsnr>
+#   Tells the listener to save configuration changes to listener.ora when
+#   it shuts down.  Changed parameter values will be written to the file,
+#   while preserving formatting and comments.
+# Default: OFF
+# Values: ON/OFF
+#
+# SAVE_CONFIG_ON_STOP_LISTENER = ON
+
+# USE_PLUG_AND_PLAY_<lsnr>
+#   Tells the listener to contact an Onames server and register itself
+#   and its services with Onames.
+# Values: ON/OFF
+# Default: OFF
+#
+# USE_PLUG_AND_PLAY_LISTENER = ON
+
+# LOG_FILE_<lsnr>
+#   Sets the name of the listener's log file.  The .log extension
+#   is added automatically.
+# Default=<lsnr>
+#
+# LOG_FILE_LISTENER = lsnr
+
+# LOG_DIRECTORY_<lsnr>
+#   Sets the directory for the listener's log file.
+# Default: <oracle_home>/network/log
+#
+# LOG_DIRECTORY_LISTENER = /private/app/oracle/product/8.0.3/network/log
+
+# TRACE_LEVEL_<lsnr>
+#   Specifies desired tracing level.
+# Default: OFF
+# Values: OFF/USER/ADMIN/SUPPORT/0-16
+#
+# TRACE_LEVEL_LISTENER = SUPPORT
+
+# TRACE_FILE_<lsnr>
+#   Sets the name of the listener's trace file. The .trc extension
+#   is added automatically.
+# Default: <lsnr>
+#
+# TRACE_FILE_LISTENER = lsnr
+
+# TRACE_DIRECTORY_<lsnr>
+#   Sets the directory for the listener's trace file.
+# Default: <oracle_home>/network/trace
+#
+# TRACE_DIRECTORY_LISTENER=/private/app/oracle/product/8.0.3/network/trace
+# CONNECT_TIMEOUT_<lsnr>
+#   Sets the number of seconds that the listener waits to get a 
+#   valid database query after it has been started.
+# Default: 10
+#
+# CONNECT_TIMEOUT_LISTENER=10
+

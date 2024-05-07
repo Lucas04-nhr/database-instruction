@@ -1,0 +1,4003 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>oracleinstall12c</title>
+  </head>
+  <body>
+    <div class="main_father clearfix d-flex justify-content-center "
+      style="height:100%;">
+      <div class="container clearfix " id="mainBox">
+        <main>
+          <div class="blog-content-box">
+            <div class="article-header-box">
+              <div class="article-header">
+                <div class="article-title-box">
+                  <h1 class="title-article" id="articleContentId"
+                    align="center">CentOS7.9 安装 21C/19c(20240306wts)</h1>
+                  <p>这里的安装源于工程实训中心机房CENTOS 7.5: <br>
+                  </p>
+                  <p>1. 对于新装oracle 19.3需要改/etc/oratab:<br>
+                    biohustdb:/opt/app/oracle/product/19.3.000/db_home:Y&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+                    (maybe not modthis line!!!)</p>
+                  <p>2. centos 7.5 need ntfs-3g-2017.3.23(in my email,
+                    untar and configure and make make install&nbsp; sure
+                    work well)<br>
+                  </p>
+                  <p> 3.note the right:&nbsp; export
+                    ORACLE_HOME=/opt/app/oracle/product/19.3.000/db_home&nbsp;
+                    (not dbhome !!!!!!!)<br>
+                    ＊＊＊＊＊＊＊＊＊＊＊＊＊＊<br>
+                    配置好后：每次用法<br>
+                    1. 启动tomcat 9.0.75:&nbsp; port 9875: <br>
+                  </p>
+                  <p>(base) [catalyst@localhost ~]$ cd
+                    /DATABAK/tomcat9064/bin/<br>
+                    (base) [catalyst@localhost bin]$ ./startup.sh <br>
+                  </p>
+                  <p>2.启动oracle:<br>
+                    [catalyst@localhost bin]$ ./lsnrctl start&nbsp;
+                    &lt;========================================<br>
+                    Starting
+                    /DATABAK/app/oracle/product/12.1.0/dbhome_1/bin/tnslsnr:
+                    please wait...<br>
+                    <br>
+                    TNSLSNR for Linux: Version 12.1.0.1.0 - Production<br>
+                    System parameter file is
+                    /DATABAK/app/oracle/product/12.1.0/dbhome_1/network/admin/listener.ora<br>
+                    Log messages written to
+                    /DATABAK/app/oracle/diag/tnslsnr/localhost/listener/alert/log.xml<br>
+                    Listening on:
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521)))<br>
+                    Listening on:
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))<br>
+                    <br>
+                    Connecting to
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521)))<br>
+                    STATUS of the LISTENER<br>
+                    ------------------------<br>
+                    Alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    LISTENER<br>
+                    Version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    TNSLSNR for Linux: Version 12.1.0.1.0 - Production<br>
+                    Start
+                    Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    19-JUL-2022 08:28:27<br>
+                    Uptime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    0 days 0 hr. 0 min. 0 sec<br>
+                    Trace
+                    Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    off<br>
+                    Security&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    ON: Local OS Authentication<br>
+                    SNMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    OFF<br>
+                    Listener Parameter File&nbsp;&nbsp;
+                    /DATABAK/app/oracle/product/12.1.0/dbhome_1/network/admin/listener.ora<br>
+                    Listener Log
+                    File&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/DATABAK/app/oracle/diag/tnslsnr/localhost/listener/alert/log.xml<br>
+                    Listening Endpoints Summary...<br>
+                    &nbsp;
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521)))<br>
+                    &nbsp;
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))<br>
+                    The listener supports no services&nbsp;&nbsp;&nbsp;
+                    &lt;=!!!!这
+                    报错由于：/DATABAK/app/oracle/product/12.1.0/dbhome_1
+                    /network/admin/listener.ora中少写了一行（19.3也是这样的错, 见下面）<br>
+                    The command completed successfully<br>
+                  </p>
+                  <p>===========================<br>
+                    SQL&gt; conn as sysdba<br>
+                    Enter user-name: sys<br>
+                    Enter password:&nbsp;&nbsp; &lt;============oracle
+                    12的怎么会nopassswd??????????????管他，可用就行。<br>
+                    Connected to an idle instance.<br>
+                    SQL&gt; startup<br>
+                    ORACLE instance started.<br>
+                    <br>
+                    Total System Global Area 7465926656 bytes<br>
+                    Fixed Size&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp; 2698976 bytes<br>
+                    Variable Size&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                    &nbsp;1409286432 bytes<br>
+                    Database Buffers&nbsp;&nbsp;&nbsp; &nbsp;6039797760
+                    bytes<br>
+                    Redo Buffers&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp; 14143488 bytes<br>
+                    Database mounted.<br>
+                    Database opened.<br>
+                    SQL&gt; <br>
+                    现在可以用eclipse的Dbeaver连接看看是否成功！<br>
+                    *********************************** FOR CENTOS 7.9
+                    oracle 19.3 *******************</p>
+                  <p>对于CENTOS 7.9， Oracle 19.3的 listener.ora<br>
+                    # listener.ora Network Configuration File:
+                    /opt/app/oracle/product/19.3.000/db_home//network/admin/listener.ora<br>
+                    # Generated by Oracle configuration tools.<br>
+                    <br>
+                    LISTENER =<br>
+                    &nbsp; (DESCRIPTION_LIST =<br>
+                    &nbsp;&nbsp;&nbsp; (DESCRIPTION =<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL
+                    = TCP)(HOST = 222.20.94.229)(PORT = 1521))<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL
+                    = IPC)(KEY = EXTPROC1521))<br>
+                    &nbsp;&nbsp;&nbsp; )<br>
+                    &nbsp; )<br>
+                    <br>
+                    SID_LIST_LISTENER=<br>
+                    &nbsp; (SID_LIST=<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SID_DESC=<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #BEQUEATH
+                    CONFIG<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (GLOBAL_DBNAME=drugdb)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (SID_NAME=drugdb)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (ORACLE_HOME=/opt/app/oracle/product/19.3.000/db_home)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #PRESPAWN
+                    CONFIG<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (PRESPAWN_MAX=20)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (PRESPAWN_LIST=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(PRESPAWN_DESC=(PROTOCOL=tcp)(POOL_SIZE=2)(TIMEOUT=1))<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+                  </p>
+                  <p><br>
+                    &amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&nbsp;
+
+
+
+
+
+                    tnsnames.ora&nbsp; ok!!!!!!!!!!!!<br>
+                    # tnsnames.ora Network Configuration File:
+                    /opt/app/oracle/product/19.3.000/db_home//network/admin/tnsnames.ora<br>
+                    # Generated by Oracle configuration tools.<br>
+                    <br>
+                    DRUGDB =<br>
+                    &nbsp; (DESCRIPTION =<br>
+                    &nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST
+                    = 222.20.94.229)(PORT = 1521))<br>
+                    &nbsp;&nbsp;&nbsp; (CONNECT_DATA =<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SERVER = DEDICATED)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SERVICE_NAME =
+                    drugdb)<br>
+                    &nbsp;&nbsp;&nbsp; )<br>
+                    &nbsp; )<br>
+                    <br>
+                    LISTENER_DRUGDB =<br>
+                    &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                    222.20.94.229)(PORT = 1521))<br>
+                    <br>
+                  </p>
+                  <p>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%<br>
+                    [catalyst@localhost bin]$ ./lsnrctl start<br>
+                    <br>
+                    LSNRCTL for Linux: Version 19.0.0.0.0 - Production
+                    on 27-12月-2023 08:46:56<br>
+                    <br>
+                    Copyright (c) 1991, 2019, Oracle.&nbsp; All rights
+                    reserved.<br>
+                    <br>
+                    启动/opt/app/oracle/product/19.3.000/db_home//bin
+                    /tnslsnr: 请稍候...<br>
+                    <br>
+                    TNSLSNR for Linux: Version 19.0.0.0.0 - Production<br>
+                    系统参数文件为/opt/app/oracle/product/19.3.000/db_home
+                    //network/admin/listener.ora<br>
+                    写入/opt/app/oracle/diag/tnslsnr/localhost/listener
+                    /alert/log.xml的日志信息<br>
+                    监听:
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=222.20.94.229)(PORT=1521)))<br>
+                    监听:
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))<br>
+                    <br>
+                    正在连接到
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=222.20.94.229)(PORT=1521)))<br>
+                    LISTENER 的 STATUS<br>
+                    ------------------------<br>
+                    别
+                    名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+                    LISTENER<br>
+                    版
+                    本&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+                    TNSLSNR for Linux: Version 19.0.0.0.0 - Production<br>
+                    启动日
+                    期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+                    27-12月-2023 08:46:56<br>
+                    正常运行时
+                    间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+                    0 天 0 小时 0 分 0 秒<br>
+                    跟踪级
+                    别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+                    off<br>
+                    安全
+                    性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+                    ON: Local OS Authentication<br>
+                    SNMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+                    OFF<br>
+                    监听程序参数文
+                    件&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/opt/app/oracle/product/19.3.000/db_home//network/admin/listener.ora<br>
+                    监听程序日志文
+                    件&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/opt/app/oracle/diag/tnslsnr/localhost/listener/alert/log.xml<br>
+                    监听端点概要...<br>
+                    &nbsp;
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=222.20.94.229)(PORT=1521)))<br>
+                    &nbsp;
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))<br>
+                    服务摘要..<br>
+                    服务 "drugdb" 包含 1 个实例。<br>
+                    &nbsp; 实例 "drugdb", 状态 UNKNOWN, 包含此服务的 3 个处理程序...<br>
+                    命令执行成功<br>
+                    *********************************************************************************end
+
+
+
+
+
+                    of for 19.3<br>
+                  </p>
+                  <p>[catalyst@localhost bin]$ ./sqlplus
+                    drugdbuser/wtsgyh@localhost:1521/drugdb
+                    (只有用sql&gt;startup启动数据库成功后，这个命令才有用！！)<br>
+                    然后就可以用于drugdesignpractise了！！！！！！！！！！（批量导入数据看后面！）<br>
+                    222.20.94.229:5500/em （windows! flash! 19.3
+                    不需要flash!）<br>
+                  </p>
+                  <p>＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊<br>
+                    关于详细listener.ora的说明：<a moz-do-not-send="true"
+href="file:///run/media/catalyst/TOSHIBA/2023hustbiodbshaji/gohustdb/src/maindbgo/hustdbroot/oranetwork/listener.ora">可
+                      以看这里</a>&nbsp;&nbsp;&nbsp; 关于详细listener.ora的说明：<a
+                      moz-do-not-send="true"
+                      href="../oranetwork/sqlnet.ora">可以看这里</a>
+                    关于详细listener.ora的说明<a moz-do-not-send="true"
+href="file:///run/media/catalyst/TOSHIBA/2023hustbiodbshaji/gohustdb/src/maindbgo/hustdbroot/oranetwork/listener.ora">：</a><a
+                      moz-do-not-send="true"
+                      href="../oranetwork/tnsnames.ora">可以看这里</a><br>
+                    # listener.ora Network Configuration File:
+                    /DATABAK/app/oracle/product/12.1.0/dbhome_1/network/admin/listener.ora&nbsp;
+
+
+
+
+
+                    <br>
+                    # Generated by Oracle configuration tools.<br>
+                    <br>
+                    LISTENER =<br>
+                    &nbsp; (DESCRIPTION_LIST =<br>
+                    &nbsp;&nbsp;&nbsp; (DESCRIPTION =<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL
+                    = TCP)(HOST = localhost)(PORT = 1521))<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL
+                    = IPC)(KEY = EXTPROC1521))<br>
+                    &nbsp;&nbsp;&nbsp; )<br>
+                    &nbsp; )<br>
+                  </p>
+                  <p>//下面这个要写才可以运行：./lsnrctl start&nbsp; 不会报错：The
+                    listener supports no services<br>
+                    SID_LIST_LISTENER=<br>
+                    &nbsp; (SID_LIST=<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SID_DESC=<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #BEQUEATH
+                    CONFIG<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (GLOBAL_DBNAME=drugdb)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (SID_NAME=drugdb)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (ORACLE_HOME=/DATABAK/app/oracle/product/12.1.0/dbhome_1)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #PRESPAWN
+                    CONFIG<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (PRESPAWN_MAX=20)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    (PRESPAWN_LIST=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(PRESPAWN_DESC=(PROTOCOL=tcp)(POOL_SIZE=2)(TIMEOUT=1))<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+                    ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊sure wts!!!<br>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <article class="baidu_pl">
+              <div id="article_content" class="article_content clearfix">
+                <div id="content_views" class="htmledit_views">
+                  <hr id="hr-toc">
+                  <hr>
+                  <h1>1 安装准备: <br>
+                  </h1>
+                  <h1>&nbsp;/opt/app/oracle/product/19.3.000/db_home/LINUX.X64_193000_db_home.zip
+
+
+
+
+
+
+
+
+
+
+
+                    (一定要放在这里!!!)<br>
+                  </h1>
+                  <p>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <p><span style="color:#999aaa;">centos 7.9、Xmanager
+                      Enterprise 5、zysong.ttf（字体）、oracle12c：</span></p>
+                  <p><span style="color:#999aaa;">文件解压：/run/media
+                      /catalyst/IBBWORK/toolsbak/oracle19c<br>
+                    </span><br>
+                    <span style="color:#999aaa;"><code>
+                        <meta http-equiv="content-type"
+                          content="text/html; charset=UTF-8">
+                      </code></span></p>
+                  <pre><code><code>yum install xorg-x11-fonts*  </code><span style="color:#999aaa;">（字体）</span></code></pre>
+                  <code> </code>
+                  <p></p>
+                  <h1 id="2.%20%E7%B3%BB%E7%BB%9F%E8%A6%81%E6%B1%82">
+                    2.系统要求</h1>
+                  <p>官方建议内存空间至少1G，交换分区应为内存空间2倍以上</p>
+                  <p><strong>说明：</strong>通常Swap空间的大小应是物理内存的2-2.5倍，特别是数据库
+                    服务器和Web服务器，随着访问量的增加，对Swap空间的要求也会增加</p>
+                  <h2
+                    id="2.1.%20%E6%9F%A5%E7%9C%8B%E7%A3%81%E7%9B%98%E5%A4%A7%E5%B0%8F">
+                    2.1.查看磁盘大小</h2>
+                  <p>(base) [catalyst@localhost ~]$ df -h<br>
+                    Filesystem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    Size&nbsp; Used Avail Use% Mounted on<br>
+                    devtmpfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    12G&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;
+                    12G&nbsp;&nbsp; 0% /dev<br>
+                    tmpfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    12G&nbsp; 128K&nbsp;&nbsp; 12G&nbsp;&nbsp; 1%
+                    /dev/shm<br>
+                    tmpfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    12G&nbsp;&nbsp; 11M&nbsp;&nbsp; 12G&nbsp;&nbsp; 1%
+                    /run<br>
+                    tmpfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    12G&nbsp;&nbsp;&nbsp;&nbsp;
+                    0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12G&nbsp;&nbsp; 0%
+                    /sys/fs/cgroup<br>
+                    /dev/mapper/centos-root&nbsp; 336G&nbsp;&nbsp;
+                    66G&nbsp; 270G&nbsp; 20% /<br>
+                    /dev/sdb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    412G&nbsp;&nbsp; 65G&nbsp; 326G&nbsp; 17% /DATABAK<br>
+                    /dev/sda1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    950M&nbsp; 244M&nbsp; 707M&nbsp; 26% /boot<br>
+                    /dev/mapper/centos-home&nbsp;&nbsp; 94G&nbsp;
+                    3.4G&nbsp;&nbsp; 90G&nbsp;&nbsp; 4% /home<br>
+                    tmpfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    2.4G&nbsp;&nbsp; 64K&nbsp; 2.4G&nbsp;&nbsp; 1%
+                    /run/user/1000<br>
+                    /dev/sdd1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    1.9T&nbsp; 894G&nbsp; 970G&nbsp; 48%
+                    /run/media/catalyst/officegyh<br>
+                    tmpfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    2.4G&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;
+                    2.4G&nbsp;&nbsp; 0% /run/user/0<br>
+                    (base) [catalyst@localhost ~]$ <br>
+                    <br>
+                  </p>
+                  <h2
+id="2.2.%20%E6%9F%A5%E7%9C%8B%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F">2.2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    查看交换分区大小</h2>
+                  <p>若不满足，需要修改交换分区大小<br>
+                    (base) [catalyst@localhost ~]$ free -m<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    &nbsp; &nbsp; &nbsp;&nbsp;
+                    total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    used&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    free&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+                    shared&nbsp; buff/cache&nbsp;&nbsp; available<br>
+                    Mem:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    23884&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    2674&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    16680&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    77&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    4529&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20768<br>
+                    Swap:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    46719&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 46719<br>
+                  </p>
+                  <h1
+id="3.%20%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99%E4%BB%A5%E5%8F%8ASelinux">
+                    <br>
+                    3.关闭防火墙以及Selinux: Active: inactive (dead)</h1>
+                  <p>(base) [catalyst@localhost ~]$ systemctl stop
+                    firewalld.service<br>
+                    (base) [catalyst@localhost ~]$ systemctl status
+                    firewalld.service<br>
+                    ● firewalld.service - firewalld - dynamic firewall
+                    daemon<br>
+                    &nbsp;&nbsp; Loaded: loaded
+                    (/usr/lib/systemd/system/firewalld.service; enabled;
+                    vendor preset: enabled)<br>
+                    &nbsp;&nbsp; Active: inactive (dead) since Sun
+                    2022-07-17 10:06:19 CST; 21s ago<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp; Docs: man:firewalld(1)<br>
+                    &nbsp; Process: 1076 ExecStart=/usr/sbin/firewalld
+                    --nofork --nopid $FIREWALLD_ARGS (code=exited,
+                    status=0/SUCCESS)<br>
+                    &nbsp;Main PID: 1076 (code=exited, status=0/SUCCESS)</p>
+                  <p>//egrep "SELINUX=enforcing"
+                    /etc/selinux/config&nbsp; ===&gt; SELINUX=enforcing<br>
+                    //systemctl disable firewalld.service&nbsp;&nbsp;
+                    禁止防火墙启动<br>
+                    //systemctl status firewalld.service<br>
+                  </p>
+                  <p>or:&nbsp; vi /etc/selinux/config<br>
+                    SELINUX=disabled&nbsp;&nbsp;
+                    #直接关闭selinux&nbsp;&nbsp;&nbsp;&nbsp; //or:&nbsp; sed
+                    -i s#SELINUX=enforcing#SELINUX=disabled#g
+                    /etc/selinux/config&nbsp; =&gt; egrep
+                    "SELINUX=disabled" /etc/selinux/config<br>
+                    setenforce 0///????????? </p>
+                  <h1
+id="%C2%A04.yum%E5%AE%89%E8%A3%85%E5%BF%85%E8%A6%81%E5%AE%89%E8%A3%85%E5%8C%85">4.yum
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    安装必要安装包</h1>
+                  <p>yum install gcc gcc-c++&nbsp;&nbsp;
+                    (对于biohustdb需要安装这个)<br>
+                  </p>
+                  <p>&nbsp;yum install binutils compat-libcap1
+                    compat-libstdc++ dtrace-modules
+                    dtrace-modules-headers
+                    dtrace-modules-provider-headers dtrace-utils
+                    elfutils-libelf elfutils-libelf-devel
+                    fontconfig-devel glibc glibc-devel ksh libaio
+                    libaio-devel libdtrace-ctf-devel libX11 libXau libXi
+                    libXtst libXrender libXrender-devel libgcc
+                    librdmacm-devel libstdc++ libstdc++-devel libxcb <br>
+                  </p>
+                  <p>///////atalyst]# yum install compat-libcapl UnixOD<br>
+                    <br>
+                  </p>
+                  <p>///yum install&nbsp; libstdc++ libstdc++-devel make
+                    sysstat unixODBC unixODBC-devel<br>
+                    yum install binutils.x86_64 compat-libcap1.x86_64
+                    gcc.x86_64 gcc-c.x86_64 glibc.i686 glibc.x86_64
+                    glibc-devel.i686 glibc-devel.x86_64 ksh
+                    compat-libstdc-33 libaio.i686 libaio.x86_64
+                    libaio-devel.i686 libaio-devel.x86_64 libgcc.i686
+                    libgcc.x86_64 libstdc.i686 libstdc.x86_64
+                    libstdc-devel.i686 libstdc-devel.x86_64 libXi.i686
+                    libXi.x86_64 libXtst.i686 libXtst.x86_64 make.x86_64
+                    sysstat.x86_64 zip unzip<br>
+                  </p>
+                  <p>&nbsp;oracle 安装时先决条件检查会检测下面是否安装完成</p>
+                  <p>&nbsp;<a class="link-info"
+href="http://www.rpmfind.net/linux/rpm2html/search.php?query=glibc&amp;submit=Search%20...&amp;system=&amp;arch="
+                      title="下载
+                      compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm">下载
+                      compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm</a></p>
+                  <h1
+id="5.%E8%B0%83%E6%95%B4%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0">#yum
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    install
+                    compat-libstdc++-33-3.2.3-72.el7.x86_64&nbsp;
+                    (对于biohustdb需要安装这个)</h1>
+                  <h1
+id="5.%E8%B0%83%E6%95%B4%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0">5.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    调整系统内核参数</h1>
+                  <pre><code class="language-bash">vi /etc/sysctl.conf
+
+fs.aio-max-nr = 1048576   </code><code class="language-bash"><code class="language-bash">#异步IO请求数目 推荐值是：1048576 其实它等于 1024*1024 也就是 1024K 个</code>
+fs.file-max = 6815744   </code><code class="language-bash"><code class="language-bash">#打开的文件句柄的最大数量,防止文件描述符耗尽的问题</code>
+#共享内存总量 页为单位,内存除以4K所得
+kernel.shmall =</code><strong>46053680</strong><code class="language-bash">
+#单个共享内存段的最大值
+kernel.shmmax = 8589934592  # 1/2物理内存大小
+#共享内存段的最小数量缺省值4096
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+#SEMMSL: 每个信号集的最大信号数量 ,（Oracle建议其值不少于100.）
+#SEMMNS：用于控制整个 Linux 系统中信号的最大数
+#SEMOPM： 内核参数用于控制每个 semop 系统调用可以执行的信号操作的数量 （Oracle建议其值不少于100.）
+#SEMMNI ：内核参数用于控制整个 Linux 系统中信号集的最大数量（Oracle建议其值不少于100.）
+#用于向外连接的端口范围
+net.ipv4.ip_local_port_range = 9000 65500
+#套接字接收缓冲区大小的缺省值
+net.core.rmem_default = 262144
+#套接字接收缓冲区大小的最大值
+net.core.rmem_max = 4194304
+#套接字发送缓冲区大小的缺省值
+net.core.wmem_default = 262144
+#套接字发送缓冲区大小的最大值
+net.core.wmem_max = 1048576
+# 以上保存后：#sysctl -p#加载配置文件</code></pre>
+                  <p>1）kernel.shmall:共享内存页数的最大值<br>
+                    Linux共享内存页大小为4KB,共享内存段的大小都是共享内存页大小的整数倍。一个共享内存段的最大值可设
+                    为16G，如16G内存，则对应需要共享内存页数为16GB/4KB=16777216KB
+                    /4k（getconfPAGESIZE可得到）= 4194304（页）</p>
+                  <p>2) kernel.shmmax:单个共享内存段的最大值<br>
+                    Shmma设置应足够大，设置过低可能导致需要创建多个共享内存段，导致系统性能下降，一般情况下，设置最大共
+                    享内存为物理内存的一半，如物理内存是2G,则可以设置最大共享内存为110241024*1024<br>
+                    = 1073741824，以此类推， kernel.shmmax= 8589934592
+                    kernel.shmall=4194304&nbsp;</p>
+                  <h1
+id="6.%E7%94%A8%E6%88%B7%E5%8F%8A%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E9%85%8D%E7%BD%AE">6.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    用户及安装目录配置</h1>
+                  <h2
+                    id="6.1.%E6%96%B0%E5%BB%BAoinstall%2Cdba%2Coper%E7%BB%84">6.1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    新建oinstall,dba,oper组</h2>
+                  <pre><code class="language-bash">groupadd oinstall #添加组
+groupadd dba #添加组
+groupadd oper #添加组
+///////useradd -g oinstall -G dba,oper admin(not use this, just use admin !!!!!! for biohustdb)
+///////passwd oracle #修改主机oracle用户的密码 默认123456<br>root]# usermod -G dba,oper admin &nbsp;//</code>-G用户组，用户组 指定用户所属的附加组。<code class="language-bash"><br>root]# usermod -g oinstall admin &nbsp; &nbsp;//</code>-g用户组 指定用户所属的用户组。<br>chmod -g -s /opt/app/oracle<br><br><br>将以下内容添加到/etc/security/limits.conf 中。该内容是Oracle用户的一些限制<br>admin soft nproc 2047&nbsp; //single user can use process number<br>admin hard nproc 16384<br>admin soft nofile 1024&nbsp; //user can open file number<br>admin hard nofile 65536<br>admin soft stack 10240&nbsp;&nbsp; //set stack<code class="language-bash"></code></pre>
+                  <h2 id="6.2.%E6%96%B0%E5%BB%BA%E7%9B%AE%E5%BD%95">6.2.
+                    新建目录</h2>
+                  <p>mkdir -p /opt/app/oracle/product/19.3.000/db_home<br>
+                    mkdir -p /opt/app/oraInventory<br>
+                    unzip /opt/LINUX.X64_193000_db_home.zip -d
+                    /opt/app/oracle/product/19.3.000/db_home/&nbsp;&nbsp;
+                    (命令行将压缩包解压到目标目录中)<br>
+                    cd /opt/app/oracle/product/19.3.000/db_home<br>
+                    chown -R admin:oinstall /opt/app/oracle<br>
+                    chown -R admin:oinstall
+                    /opt/app/oracle/product/19.3.000/db_home<br>
+                    chmod -R 775 /opt/app/oracle //修改oracle目录的权限<br>
+                    chown -R admin:oinstall /opt/app/oraInventory<br>
+                    chown -R admin:oinstall /opt/app/&nbsp;&nbsp;&nbsp;
+                    //修改目录的属主，属组</p>
+                  <p> </p>
+                  <h1
+                    id="7.Oracle%E7%94%A8%E6%88%B7%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">7.Oracle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    用户环境配置</h1>
+                  <h2
+                    id="7.1.%E4%BF%AE%E6%94%B9oracle%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">7.1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    修改oracle环境变量<code class="language-bash"></code></h2>
+                  <pre><code class="language-bash">vi /home/admin/.bash_profile
+
+#权限（反码）<br>umask 022<br>#oracle的BASE目录定义<br>ORACLE_BASE=/opt/app/oracle<br>#oracle的HOME目录定义<br>ORACLE_HOME=/opt/app/oracle/product/19.3.000/dbhome/<br>#设置SID<br>ORACLE_SID=biohustdb<br>ORACLE_UNQNAME=biohustdb<br>NLS_DATE_FORMAT="YYYY:MM:DDHH24:MI:SS"<br>#简体中文版<br>NLS_LANG="SIMPLIFIED CHINESE_CHINA".UTF8<br>export TNS_ADMIN=$ORACLE_HOME/network/admin<br>export ORA_NLS11=$ORACLE_HOME/nls/data<br>#重新定义系统环境变量<br>PATH=$PATH:$HOME/.local/bin:$HOME/bin:$ORACLE_HOME/bin<br>#定义语系<br>LANG=zh_CN.UTF-8<br>#导入系统变量<br>export PATH LANG NLS_DATE_FORMAT NLS_LANG ORACLE_BASE ORACLE_HOME ORACLE_SID ORACLE_UNQNAME<br>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib:$ORACLE_HOME/oracm/lib:/lib:/usr/lib:/usr/lib64<br>export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib:$ORACLE_HOME/network/jlib<br><br># User specific environment and startup programs<br><br>PATH=$PATH:$HOME/.local/bin:$HOME/bin<br></code><code class="language-bash">******************************************************************above is ZH-CN not use!!!need zysong.ttf!!!!!!fuck<br><br>just use US LANG install!!!!!!!!!!!!!!!!!!!!!!!!!<br></code></pre>
+                  <pre>添加防火墙<br># # firewall-cmd --zone=public --add-port=1521/tcp --add-port=5500/tcp --add-port=5520/tcp --add-port=3938/tcp --permanent<br># firewall-cmd --reload &nbsp; //success both!!!!!<br><code class="language-bash"></code></pre>
+                  <p>source&nbsp;&nbsp;/home/admin/.bash_profile</p>
+                  <h2
+id="7.2.%E4%BF%AE%E6%94%B9pam_limits%E8%AE%A4%E8%AF%81%E6%A8%A1%E5%9D%97">7.2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    修改pam_limits认证模块</h2>
+                  <p>admin用户资源限制使用pam_limits认证模块<br>
+                    <br>
+                    su - root<br>
+                    vi /etc/pam.d/login<br>
+                    <br>
+                    #在内容末尾添加以下两行数据<br>
+                    session required /lib/security/pam_limits.so<br>
+                    session required pam_limits.so<br>
+                  </p>
+                  <h2
+                    id="7.3.%E7%BC%96%E8%BE%91limits.conf%E9%85%8D%E7%BD%AE%C2%A0">7.3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    编辑limits.conf配置 <br>
+                  </h2>
+                  <p>vi /etc/security/limits.conf<br>
+                    #在内容末尾添加以下数据<br>
+                    #单用户可使用的进程数量<br>
+                    admin soft nproc 2047<br>
+                    admin hard nproc 16384<br>
+                    #用户可打开的文件数量<br>
+                    admin soft nofile 1024<br>
+                    admin hard nofile 65536<br>
+                    #堆栈设置<br>
+                    admin soft stack 10240<br>
+                  </p>
+                  <h2
+                    id="7.4.%E7%BC%96%E8%BE%91profile%E6%96%87%E4%BB%B6">7.4.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    编辑profile文件<br>
+                  </h2>
+                  <p>vi /etc/profile<br>
+                    # 在内容末尾添加以下语句<br>
+                    if [ $USER = "admin" ]<br>
+                    then<br>
+                    if [ $SHELL = "/bin/ksh" ]<br>
+                    then<br>
+                    ulimit -p 16384 #缓冲区大小<br>
+                    ulimit -n 65536<br>
+                    else<br>
+                    ulimit -u 16384 -n 65536 #进程数 文件数<br>
+                    fi<br>
+                    fi<br>
+                  </p>
+                  <p>source /etc/profile #使配置生效</p>
+                  <h1 id="8.%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85">8.开始安装</h1>
+                  <h1 id="9.%E9%85%8D%E7%BD%AExmanager">9.install: <br>
+                  </h1>
+                  <p>[oracle@localhost oracal12cdatabase]$ source
+                    ~/.bash_profile&nbsp;&nbsp; //一定要这步，不然报： Minimum
+                    requirements were not met for this environment<br>
+                  </p>
+                  <p>echo $LANG</p>
+                  <p><strong><span style="color:#fe2c24;">admin用户下默认字
+                        符集LANG=zh_CN.UTF-8(or use: en_US.UTF-8)</span></strong></p>
+                  <h1 id="9.%E9%85%8D%E7%BD%AExmanager">./runinstaller&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <br>
+                  </h1>
+                  <p> </p>
+                  <h2
+id="9.1.%E8%A7%A3%E5%86%B3%E5%AE%89%E8%A3%85Oracle12c%E6%97%B6%E4%B8%AD%E6%96%87%E6%96%B9%E5%9D%97%E5%AD%97"><i><span
+                        style="color:#0d0016;"><strong>9.1.安装</strong></span></i>选
+                    项： 创建并配置单实例数据库, 选 第一 item:<br>
+                  </h2>
+                  <p> &nbsp; 中文版的界面：<br>
+                  </p>
+                  <p align="center">&nbsp;
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img
+                      moz-do-not-send="true"
+                      src="oracle19cdir/install19c1.png" alt=""
+                      width="524" height="401"><br>
+                  </p>
+                  选第2个: 服务器类&nbsp; 安装<br>
+                  <p align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img
+                      moz-do-not-send="true"
+                      src="oracle19cdir/install19c2.png" alt=""
+                      width="483" height="371"><br>
+                    现在选：
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    <strong>now 这里选择企业版(for biohustdb)</strong><br>
+                  </p>
+                  <p align="center"><br>
+                  </p>
+                  <p align="center">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3>安装位置,
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    <strong>安装位置默认即可</strong></h3>
+                  <p align="center"><img moz-do-not-send="true"
+                      src="oracle19cdir/install19c4.png" alt=""
+                      width="627" height="472"><br>
+                    <br>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </h3>
+                  <h3><br>
+                    <strong></strong></h3>
+                  <h3>如果是第一次安装:会提示&nbsp; 产品清单目录:&nbsp;&nbsp;&nbsp;&nbsp;
+                    /opt/app/oraInventory<br>
+                  </h3>
+                  <h3><strong>类型配置,</strong>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    常规即可</h3>
+                  <p align="center">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <p align="center">&nbsp;<img alt=""
+                      src="oracle19cdir/install19c5.png"
+                      moz-do-not-send="true" width="621" height="474"><br>
+                  </p>
+                  <p align="center">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3><strong>数据库标识符配置,</strong>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    这个取消候选创建容器数据库，一般用不到。</h3>
+                  <p>GLOBAL ID:biohustdb&nbsp;&nbsp; <br>
+                    SID: biohustdb<br>
+                    可插入数据库名：biodbpdb<br>
+                  </p>
+                  <p align="center"><br>
+                    &nbsp; <br>
+                  </p>
+                  <p align="center">&nbsp;<img alt=""
+                      src="oracle19cdir/install19c6.png"
+                      moz-do-not-send="true" width="492" height="375">&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <br>
+                  </p>
+                  <div align="left">内存配置： 默认 40%<br>
+                  </div>
+                  <p align="center"><img alt=""
+                      src="oracle19cdir/install19c7.png"
+                      moz-do-not-send="true" width="492" height="375"></p>
+                  <p align="center"><br>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3><strong>字符集 AL32</strong><strong><code>UTF-8(U)</code></strong></h3>
+                  <p align="center">&nbsp;&nbsp; <img
+                      moz-do-not-send="true"
+                      src="oracle19cdir/install19c8.png" alt=""
+                      width="503" height="382"><br>
+                  </p>
+                  <p align="center">next:</p>
+                  <p>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    软件存放目录，之前预设好的
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3><strong>数据存储的位置&nbsp;</strong><strong></strong></h3>
+                  <h3><strong>默认 文件系统:</strong> /opt/app/oracle/oradata<br>
+                  </h3>
+                  <p align="center">&nbsp;<img alt=""
+                      src="oracle19cdir/install19c9.png"
+                      moz-do-not-send="true" width="628" height="479"><br>
+                  </p>
+                  <p align="center">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3><strong>管理选项配置&nbsp; </strong><br>
+                    <strong>
+                      <meta http-equiv="content-type"
+                        content="text/html; charset=UTF-8">
+                      如想用云端控制台的可配置这里。 <br>
+                    </strong></h3>
+                  <h3><strong>默认下一步</strong></h3>
+                  <p align="center"><img alt=""
+                      src="oracle19cdir/install19c10.png"
+                      moz-do-not-send="true" width="546" height="420"><br>
+                  </p>
+                  <p align="left">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3>恢复选项配置&nbsp;
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    <br>
+                  </h3>
+                  <h3>设置后，后面出现问题可进行数据恢复，不过会占用很多资源。</h3>
+                  <p>对于biohustdb: 选中这项:&nbsp;&nbsp;&nbsp; 文件系统&nbsp; 改为:
+                    /home/admin/recovery_area&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+                    //因报空间不够所以另选一个目录:&nbsp;&nbsp;&nbsp; mkdir -p
+                    /home/admin/recovery_area<br>
+                  </p>
+                  <div align="center"><img moz-do-not-send="true"
+                      src="oracle19cdir/restoreora.png" alt=""
+                      width="632" height="355"></div>
+                  <p align="center"> <br>
+                  </p>
+                  <h3><strong>方案口令配置&nbsp; </strong><br>
+                    <strong>
+                      <meta http-equiv="content-type"
+                        content="text/html; charset=UTF-8">
+                      推荐大小写字母+数字，不要包含特殊字符&nbsp;&nbsp; biodb123&nbsp;
+                      (for all users)<br>
+                    </strong></h3>
+                  <p align="center"> </p>
+                  <div align="center"><img moz-do-not-send="true"
+                      src="oracle19cdir/install19c12a.png" alt=""
+                      width="466" height="356">&nbsp;&nbsp;&nbsp; <img
+                      moz-do-not-send="true"
+                      src="oracle19cdir/install19c12b.png" alt=""
+                      width="515" height="187"><br>
+                  </div>
+                  <p><br>
+                    请根据安装方式以及物理内存大小配置内存参数。在该页面中默认选择典型配置，仅需要调整内存大小即可<br>
+                    <img moz-do-not-send="true"
+                      src="oracle12cCENTOS7/1710040951551119.png" alt=""
+                      width="692" height="156"><br>
+                  </p>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <meta http-equiv="content-type" content="text/html;
+                    charset=UTF-8">
+                  <h3><strong>配置操作系统组&nbsp; </strong><br>
+                    <strong>
+                      <meta http-equiv="content-type"
+                        content="text/html; charset=UTF-8">
+                      这里也是直接选择默认即可（不要用： oper !）</strong></h3>
+                  <p align="center">&nbsp;<img alt=""
+                      src="oracle19cdir/install13.png"
+                      moz-do-not-send="true" width="572" height="431"><br>
+                  </p>
+                  <p align="center">next: <br>
+                  </p>
+                  <p align="center">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3>18) <strong>root 脚本执行权限配置</strong></h3>
+                  <p>root 用户信息配置<br>
+                    输入 root 用户的密码: 123456 (gongchengshixun)&nbsp; 后面自动执行<br>
+                    <img moz-do-not-send="true"
+                      src="oracle19cdir/install14a.png" alt=""
+                      width="457" height="350">&nbsp;&nbsp;&nbsp;&nbsp;
+                    <img moz-do-not-send="true"
+                      src="oracle19cdir/install19c14b.png" alt=""
+                      width="465" height="350"><br>
+                  </p>
+                  <br>
+                  如果报错说:<br>
+                  组成员资格问题: admin<br>
+                  <br>
+                  <div align="center"><img moz-do-not-send="true"
+                      src="oracle19cdir/failmembergroup.png" alt=""
+                      width="739" height="415"><br>
+                  </div>
+                  <br>
+                  点确定即可消除:<br>
+                  <br>
+                  <h1 class="sb-title" id="sbTitle">如果报交换分区不够,
+                    需要修改修改swap分区大小: <br>
+                  </h1>
+                  <p>[root@PC201-10-002 admin]# dd if=/dev/zero
+                    of=/swap1 bs=1M count=16384<br>
+                    记录了16384+0 的读入<br>
+                    记录了16384+0 的写出<br>
+                    17179869184字节(17 GB)已复制，133.069 秒，129 MB/秒<br>
+                    [root@PC201-10-002 admin]# mkswap /swap1<br>
+                    正在设置交换空间版本 1，大小 = 16777212 KiB<br>
+                    无标签，UUID=ec010222-8f59-4b6a-bc56-97075b7ef127<br>
+                    [root@PC201-10-002 admin]# <br>
+                    <br>
+                  </p>
+                  [root@PC201-10-002 admin]# swapon /swap1<br>
+                  swapon: /swap1：不安全的权限 0644，建议使用 0600。<br>
+                  [root@PC201-10-002 admin]# free -h<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  used&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  free&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shared&nbsp;
+                  buff/cache&nbsp;&nbsp; available<br>
+                  Mem:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  15G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  2.6G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  219M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  147M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  12G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  12G<br>
+                  Swap:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  23G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  0B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 23G<br>
+                  <br>
+                  <h3 tid="tid-HFX6Ke" id="hid-zKA5th">free
+                    -h查看swap已增加，但这只是临时性的，如果机器重启会失效</h3>
+                  <br>
+                  <h3 tid="tid-Y5TtWW" id="hid-GafEMc">6. 设置开机自动挂载</h3>
+                  <pre class="highlighter-hljs" style="font-family: &quot;Ubuntu Mono&quot;,monospace ! important; font-size: 14px ! important; background-color: rgb(246, 248, 250); overflow-x: auto;" id="pre-CfyA4X"><code class="highlighter-hljs">vi /etc/fstab<br></code>最后一行添加<br><code class="highlighter-hljs">/swap1          swap     swap    defaults        0 0</code><br><code class="highlighter-hljs"></code></pre>
+                  (现在所有问题都解决了!!!!!!!!!!)<br>
+                  <br>
+                  <br>
+                  <br>
+                  <div align="center"><img moz-do-not-send="true"
+                      src="oracle19cdir/install19c14cc.png" alt=""
+                      width="583" height="445"><br>
+                    <br>
+                    <br>
+                    <div align="left"> 如果报:&nbsp;&nbsp; 没有为主机 返回有效的 IP
+                      地址&nbsp;&nbsp; 需要修改:<br>
+                    </div>
+                    <div align="left"> vi /etc/hosts:&nbsp; <br>
+                    </div>
+                    <div align="left"> 127.0.0.1&nbsp;&nbsp; localhost
+                      localhost.localdomain localhost4
+                      localhost4.localdomain4<br>
+                    </div>
+                    <div align="left">
+                      ::1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      localhost localhost.localdomain localhost6
+                      localhost6.localdomain6<br>
+                    </div>
+                    <div align="left"> 210.42.105.99
+                      PC201-10-002&nbsp;&nbsp; &lt;===这里原来是 127.0.0.1
+                      !!!!!<br>
+                    </div>
+                    <br>
+                    <br>
+                    <div align="left"> 再点 retry: ok!!!!!now wts 2023 5.
+                      26!!!!!!!<br>
+                    </div>
+                  </div>
+                  <p align="center"><br>
+                  </p>
+                  <p align="center">现在ok<br>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3>19) <strong>安装检查&nbsp; shmall:&nbsp;&nbsp;
+                      =&gt;&nbsp;&nbsp;&nbsp; 4605368</strong></h3>
+                  <p>[root@localhost db_home]# vi
+                    /etc/sysctl.conf&nbsp;&nbsp;&nbsp; <strong>shmall&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      mod to =&gt;&nbsp;&nbsp;&nbsp; 4605368</strong><br>
+                    [root@localhost db_home]# sysctl -p<br>
+                    <br>
+                  </p>
+                  <div align="center"><img moz-do-not-send="true"
+                      src="oracle19cdir/install19c14dd.png" alt=""
+                      width="469" height="357">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    现在是不是可以了？？？？？！！！！！！: <img moz-do-not-send="true"
+                      src="oracle19cdir/install19c15aa.png" alt=""
+                      width="545" height="385"><br>
+                  </div>
+                  <br>
+                  summary set<br>
+                  软性限制: 最大堆栈大小 - 此先决条件测试最大堆栈大小的软性限制是否设置正确。 <br>
+                  详细资料: <br>
+                  &nbsp;- PRVG-0449 : 在节点 "localhost" 上找不到最大堆栈大小的相应软性限制
+                  [预期 &gt;= "10240"; 找到 = "8192"]。&nbsp; <br>
+                  - 原因:&nbsp; 集群验证实用程序确定在所指示节点上的 所指示软性限制设置不符合 Oracle
+                  提出的适当操作建议。&nbsp; <br>
+                  - 操作:&nbsp; 修改资源限制以满足要求并接受操作系统 特定的度量, 以确保先使更正的值
+                  对于当前用户生效, 然后再重试此检查<br>
+                  <p align="center">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h3>20) 开始安装&nbsp;
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    点安装即可</h3>
+                  <div align="center"><img moz-do-not-send="true"
+                      src="oracle19cdir/install19c16bb.png" alt=""
+                      width="567" height="401"></div>
+                  <p align="center"><br>
+                  </p>
+                  <p>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    安装过程中 需要收到自动执行脚本提示：<br>
+                  </p>
+                  <p align="center"><img moz-do-not-send="true"
+                      src="oracle19cdir/install19c16ggg.png" alt=""
+                      width="640" height="453"><br>
+                  </p>
+                  <br>
+                  <p>自动搞完即可!!!!!<br>
+                  </p>
+                  <p align="center"><br>
+                  </p>
+                  <p align="center"><br>
+                    <img moz-do-not-send="true"
+                      src="oracle19cdir/install19c17bbbb.png" alt=""
+                      width="625" height="439"><br>
+                  </p>
+                  <p align="center">&nbsp;Oracle Enterprise Manager
+                    Database Express URL: https://PC201-10-002:5500/em
+                    (19.3不需要flash!)
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                  </p>
+                  <h2>3 启动服务</h2>
+                  <p>#cd /opt/app/oracle/product/19.3.000/db_home/bin<br>
+                    #lsnrctl&nbsp; start<br>
+                    #sqlplus /nolog<br>
+                    #connect /as sysdba<br>
+                    #startup<br>
+                    SQL&gt; startup</p>
+                  <p>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    当启动数据库或者创建数据库时都可能出现ORA-27125错误，我在<a
+href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
+                      target="_blank" class="hl hl-1"
+data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.7020&quot;,&quot;dest&quot;:&quot;https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020&quot;,&quot;extra&quot;:&quot;{\&quot;searchword\&quot;:\&quot;Oracle\&quot;}&quot;}"
+                      data-tit="Oracle" data-pretit="oracle">CENTOS 7.9</a>上
+                    安装Oracle 19.3.000，startup时就遇到了这个错误<br>
+                    ORA-27125: unable to create shared memory segment<br>
+                    Linux-x86_64 Error: 28: No space left on
+                    device&nbsp;&nbsp;&nbsp; //
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    经查，该错误是由于无法分配共享内存段引起！！<br>
+                    Additional information: 3822<br>
+                    Additional information: 11307843584<br>
+                  </p>
+                  <p>#free -h&nbsp;&nbsp; 发现系统的可用内存很多<br>
+                    #df -h &nbsp;&nbsp; 发现tempfs系统相关挂载点 也有很多的空间；<br>
+                    #ipcs -l &nbsp; 发现<br>
+                  </p>
+                  ---------- 同享内存限制 ------------<br>
+                  最大段数 = 4096<br>
+                  最大段大小 (千字节) = 18421472<br>
+                  最大总共享内存 (千字节) = 18421472<br>
+                  最小段大小 (字节) = 1<br>
+                  <br>
+                  [root@localhost bin]# ipcs -u<br>
+                  <br>
+                  ---------- 共享内存状态 ------------<br>
+                  段已分配 49<br>
+                  页已分配 2792980<br>
+                  页驻留&nbsp; 2780899<br>
+                  页交换&nbsp; 0<br>
+                  <br>
+                  # vi /etc/sysctl.conf<br>
+                  <p>kernel.shmall = 46053680&nbsp;&nbsp;&nbsp; //mod
+                    here!!!!!!!!!!!!!!<br>
+                  </p>
+                  <p>SQL&gt; startup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    //again !!!!!!!!!!!!!<br>
+                    ORACLE 例程已经启动。<br>
+                    <br>
+                    Total System Global Area 1.1341E+10 bytes<br>
+                    Fixed Size&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp; 12343896 bytes<br>
+                    Variable Size&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                    &nbsp;2013267368 bytes<br>
+                    Database Buffers&nbsp;&nbsp;&nbsp; &nbsp;9294577664
+                    bytes<br>
+                    Redo Buffers&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp; 21209088 bytes<br>
+                    数据库装载完毕。<br>
+                    数据库已经打开。<br>
+                    <br>
+                  </p>
+                  <p>now ok!!<br>
+                  </p>
+                  <p align="left">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    <strong>创建用户并分配权限<br>
+                      SQL</strong>&gt;<strong>create user c##biodbuser
+                      identified by biodb123;&nbsp;&nbsp;&nbsp;&nbsp; no
+                      @#&nbsp;&nbsp; for oracle 19.3&nbsp; (对于</strong>oracle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    19.3不需要commit;
+                    就可以在myeclipse中refresh看到用户模式了！！！！！！sure<strong>)</strong></p>
+                  <p align="left"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      alter user c##biodbuser identified by
+                      biodb123;&nbsp;&nbsp;&nbsp; //</strong>可以改用户 密码<br>
+                    <strong>SQL&gt;grant connect,resource,dba to </strong><strong><strong>c##biodbuser</strong>;<br>
+                    </strong></p>
+                  <p align="left"><strong>SQL&gt;conn
+                      c##biodbuser/biodb123@biohustdb; &nbsp; &nbsp; //</strong>一
+                    定要这样，不然就把表建到SYS模式下了！！！！！！！！！！！！！！！<br>
+                    CREATE TABLE "C##BIODBUSER"."BIODBUSER"( STD_ID
+                    NUMBER NOT NULL, STD_NAME VARCHAR2(100) NOT NULL,
+                    STD_NUM VARCHAR2(50) NOT NULL,STD_MAJOR VARCHAR2(50)
+                    NOT NULL, STD_PASSWORD VARCHAR2(200), STD_RECORDS
+                    NUMBER NOT NULL);<br>
+                    INSERT INTO "C##BIODBUSER"."BIODBUSER"
+                    VALUES('2021002','李子晨','U202112156','生物信息学202101班','U202112156','1000');
+                    <br>
+                    INSERT INTO "C##BIODBUSER"."BIODBUSER"
+                    VALUES('2021003','LIZICHEN','U202112157','生物信息学202101班
+                    ','U202112157','1000'); <br>
+                    INSERT INTO "C##BIODBUSER"."BIODBUSER"
+                    VALUES('2021004','Chlizi','U202112158','生物信息学202101班
+                    ','U202112158','1000'); <br>
+                  </p>
+                  <p align="left">现在就有表位于： <strong>c##biodbuser&nbsp; </strong>模
+                    式下了！！！！！！！！！！！！！！！！！！！！</p>
+                  <p align="left">select "STD_ID", "STD_NAME",
+                    "STD_NUM",&nbsp; "STD_MAJOR", "STD_PASSWORD",
+                    "STD_RECORDS" from "C##BIODBUSER"."BIODBUSER" where
+                    STD_NAME='LIZICHEN';&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    //WHERE NOT USE:&nbsp;&nbsp; "&nbsp;&nbsp; BUT '<br>
+                    <strong></strong></p>
+                  <p align="left">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    使用plsql连接<br>
+                  </p>
+                  <p align="left"><br>
+                  </p>
+                  <p align="left"><br>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    这就表示成功!!!<br>
+                    接下来你可以尽情玩耍啦!!!<br>
+                  </p>
+                  <p align="left">create tablespace biodrugdb datafile <span
+                      style="font-size:18px">'</span>/opt/app/oracle/oradata/DRUGDB/biodrugdb.dbf<span
+                      style="font-size:18px">'<br>
+                      size 2048M reuse autoextend on next 40M maxsize
+                      unlimited default storage(<br>
+                      initial 128k next 128k minextents 2 maxextents
+                      unlimited);<br>
+                    </span></p>
+                  <p align="left"><span style="font-size:18px">---rename
+                      tablespace<br>
+                      alter tablespace biodrugdb to BIOHDDB;<br>
+                      --search all tables<br>
+                      select * from dba_tables;<br>
+                      select * from dba_tabl_columns;<br>
+                      ---find data file<br>
+                      select name from v@datafile;<br>
+                      ---find tablespace<br>
+                      select * from dba_tablespaces;<br>
+                      select * from dba_tablespaces t where
+                      t.TABLESPACE_NAME = </span><span
+                      style="font-size:18px"><span
+                        style="font-size:18px"><span
+                          style="font-size:18px">'</span>BIOHDDB</span></span><span
+                      style="font-size:18px"><span
+                        style="font-size:18px"><span
+                          style="font-size:18px">'</span></span>;<br>
+                      select * from dba_tables t where t.TABLE_NAME = </span><span
+                      style="font-size:18px">'</span><span
+                      style="font-size:18px">T_ORDER';<br>
+                    </span></p>
+                  <p align="left"><span style="font-size:18px">insert
+                      into t_order(id,name) values(1003, </span><span
+                      style="font-size:18px"><span
+                        style="font-size:18px"></span><span
+                        style="font-size:18px">'</span><span
+                        style="font-size:18px"></span>apple</span><span
+                      style="font-size:18px"><span
+                        style="font-size:18px"></span><span
+                        style="font-size:18px">'</span><span
+                        style="font-size:18px"></span>);<br>
+                      select * from t_order;<br>
+                    </span><span style="font-size:18px"></span></p>
+                  <p align="center">&nbsp;<br>
+                  </p>
+                  <p align="center"><br>
+                  </p>
+                  <div id="content_views" class="htmledit_views">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    <span style="font-size:18px"><br>
+                      <br>
+                    </span><br>
+                    <p><br>
+                    </p>
+                    <span style="font-size:18px"> </span>
+                    <div align="center"><span style="font-size:18px"></span><span
+                        style="font-size:18px"></span><span
+                        style="font-size:18px"></span><br>
+                      <span style="font-size:18px"> </span>
+                      <div align="left">
+                        <div align="center"><span style="font-size:18px">
+                          </span><br>
+                          https://localhost:5500/em&nbsp;&nbsp;
+                          19C的编程cloud了(不需要flash)!!!<br>
+                          <span style="font-size:18px"></span></div>
+                      </div>
+                      <span style="font-size:18px"></span></div>
+                  </div>
+                  <p align="center">&nbsp;<br>
+                  </p>
+                  ****************************** 以下部分可以作为后期使用<br>
+                  <h1
+id="10.%20%E5%90%AF%E5%8A%A8%E7%9B%91%E5%90%AC%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93">
+                    10. 启动监听及数据库<br>
+                  </h1>
+                  <h2 id="10.1.%E5%90%AF%E5%8A%A8%E7%9B%91%E5%90%AC">10.1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    启动监听</h2>
+                  <p>[catalyst@localhost app]$
+                    /DATABAK/app/oracle/product/12.2.0/dbhome_1/bin/lsnrctl
+                    status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;see
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    the status<br>
+                    <br>
+                    LSNRCTL for Linux: Version 12.1.0.1.0 - Production
+                    on 17-JUL-2022 17:52:59<br>
+                    <br>
+                    Copyright (c) 1991, 2013, Oracle.&nbsp; All rights
+                    reserved.<br>
+                    <br>
+                    Connecting to
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521)))<br>
+                    STATUS of the LISTENER<br>
+                    ------------------------<br>
+                    Alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    LISTENER<br>
+                    Version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    TNSLSNR for Linux: Version 12.1.0.1.0 - Production<br>
+                    Start
+                    Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    17-JUL-2022 17:19:25<br>
+                    Uptime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    0 days 0 hr. 33 min. 35 sec<br>
+                    Trace
+                    Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    off<br>
+                    Security&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    ON: Local OS Authentication<br>
+                    SNMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    OFF<br>
+                    Listener Parameter File&nbsp;&nbsp;
+                    /DATABAK/app/oracle/product/12.1.0/dbhome_1/network/admin/listener.ora<br>
+                    Listener Log
+                    File&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/DATABAK/app/oracle/diag/tnslsnr/localhost/listener/alert/log.xml<br>
+                    Listening Endpoints Summary...<br>
+                    &nbsp;
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521)))<br>
+                    &nbsp;
+                    (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))<br>
+                    Services Summary...<br>
+                    Service "DBUA2148377" has 1 instance(s).<br>
+                    &nbsp; Instance "DBUA2148377", status BLOCKED, has 1
+                    handler(s) for this service...<br>
+                    Service "drugdb" has 1 instance(s).<br>
+                    &nbsp; Instance "drugdb", status RESTRICTED, has 2
+                    handler(s) for this service...<br>
+                    The command completed successfully<br>
+                  </p>
+                  <p>[catalyst@localhost bin]$ netstat -tunlp | grep
+                    1521<br>
+                    (Not all processes could be identified, non-owned
+                    process info<br>
+                    &nbsp;will not be shown, you would have to be root
+                    to see it all.)<br>
+                    tcp6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0
+                    :::1521&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    :::*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    LISTEN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9918/tnslsnr<br>
+                  </p>
+                  <p><br>
+                    最终的数据创建结果为：<br>
+                    可以打开网页： https://localhost:5500/em&nbsp;
+                    (19.3不需要flash player！！！！)<br>
+                    sys/system: passswd :
+                    WTSgyh1972@@@@@@@@@@@@@@@@@@@@@@@@@(windowsOK)<br>
+                    CENTOS 7下面不能用firefox打开网页，因为需要flash,
+                    但可以用google的chrome:<br>
+                    #rpm -ivh
+                    /DATABAK/oracal12cdatabase/google-chrome-stable_current_x86_64.rpm(可能需要下
+                    面几步操作)<br>
+                    #yum install liberation-fonts (需要的字体)<br>
+                    #yum provides libvulkan.so.1<br>
+                    #yum install vulkan<br>
+                    (好象也不行，还是需要：)<br>
+                    <span style="color: #ff0000;">
+                      <meta http-equiv="content-type"
+                        content="text/html; charset=UTF-8">
+                      <span class="pre-scrollable"><span
+                          style="font-size: 18px;"><span style="color:
+                            #ff0000;">tar&nbsp; -xzvf&nbsp;&nbsp;&nbsp;
+                            flash_player_npapi_linux.x86_64.tar.gz<br>
+                          </span></span></span></span><br>
+                    <span style="color: #ff0000;"><span
+                        class="pre-scrollable"><span style="font-size:
+                          18px;"><span style="color: #ff0000;"><span
+                              style="color: #ff0000;">
+                              <meta http-equiv="content-type"
+                                content="text/html; charset=UTF-8">
+                              <span class="pre-scrollable"><span
+                                  style="font-size: 18px;"><span
+                                    style="color: #ff0000;">sudo cp
+                                    libflashplayer.so
+                                    &nbsp;/usr/lib64/mozilla/plugins<br>
+                                  </span></span></span></span></span></span></span></span><span
+                      style="font-size: 18px;">
+                      <meta http-equiv="content-type"
+                        content="text/html; charset=UTF-8">
+                      <span class="pre-scrollable"><span
+                          style="font-size: 18px;">cd
+                          /usr/lib64/mozilla/plugins<br>
+                        </span></span></span><span style="color:
+                      #ff0000;">
+                      <meta http-equiv="content-type"
+                        content="text/html; charset=UTF-8">
+                      <span class="pre-scrollable"><span
+                          style="font-size: 18px;"><span style="color:
+                            #ff0000;">sudo&nbsp; chmod 755
+                            libflashplayer.so&nbsp; (好象还是不行？？？)</span></span></span></span><br>
+                    <span style="font-size: 18px;"><span
+                        class="pre-scrollable"><span style="font-size:
+                          18px;"></span></span></span><span
+                      style="color: #ff0000;"><span
+                        class="pre-scrollable"><span style="font-size:
+                          18px;"><span style="color: #ff0000;"><span
+                              style="color: #ff0000;"><span
+                                class="pre-scrollable"><span
+                                  style="font-size: 18px;"><span
+                                    style="color: #ff0000;"></span></span></span></span></span></span></span></span>
+                  </p>
+                  <div align="center"><img moz-do-not-send="true"
+                      src="oracle12cCENTOS7/dbconfassfinal.png" alt=""
+                      width="634" height="399"></div>
+                  <h2
+id="10.2.%E5%90%AF%E5%8A%A8%2F%E5%85%B3%E9%97%AD%E6%95%B0%E6%8D%AE%E5%BA%93">10.2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    启动/关闭数据库</h2>
+                  <blockquote>
+                    <p>&nbsp;本地以sqlplus / as
+                      sysdba方式登录时，采用的是操作系统验证的方式，所以用户名/密码输与不输入是一样的。<br>
+                      oracle数据库登录认证的2种方式</p>
+                    <p>[catalyst@localhost app]$
+                      /DATABAK/app/oracle/product/12.1.0/dbhome_1/bin//sqlplus
+                      /nolog<br>
+                    </p>
+                    <p>Copyright (c) 1982, 2013, Oracle.&nbsp; All
+                      rights reserved.<br>
+                      <br>
+                      SQL&gt; conn as sysdba<br>
+                      Enter user-name: sys<br>
+                      Enter password: <br>
+                      Connected.</p>
+                    <p>SQL&gt; startup<br>
+                      ORACLE instance started.<br>
+                      <br>
+                      Total System Global Area 7465926656 bytes<br>
+                      Fixed Size&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp; 2698976 bytes<br>
+                      Variable Size&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      &nbsp;1409286432 bytes<br>
+                      Database Buffers&nbsp;&nbsp;&nbsp;
+                      &nbsp;6039797760 bytes<br>
+                      Redo Buffers&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp; 14143488 bytes<br>
+                      Database mounted.<br>
+                      Database opened.&nbsp;&nbsp;
+                      &lt;&lt;&lt;现在就可以用网页查看了：</p>
+                    <p>https://222.20.94.229:5500/ <br>
+                    </p>
+                    <p>SQL&gt; shutdown immediate<br>
+                      Database closed.<br>
+                      Database dismounted.<br>
+                      ORACLE instance shut
+                      down.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      现在就不能用网页： https://222.20.94.229:5500/ <br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      https://222.20.94.229:5500/em <br>
+                    </p>
+                    <p><br>
+                      1、操作系统认证：也叫本地认证，oracle认为操作系统是可靠的，只要能登录到操作系统，就能访问数据
+                      库。安装oracle时默认的就是这种认证方式<br>
+                      这种情况下，任何用户密码以sysdba角色都可以连接数据库，实际上都是作为sys登录的<br>
+                      2、口令文件认证：oracle认为操作系统是不可靠的，若要访问数据库，必须要输入用户密码</p>
+                  </blockquote>
+                  <h2
+id="10.3.%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E6%98%AF%E5%90%A6%E4%B8%BACDB">10.3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    查看数据库是否为CDB</h2>
+                  <p>SQL&gt; set line 1000<br>
+                    SQL&gt; select name, decode(cdb, 'YES','Multitenant
+                    Option enabled', 'Regular l2c Database: ')
+                    "Multitenant Option", open_mode, con_id from
+                    v$database;<br>
+                    <br>
+                    NAME&nbsp;&nbsp;&nbsp; &nbsp; Multitenant
+                    Option&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    OPEN_MODE&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CON_ID<br>
+                    --------- --------------------------
+                    -------------------- ----------<br>
+                    DRUGDB&nbsp;&nbsp;&nbsp; &nbsp; Regular l2c
+                    Database:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; READ WRITE
+                    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; 0<br>
+                    <br>
+                  </p>
+                  <p>&nbsp;<img alt=""
+src="https://img-blog.csdnimg.cn/c11e8835e7414e7797b4c0a079062ea7.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQWFyb24gRmFuZw==,size_20,color_FFFFFF,t_70,g_se,x_16"
+                      width="1200" height="129"></p>
+                  <p>&nbsp;YES表示该数据库是CDB,如果是NO表示是NO-CDB(普通数据库)</p>
+                  <h2
+id="10.4.%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E5%AE%B9%E5%99%A8%EF%BC%88Container%EF%BC%89">10.4.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    查看当前容器（Container）</h2>
+                  <p>SQL&gt; show con_name<br>
+                    <br>
+                    CON_NAME<br>
+                    ------------------------------<br>
+                    Non Consolidated<br>
+                    <br>
+                  </p>
+                  <p>###########################检查数据库状态:<br>
+                    SQL&gt; select status from v$instance;<br>
+                    <br>
+                    STATUS<br>
+                    ------------<br>
+                    OPEN<br>
+                  </p>
+                  <h1
+id="11.Oracle12c%20%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E3%80%81%E6%8E%88%E6%9D%83">11.Oracle12c
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    创建用户、授权</h1>
+                  <p>SQL&gt; create user drugdbuser IDENTIFIED BY
+                    wtsgyh1972;<br>
+                    User created.<br>
+                  </p>
+                  <p>[catalyst@localhost bin]$
+                    /DATABAK/app/oracle/product/12.1.0/dbhome_1/bin/sqlplus
+                    drugdbuser/wtsgyh@drugdb<br>
+                    <br>
+                    Enter user-name: drugdbuser<br>
+                    Enter password: <br>
+                    <br>
+                    Connected to:<br>
+                    Oracle Database 12c Enterprise Edition Release
+                    12.1.0.1.0 - 64bit Production<br>
+                    With the Partitioning, OLAP, Advanced Analytics and
+                    Real Application Testing options<br>
+                    <br>
+                  </p>
+                  <blockquote>
+                    <p>12c推出了可插拔库，管理用户也分为两种：本地用户和公用用户<br>
+                      本地用户是指在插拔数据库（PDB）中的用户，和12c之前的版本没有什么区别。公用用户只存在于可插拔环
+                      境中，在传统的数据库环境中不存在这种应用。怎么理解公用用户呢？可以简单的把它当做容器（CDB）用户，
+                      可以在各个通用与所有可插拔数据库（PDB）中使用。这个用户就像是小区的物业管理员，由小区物业来任命并
+                      且可以管理小区所有用户。<br>
+                      如果第一次登录CDB数据库，用传统方式创建用户会报错，这就是因为在CDB环境创建的用户为公共用户，语
+                      法和普通用户不同</p>
+                  </blockquote>
+                  <h2
+                    id="11.1.%20%E5%88%9B%E5%BB%BA%E5%85%AC%E7%94%A8%E7%94%A8%E6%88%B7">11.1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    创建公用用户</h2>
+                  <p>说明：公用用户需要使用C##或者c##作为该用户名的开头<br>
+                    注意：sysdba身份登录进入数据库<br>
+                    如果使用传统创建用户的方法会报错</p>
+                  <h2 id="11.2.%E6%8E%88%E6%9D%83%C2%A0">11.2.授权</h2>
+                  <h3
+                    id="11.2.1.%E6%89%80%E6%9C%89%E6%8E%88%E6%9D%83%C2%A0">11.2.1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    所有授权&nbsp;</h3>
+                  <p>给用户赋予所有权限：<strong><code>grant connect,resource,dba
+                        to c##kmhd;</code></strong><br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    提示：可通过登录web可视化管理页面授权https://x.x.x.x:5500/em/因为新建的用户和
+                    默认的用户是锁住的，没有权限。所以新建用户后要给用户赋予权限。&nbsp;<br>
+                    1） 给用户赋予登录的权限：grant createsession to 用户名&nbsp;<br>
+                    2） 给用户赋予表操作的权限：grant create table to用户名（包含有create
+                    index权限, alter table, drop table权限）&nbsp;<br>
+                    3） 给用户赋予表空间操作的权限：grant unlimited tablespace
+                    to用户名&nbsp;<br>
+                    4） 给该用户赋予访问任务表的权限：grant select any table to
+                    用户名（同理可以赋予update和delete）&nbsp;<br>
+                    5） 给c##kmhd用户赋予xxx用户的a表的查询的权限： 例如：grant<br>
+                    select on xxx.a to
+                    c##kmhd（同理可以有alter，drop，insert等权限）&nbsp;<br>
+                    6） 更多赋权参考：<br>
+                    https://www.cnblogs.com/lanqingzhou/p/8145272.html</p>
+                  <h2 id="11.3.%E9%AA%8C%E8%AF%81">11.3.验证</h2>
+                  <h3
+                    id="11.3.1.%E5%88%9B%E5%BB%BA%E8%A1%A8%E7%A9%BA%E9%97%B4">11.3.1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    创建表空间</h3>
+                  <p>SQL&gt; CREATE TABLE DRUGCOURSEUSER(STD_ID NUMBER
+                    NOT NULL, STD_NAME VARCHAR2(100) NOT NULL, STD_NUM
+                    VARCHAR2(50) NOT NULL, STD_MAJOR VARCHAR2(50) NOT
+                    NULL, STD_PASSWORD VARCHAR2(200), STD_RECORDS NUMBER
+                    NOT NULL, ISVIP VARCHAR2(200));<br>
+                    <br>
+                    Table created.<br>
+                    <br>
+                  </p>
+                  <h3
+                    id="11.3.2.%20%E6%8F%92%E5%85%A5%E8%A1%A8%E6%95%B0%E6%8D%AE">11.3.2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    插入表数据: 批量导入数据</h3>
+                  <p>以下是成功的例子控制文件（control.ctl）中内容如下：<br>
+                    OPTIONS (skip=1, rows=10)<br>
+                    LOAD DATA<br>
+                    CHARACTERSET ZHS16GBK<br>
+                    INFILE 'drugusers.csv'<br>
+                    append into TABLE DRUGCOURSEUSER<br>
+                    FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'<br>
+                    ( <br>
+                    STD_ID,<br>
+                    STD_NAME,<br>
+                    STD_NUM,<br>
+                    STD_MAJOR,<br>
+                    STD_PASSWORD,<br>
+                    STD_RECORDS DECIMAL EXTERNAL,<br>
+                    ISVIP)<br>
+                    &nbsp;<br>
+                    在linux下执行SQL*Loader：<br>
+                    先在myeclipse中清空表（当然是在先把数据库连接正确）： <br>
+                    SQL&gt;truncate table
+                    "DRUGDBUSER"."DRUGCOURSEUSER"&nbsp;&nbsp;&nbsp;&nbsp;
+                    然后点那个右向小三角即可。<br>
+                    将文件:contrl.ctl和drugusers.csv放到目录/DATABAK/app
+                    /catalyst/product/11.2.0/dbhome_1/bin<br>
+                    #cd
+                    /DATABAK/app/catalyst/product/11.2.0/dbhome_1/bin<br>
+                  </p>
+                  <p>数据格式为：</p>
+                  <p>******************************************************************************************<br>
+                    2018001,aaa,U201812130,yyyy,U201812130,1000,N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    &lt;=共七列数据哟！！！！！！</p>
+                  <p>*******************************************************************************************<br>
+                    [catalyst@localhost bin]$
+                    /DATABAK/app/oracle/product/12.1.0/dbhome_1/bin/sqlldr
+                    userid=drugdbuser/wtsgyh@drugdb control=contrl.ctl
+                    log=resulthis.out<br>
+                    SQL*Loader: Release 12.1.0.1.0 - Production on Mon
+                    Jul 18 19:09:39 2022<br>
+                    <br>
+                    Copyright (c) 1982, 2013, Oracle and/or its
+                    affiliates.&nbsp; All rights reserved.<br>
+                    <br>
+                    Path used:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    Conventional<br>
+                    Commit point reached - logical record count 4<br>
+                    <br>
+                    Table DRUGCOURSEUSER:<br>
+                    &nbsp; 4 Rows successfully loaded.&nbsp;&nbsp;&nbsp;
+                    &lt;==================为何会少加一行？？？？</p>
+                  <p>也可以用图形界面进行（在eclipse 2021中装上那个插件Dbeaver 22,很简单的）：<br>
+                    <br>
+                  </p>
+                  <h3
+                    id="11.3.3.%20%E9%AA%8C%E8%AF%81%E8%A1%A8%E6%95%B0%E6%8D%AE">11.3.3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    验证表数据</h3>
+                  <p><br>
+                    验证新插入的表的数据：新建一个连接窗口，查看是否插入成功，并查看插入的中文是否乱码<br>
+                    select * from DRUGCOURSEUSER;<br>
+                  </p>
+                  <h1
+id="%E2%80%8B12.%20Web%E7%99%BB%E5%BD%95Oracle%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2"><img
+                      alt=""
+src="https://img-blog.csdnimg.cn/d58aab388732413c8c0a431332c479f0.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQWFyb24gRmFuZw==,size_20,color_FFFFFF,t_70,g_se,x_16"
+                      width="1011" height="306"><br>
+                    12. Web登录Oracle管理页面</h1>
+                  <p><br>
+                    https://222.20.94.229:5500/em (in windows
+                    OK!!!!!!!!!!!! need flash player!!!!!!!!!!!!!!!I
+                    sure in windows 7 can see!!!!!!!!!!!20220717)<br>
+                    CENTOS 7:<br>
+                    #<br>
+                  </p>
+                  <p>用户sys/WTgyh1972@@@@@@@@@@@@@@@@@@<br>
+                    https://222.20.94.229:5500/:&nbsp;&nbsp;&nbsp; can
+                    use: SYSTEM/WTSgyh1972@######&nbsp; (sure in firefox
+                    in linux)<br>
+                  </p>
+                  <p align="center"><img alt=""
+                      src="oracle12cCENTOS7/registeredem.png"
+                      moz-do-not-send="true" width="1200" height="660"></p>
+                  <h1 id="13.%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98">13.常见
+                    问题</h1>
+                  <h2
+id="13.1%E6%96%B0%E5%BB%BA%E7%94%A8%E6%88%B7%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93">13.1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    新建用户第一次操作数据库</h2>
+                  <p>1）在用PL/SQL进行登录时，出现：”ora-01045 :user system lacks
+                    create session privilege; logon denied”<br>
+                    原因：该用户没有创建session会话的权限</p>
+                  <p>2）如果以创建的用户登录，创建表，提示权限不足，则再次赋予创建表的权限</p>
+                  <p><br>
+                    3）给创建的表插入表数据,提示ORA-01950: 对表空间 ‘USERS’ 无权限,sys用户执行</p>
+                  <p><strong>说明：</strong>connect是赋予连接数据库的权限，resource
+                    是赋予用户只可以创建实体但是没有创建数据结构的权限<br>
+                    4） 第三步出错，无要求，直接赋予dba权限！<br>
+                  </p>
+                  <p>
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    13.2&nbsp; 安装Oracle12c数据库，安装完成后用浏览器访问<code>https://localhost:5500/em</code>，
+                    发现无论我怎么用户名和密码都不能登录，一直提示账号或口令错误<br>
+                  </p>
+                  <div id="content_views" class="markdown_views
+                    prism-atom-one-dark">
+                    <meta http-equiv="content-type" content="text/html;
+                      charset=UTF-8">
+                    <p>错误原因：没有设置用户名的口令</p>
+                    <p>解决办法：使用DBCA新建一个数据库<br>
+                      <strong>打开“<code>Database Configuration Assistant</code>”，
+                        新建一个数据库</strong><br>
+                      <strong>新建成功后有个如下图所示的弹窗，点击“口令管理”进入口令管理设置口令<br>
+                      </strong></p>
+                    <p><strong>(base) [catalyst@localhost ~]$ cd
+                        /opt/app/oracle/product/12.1.0/dbhome_1/bin/<br>
+                        (base) [catalyst@localhost bin]$ ./dbca <br>
+                        <br>
+                      </strong></p>
+                    <p><strong><br>
+                      </strong></p>
+                    <p><strong><br>
+                      </strong></p>
+                    <h3><strong> oracle 19c CDB容器数据库监听和tns文件配置</strong></h3>
+                    <h3><strong></strong></h3>
+                    <p><strong> <br>
+                        sqlnet.ora（客户端和服务端）：决定连接顺序<br>
+                        <br>
+                        <br>
+                        <br>
+                        listener.ora(服务端)和tnsnames.ora（客户端）文件配置：<br>
+                        <br>
+                        首先说明一下监听分为以下两类<br>
+                        <br>
+                        默认监听：端口号是1521，监听的名字为LISTENER<br>
+                        非默认监听：端口号自定义，监听名字也可以自定义<br>
+                        <br>
+                        注册：将实例和服务名注册到监听<br>
+                        <br>
+                        服务器注册也分为以下两类：<br>
+                        <br>
+                        动态注册：先启动监听，如果实例启动，就自动注册到监听，监听每隔1分钟会去扫描是否有新启动的实例<br>
+                        <br>
+                        如下：如果将实例关闭，监听就监听不到服务。<br>
+                        <br>
+                        <br>
+                        <br>
+                        alter system
+                        register;---注册监听，这个操作是手动的去注册服务，这样就不需要区等待1分钟了<br>
+                        静态注册：启动监听的同时就把实例注册到监听，不管实例是否启动都注册<br>
+                        <br>
+                        监听的过程：<br>
+                        <br>
+                        1.有一个外部程序每隔1分钟就会去扫描是否有新启动的实例，有的话就把实例和服务名注册上去，注册过
+                        后就代表告诉外界的客户端，你们都可以来连接我了。<br>
+                        <br>
+                        2.客户端只要提供正确的端口号，ip，服务名就可以连接到服务器了。<br>
+                        <br>
+                        <br>
+                        想要默认监听和非默认监听都能静态注册和动态注册<br>
+                        1.要在listener.ora配置默认和非默认监听名字<br>
+                        2.设置参数为新增的别名，这个别名要有默认监听和非默认监听两个端口<br>
+                        alter system set local_listener='LISR2';<br>
+                        <br>
+                        listener.ora:<br>
+                        #默认监听<br>
+                        <br>
+                        LISTENER =<br>
+                        &nbsp; (DESCRIPTION_LIST =<br>
+                        &nbsp; &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; &nbsp; (ADDRESS = (PROTOCOL =
+                        TCP)(HOST = 19c)(PORT = 1521))<br>
+                        &nbsp; &nbsp; &nbsp; (ADDRESS = (PROTOCOL =
+                        IPC)(KEY = EXTPROC1521))<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        <br>
+                        <br>
+                        SID_LIST_LISTENER =<br>
+                        &nbsp; (SID_LIST =#动态注册，这一段其实可以不写，为了体现完整性还是加上<br>
+                        &nbsp; &nbsp; (SID_DESC =<br>
+                        &nbsp; &nbsp; &nbsp; (SID_NAME = plsextproc)<br>
+                        &nbsp; &nbsp; &nbsp; (ORACLE_HOME =
+                        /opt/app/oracle/product/19.3.000/db_home)<br>
+                        &nbsp; &nbsp; &nbsp; (PROGRAM = extproc)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; &nbsp; (SID_DESC =#静态注册<br>
+                        &nbsp; &nbsp; &nbsp; (GLOBAL_DBNAME =
+                        CDB)#对外提供服务的名字是什么，这个可以自定义<br>
+                        &nbsp; &nbsp; &nbsp; (ORACLE_HOME =
+                        /u01/app/oracle/product/19.2.0/db_home1)<br>
+                        &nbsp; &nbsp; &nbsp; (SID_NAME = CDB)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        <br>
+                        <br>
+                        tnsnames.ora:<br>
+                        <br>
+                        LISTENER_CDB =<br>
+                        &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                        19c)(PORT = 1521))<br>
+                        <br>
+                        <br>
+                        CDB =<br>
+                        &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                        19c)(PORT = 1521))<br>
+                        &nbsp; &nbsp; (CONNECT_DATA =<br>
+                        &nbsp; &nbsp; &nbsp; (SERVER = DEDICATED)<br>
+                        &nbsp; &nbsp; &nbsp; (SERVICE_NAME = CDB)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        pdb1=<br>
+                        &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                        19c)(PORT = 1521))<br>
+                        &nbsp; &nbsp; (CONNECT_DATA =<br>
+                        &nbsp; &nbsp; &nbsp; (SERVER = DEDICATED)<br>
+                        &nbsp; &nbsp; &nbsp; (SERVICE_NAME = pdb1)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        &nbsp;<br>
+                        <br>
+                        配置默认监听和非默认监听都同时支持动态注册和静态注册<br>
+                        1.如果要默认监听和非默认监听都能使用，需要去掉 (ADDRESS = (PROTOCOL =
+                        IPC)(KEY = EXTPROC1521))<br>
+                        <br>
+                        LISTENER =#默认监听<br>
+                        &nbsp; (DESCRIPTION_LIST =<br>
+                        &nbsp; &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; &nbsp; (ADDRESS = (PROTOCOL =
+                        TCP)(HOST = 19c)(PORT = 1521))<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        <br>
+                        <br>
+                        SID_LIST_LISTENER =<br>
+                        &nbsp; (SID_LIST =<br>
+                        &nbsp; &nbsp; (SID_DESC =<br>
+                        &nbsp; &nbsp; &nbsp; (SID_NAME = plsextproc)<br>
+                        &nbsp; &nbsp; &nbsp; (ORACLE_HOME =
+                        /u01/app/oracle/product/19.2.0/db_home1)<br>
+                        &nbsp; &nbsp; &nbsp; (PROGRAM = extproc)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; &nbsp; (SID_DESC =<br>
+                        &nbsp; &nbsp; &nbsp; (GLOBAL_DBNAME = CDB)<br>
+                        &nbsp; &nbsp; &nbsp; (ORACLE_HOME =
+                        /u01/app/oracle/product/19.2.0/db_home1)<br>
+                        &nbsp; &nbsp; &nbsp; (SID_NAME = CDB)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        LSNR2 =#非默认监听<br>
+                        &nbsp; (DESCRIPTION_LIST =<br>
+                        &nbsp; &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; &nbsp; (ADDRESS = (PROTOCOL =
+                        TCP)(HOST = 19c)(PORT = 1526))<br>
+                        &nbsp; &nbsp; ) &nbsp; &nbsp; <br>
+                        &nbsp; ) &nbsp; &nbsp; &nbsp;<br>
+                        &nbsp; &nbsp; &nbsp; &nbsp; <br>
+                        <br>
+                        SID_LIST_LSNR2 = <br>
+                        &nbsp; (SID_LIST =<br>
+                        &nbsp; &nbsp; (SID_DESC =<br>
+                        &nbsp; &nbsp; &nbsp; (SID_NAME = plsextproc)<br>
+                        &nbsp; &nbsp; &nbsp; (ORACLE_HOME =
+                        /u01/app/oracle/product/19.2.0/db_home1)<br>
+                        &nbsp; &nbsp; &nbsp; (PROGRAM = extproc)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; &nbsp; (SID_DESC =<br>
+                        &nbsp; &nbsp; &nbsp; (GLOBAL_DBNAME = CDB)<br>
+                        &nbsp; &nbsp; &nbsp; (ORACLE_HOME =
+                        /u01/app/oracle/product/19.2.0/db_home1)<br>
+                        &nbsp; &nbsp; &nbsp; (SID_NAME = CDB)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        <br>
+                        2.需要修改tnsnames.ora配置，以下红色部分为新增的<br>
+                        <br>
+                        LISTENER_CDB =<br>
+                        &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                        19c)(PORT = 1521))<br>
+                        <br>
+                        lsnr2 =<br>
+                        &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                        19c)(PORT = 1526))<br>
+                        &nbsp; &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                        19c)(PORT = 1521))<br>
+                        &nbsp; &nbsp; (CONNECT_DATA =<br>
+                        &nbsp; &nbsp; &nbsp; (SERVER = DEDICATED)<br>
+                        &nbsp; &nbsp; &nbsp; (SERVICE_NAME = CDB)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        &nbsp;<br>
+                        <br>
+                        CDB =<br>
+                        &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                        19c)(PORT = 1521))<br>
+                        &nbsp; &nbsp; (CONNECT_DATA =<br>
+                        &nbsp; &nbsp; &nbsp; (SERVER = DEDICATED)<br>
+                        &nbsp; &nbsp; &nbsp; (SERVICE_NAME = CDB)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        pdb1=<br>
+                        &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+                        19c)(PORT = 1521))<br>
+                        &nbsp; &nbsp; (CONNECT_DATA =<br>
+                        &nbsp; &nbsp; &nbsp; (SERVER = DEDICATED)<br>
+                        &nbsp; &nbsp; &nbsp; (SERVICE_NAME = pdb1)<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        &nbsp;<br>
+                        <br>
+                        3.修改参数local_listener<br>
+                        <br>
+                        <br>
+                        <br>
+                        测试结果：默认监听和非默认监听都满足要求<br>
+                        <br>
+                        <br>
+                        <br>
+                        实践：以下为19.3监听配置，一个实例配置多个服务名，这个</strong><strong><strong>GLOBAL_DBNAME</strong>
+                        可任意取名，和tnsnames.ora的SERVICE_NAME： (SERVICE_NAME
+                        = drugdb)对应。<br>
+                        修改监听文件后应该要重启监听。<br>
+                        <br>
+                        LISTENER =<br>
+                        &nbsp; (DESCRIPTION_LIST =<br>
+                        &nbsp; &nbsp; (DESCRIPTION =<br>
+                        &nbsp; &nbsp; &nbsp; (ADDRESS = (PROTOCOL =
+                        TCP)(HOST = 222.20.94.229)(PORT = 1521))<br>
+                        &nbsp; &nbsp; &nbsp; (ADDRESS = (PROTOCOL =
+                        IPC)(KEY = EXTPROC1521))<br>
+                        &nbsp; &nbsp; )<br>
+                        &nbsp; )<br>
+                        <br>
+                        ######ADR_BASE_LISTENER = /u01/app/oracle<br>
+                        <br>
+                        <br>
+                        SID_LIST_LISTENER =<br>
+                        &nbsp; (SID_LIST =<br>
+                        &nbsp; &nbsp; (SID_DESC =<br>
+                        &nbsp; &nbsp; &nbsp;(GLOBAL_DBNAME = drugdb)<br>
+                        &nbsp;&nbsp;&nbsp; <strong>(SID_NAME = </strong></strong><strong><strong><strong>drugdb</strong>))<br>
+                        </strong>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                        (ORACLE_HOME =
+                        /opt/app/oracle/product/19.3.000/db_home)<br>
+                        &nbsp; &nbsp; &nbsp; &nbsp; <br>
+                        &nbsp; &nbsp; (SID_DESC =<br>
+                        &nbsp; &nbsp; &nbsp;(GLOBAL_DBNAME = myhotel)<br>
+                        &nbsp; &nbsp; &nbsp; &nbsp; (ORACLE_HOME = </strong><strong><strong>/opt/app/oracle/product/19.3.000/db_home</strong>)<br>
+                        &nbsp; &nbsp; &nbsp; &nbsp; (SID_NAME = </strong><strong><strong><strong><strong>myhotel</strong></strong></strong>))<br>
+                        &nbsp; )<br>
+                        bin]$ sqlplus
+                        system/wtsgyh1972@//222.20.94.229:1521/drugdb<br>
+                        <br>
+                        SQL*Plus: Release 19.0.0.0.0 - Production on 星期三
+                        12月 27 09:54:24 2023<br>
+                        Version 19.3.0.0.0<br>
+                        <br>
+                        Copyright (c) 1982, 2019, Oracle.&nbsp; All
+                        rights reserved.<br>
+                        <br>
+                        上次成功登录时间: 星期一 12月 25 2023 17:58:37 +08:00<br>
+                        <br>
+                        连接到: <br>
+                        Oracle Database 19c Enterprise Edition Release
+                        19.0.0.0.0 - Production<br>
+                        Version 19.3.0.0.0<br>
+                        <br>
+                        SQL&gt; show user<br>
+                        USER 为 "SYSTEM"<br>
+                        ######################################</strong><strong><strong></strong>&nbsp;<br>
+                        bin]$ sqlplus system/wtsgyh1972@drugdb<br>
+                        <br>
+                        SQL*Plus: Release 19.0.0.0.0 - Production on 星期三
+                        12月 27 09:56:24 2023<br>
+                        Version 19.3.0.0.0<br>
+                        <br>
+                        Copyright (c) 1982, 2019, Oracle.&nbsp; All
+                        rights reserved.<br>
+                        <br>
+                        上次成功登录时间: 星期三 12月 27 2023 09:54:25 +08:00<br>
+                        <br>
+                        连接到: <br>
+                        Oracle Database 19c Enterprise Edition Release
+                        19.0.0.0.0 - Production<br>
+                        Version 19.3.0.0.0<br>
+                        <br>
+                        SQL&gt; show user<br>
+                        USER 为 "SYSTEM"<br>
+                      </strong><strong><strong></strong> </strong></p>
+                  </div>
+                  <hr> </div>
+              </div>
+            </article>
+          </div>
+          <div class="more-toolbox-new" id="toolBarBox">
+            <div class="left-toolbox"><br>
+              <br>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

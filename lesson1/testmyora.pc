@@ -1,0 +1,83 @@
+//This file was tested by wts on CENTOS 7.9, eclipse 202309, oracle 19.3: can Insert one item into the table!!
+//cant use for oracle 12c windows 7, say no sqlgls????
+//DELETE FROM "C##DRUGDBUSER".DRUGCOURSEUSER WHERE STD_ID=90 ;
+///opt/app/oracle/product/19.3.000/db_home/lib
+//or use in eclipse as input lib path: 
+///usr/lib/oracle/19.18/client64/lib/libclntsh.so
+///usr/lib/oracle/19.18/client64/lib/libclntsh.so.19.1  (sure in CENTOS 7X)
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "sqlca.h"  // this is copied from /opt/app/oracle/product/19.3.000/db_home/precomp/public
+
+// 拓展 sqlgls 函数作用域
+//用Eclipse 202309C++编译此文件，不加"extern "C""会报错
+//如报错：无法解析的外部符号
+extern "C" unsigned int sqlgls(char * , size_t *, size_t * );
+EXEC SQL BEGIN DECLARE SECTION;
+    char *serversid = "c##drugdbuser/wtsgyh1972@drugdb";
+     // 宿主变量，c与sql的一种数据类型的桥梁   ,,,,, ,
+    int STD_ID;
+    char STD_NAME[100];
+    char STD_NUM[50];
+    char STD_MAJOR[50];
+    char STD_PASSWORD[200];
+    int STD_RECORDS;
+    char ISVIP[200];
+    // loc 的指示变量，唯一的作用就是用来处理null值
+    short isvip_ind;
+EXEC SQL END DECLARE SECTION;
+
+void sqlerr() {
+    // 临时变量
+   char stm[120];
+   size_t sqlfc, stmlen=120;
+   unsigned int ret = 0;
+    // 让下一次出现错误时不再跳转到函数中，而是继续下一步（CONTINUE）
+    // 防止处理函数中有执行错误再次调用处理函数而导致的递归
+    EXEC SQL WHENEVER SQLERROR CONTINUE;
+    // Here 获取错误的sql语句
+    ret = sqlgls(stm, &stmlen, &sqlfc);
+    // c语言使用printf可以用 %.*s 的方式来打印两个衔接的变量
+    printf("%.*s\n", stmlen, stm);
+    // sqlca.sqlerrm.sqlerrml 为错误编号长度
+    // sqlca.sqlerrm.sqlerrmc 为错误内容
+    printf("%.*s\n", sqlca.sqlerrm.sqlerrml, sqlca.sqlerrm.sqlerrmc);
+    // 执行回滚并释放连接
+    EXEC SQL ROLLBACK WORK RELEASE;
+    exit(1);
+}
+int main(int argc, char* argv[]) {
+    int ret = 0;
+    // 开启错误处理机制，指定错误处理函数为 sqlerr
+EXEC SQL WHENEVER SQLERROR DO sqlerr();
+// 连接 oracle 服务器
+EXEC SQL CONNECT :serversid;
+if (sqlca.sqlcode != 0) {
+    ret = sqlca.sqlcode;
+    printf("connect oracle error… code = %d\n", ret);
+    return ret;
+}
+// 插入一个已经存在的 deptno ，会导致出错
+STD_ID = 90;
+strcpy(STD_NAME, "dengjia");//U202011069
+strcpy(STD_NUM, "U202111069");
+strcpy(STD_MAJOR, "dengjia");
+strcpy(STD_PASSWORD, "dengjia");
+STD_RECORDS = 1000;
+strcpy(ISVIP, "VIP");
+// 如果希望将 loc 插入时置为 null，那么就把指示变量 isvip_ind 设置为 -1
+isvip_ind = -1;
+// 插入数据时，注意指示变量的用法  STD_ID,STD_NAME,STD_NUM,STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP
+//EXEC SQL insert into DRUGCOURSEUSER(deptno, dname, loc) values(:deptno, :dname, :loc:isvip_ind);
+EXEC SQL insert into DRUGCOURSEUSER(STD_ID,STD_NAME,STD_NUM,STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP) values(:STD_ID, :STD_NAME, :STD_NUM, :STD_MAJOR, :STD_PASSWORD, :STD_RECORDS, :ISVIP:isvip_ind);
+if (sqlca.sqlcode != 0) {
+    ret = sqlca.sqlcode;
+    printf("insert into error… code = %d\n", ret);
+    return ret;
+}
+EXEC SQL commit release;
+return 0;
+}

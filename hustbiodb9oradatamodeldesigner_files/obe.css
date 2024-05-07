@@ -1,0 +1,102 @@
+/* Version 1.0
+** Main Oracle By Example (OBE) CSS Document containing styles to format page elements and headers.
+** Authors: Glenn Stokol and Marcie Young
+** History
+** =======
+** 23-Mar-09	GS	Created initial file 
+** 02-Mar-09	GS	Removed the obe_title_nav class (was used for nav bar title color) which is now not needed
+** 22-Apr-09	GS	Modified obe_content_default, obe_content, and obe_navbar to use percentage widths. Added
+**					position:fixed to obe_navbar class (However, "fixed" does not work in IE6 or earlier)
+*/
+
+/* Default Title in left nav */
+.obe_nav_title{
+    font-size: 11px;
+	font-weight:bold; 
+	color: #FF0000; 
+	margin-left:5px; 
+	text-decoration:none; 
+} 
+
+/* Default Title at the beginning of OBE on right pane */
+.obe_title { font-size:18px; font-weight:bold; color:#000000; }
+
+/* Section title, blue bold, included in left nav */
+.obe_section { font-size:12pt; font-weight:bold; color:#336699;}
+
+/* Topic title, blue bold italic, included in left nav */
+.obe_topic { font-size:12pt; font-weight:bold; font-style: italic; color:#336699; }
+
+/* Subtopic title, black bold, included in left nav */
+.obe_subtopic { font-size:11pt; font-weight:bold; color:#000000; }
+
+/* Default right pane size width */
+.obe_content_default {
+    position:absolute;
+	top:2px;
+	width:68%;
+	padding-left:5px;
+	padding-right:5px;
+	margin-left:5px;
+	margin-right:5px;
+}
+
+.obe_content {
+	position:absolute;
+	left:30%;
+	top:2px;
+	width:68%;
+	padding-left:5px;
+	padding-right:5px;
+	margin-left:5px;
+	margin-right:5px;
+	border-left:1px solid #000000;
+}
+
+/* Default left nav size width */
+.obe_navbar {
+	position:fixed;
+	left:0px;
+	top:0px;
+	width:29%;
+	margin-left:5px;
+	margin-right:5px;
+}
+
+/* Print Preview styles */
+.obe_toc_printview {border:1px solid #000000; background-color:#CCCCCC; width:50%}
+.obe_navbar_printview { border:1px solid black; padding:5px; background-color:#CCCCCC; }
+.obe_content_printview { left:0px; top:0px; padding:10px;}
+
+
+.obe_link { text-decoration:none; color:#000000; border:0px; cursor:pointer; }
+
+/* Styles available for use by developers to format text */
+.obe_enter_click_or_select {font-weight:bold;}
+.obe_code_enter {font-family: "Courier New", Courier, mono; font-weight:bold;}
+.obe_code_element {font-family: "Courier New", Courier, mono;}
+.obe_file_or_directory {font-family: "Courier New", Courier, mono;}
+.obe_emphasis {font-style: italic;}
+.obe_variable {font-family: "Courier New", Courier, mono; font-style: italic;}
+
+/* Styles to create bulleted or steps list */
+ul
+{
+list-style-type: none;
+padding: 0;
+margin: 0;
+margin-left: 0.6em;
+}
+
+ul li
+{
+
+background-image: url(bullet.gif);
+background-repeat: no-repeat;
+background-position: 0 .3em;
+padding-left: 1.1em;
+}
+ol#steps { list-style-position:outside; font-weight:bold; }
+li#steps { font-weight:normal; }
+span { font-weight:normal; }
+#ie6only #body { background-color:#FFFF99;}

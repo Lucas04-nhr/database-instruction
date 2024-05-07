@@ -1,0 +1,214 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+oracle bakka:<br>
+<br>
+<p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+font-size: 15px; font-style: normal; font-variant-ligatures:
+normal; font-variant-caps: normal; font-weight: 400;
+letter-spacing: normal; orphans: 2; text-align: start;
+text-transform: none; white-space: normal; widows: 2;
+word-spacing: 0px; -webkit-text-stroke-width: 0px;
+background-color: rgb(255, 255, 255); text-decoration-thickness:
+initial; text-decoration-style: initial; text-decoration-color:
+initial;"><strong><strong>/***************************采用oracle本身提供
+OCCI方式操作数据库*******************/</strong></strong></p>
+<strong><strong><span style="color: rgb(34, 34, 38); font-family:
+-apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang
+SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft
+YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif;
+font-size: 14px; font-style: normal; font-variant-ligatures:
+common-ligatures; font-variant-caps: normal; font-weight: 400;
+letter-spacing: normal; orphans: 2; text-align: left;
+text-indent: 0px; text-transform: none; white-space: normal;
+widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+background-color: rgb(255, 255, 255);
+text-decoration-thickness: initial; text-decoration-style:
+initial; text-decoration-color: initial; display: inline
+!important; float: none;">大量实验证明VC6 对应支持Oracle9i，
+VC7对应支持Oracle10g，VC8支持Oracle11g。</span><span style="color:
+rgb(34, 34, 38); font-family: -apple-system, &quot;SF UI
+Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino
+Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi
+Micro Hei&quot;, sans-serif; font-size: 14px; font-style:
+normal; font-variant-ligatures: common-ligatures;
+font-variant-caps: normal; font-weight: 400; letter-spacing:
+normal; orphans: 2; text-align: left; text-indent: 0px;
+text-transform: none; white-space: normal; widows: 2;
+word-spacing: 0px; -webkit-text-stroke-width: 0px;
+background-color: rgb(255, 255, 255);
+text-decoration-thickness: initial; text-decoration-style:
+initial; text-decoration-color: initial; display: inline
+!important; float: none;">不过好像Oracle11G也能支持VC7。<br>
+</span>&nbsp;<br>
+//代码的目的就是验证makefile中oracle的头文件和lib文件路径是否正确了&nbsp; <br>
+#include "stdafx.h"<br>
+#include &lt;iostream&gt;&nbsp; <br>
+#define WIN32COMMON //避免函数重定义错误&nbsp; <br>
+#include &lt;occi.h&gt;&nbsp; <br>
+using namespace std;<br>
+using namespace oracle::occi;<br>
+<br>
+int main()<br>
+{<br>
+&nbsp;&nbsp;&nbsp; system("pause");<br>
+&nbsp;&nbsp;&nbsp; //创建OCCI上下文环境&nbsp; <br>
+&nbsp;&nbsp;&nbsp; Environment *env =
+Environment::createEnvironment();<br>
+&nbsp;&nbsp;&nbsp; if (NULL == env) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf("createEnvironment
+error.\n");<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return -1;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; "success"
+&lt;&lt; endl;<br>
+<br>
+&nbsp;&nbsp;&nbsp; string name = "biodbuser";<br>
+&nbsp;&nbsp;&nbsp; string pass = "biodb123";<br>
+&nbsp;&nbsp;&nbsp; string srvName =
+"192.168.11.1:1521/biohustdb";<br>
+<br>
+&nbsp;&nbsp;&nbsp; try<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //创建数据库连接&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Connection *conn =
+env-&gt;createConnection(name, pass,
+srvName);//用户名，密码，数据库名&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (NULL == conn) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+printf("createConnection error.\n");<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return
+-1;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout
+&lt;&lt; "conn success" &lt;&lt; endl;<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //&nbsp;
+数据操作,创建Statement对象&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Statement *pStmt =
+NULL;&nbsp;&nbsp;&nbsp; // Statement对象&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; pStmt =
+conn-&gt;createStatement();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (NULL == pStmt) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+printf("createStatement error.\n");<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return
+-1;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+查询数据库时间&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; std::string strTemp;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ResultSet *pRs =
+pStmt-&gt;executeQuery(<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "SELECT
+TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') FROM DUAL");<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while (pRs-&gt;next()) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; strTemp
+= pRs-&gt;getString(1);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+printf("db time:%s.\n", strTemp.c_str());<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+int类型取值用getInt()&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+pStmt-&gt;closeResultSet(pRs);<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+//--------插入---------&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+指定DML为自动提交&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+pStmt-&gt;setAutoCommit(TRUE);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+设置执行的SQL语句&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //pStmt-&gt;setSQL("INSERT
+INTO TA (ID, NAME) VALUES (1, 'ZS')");&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; pStmt-&gt;setSQL("INSERT
+INTO TABLE_TEST_WANG (NAME, NUM, AGE) VALUES ('邓超', '99',
+'41')");<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+执行SQL语句&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; unsigned int nRet =
+pStmt-&gt;executeUpdate();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (nRet == 0) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+printf("executeUpdate insert error.\n");<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+终止Statement对象&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+conn-&gt;terminateStatement(pStmt);<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //&nbsp; 关闭连接&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+env-&gt;terminateConnection(conn);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+pEnv-&gt;terminateConnection(pConn);&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; catch (SQLException e)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; e.what()
+&lt;&lt; endl;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; system("pause");<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return -1;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp; // 释放OCCI上下文环境&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; Environment::terminateEnvironment(env);<br>
+&nbsp;&nbsp;&nbsp; cout &lt;&lt; "end!" &lt;&lt; endl;<br>
+&nbsp;&nbsp;&nbsp; system("pause");<br>
+&nbsp;&nbsp;&nbsp; return 0;<br>
+}<br>
+<br>
+<br>
+<br>
+cpp:<br>
+<br>
+</strong></strong><br>
+<div align="center"><strong><strong><img moz-do-not-send="true"
+src="./oradir/setincludess.png" alt="" width="808"
+height="654"></strong></strong><br>
+<strong><strong></strong></strong></div>
+<strong><strong><br>
+<br>
+<br>
+</strong></strong>
+<div align="center"><img moz-do-not-send="true"
+src="./oradir/modallinclupathlib.png" alt="" width="724"
+height="623"><br>
+</div>
+<br>
+<br>
+<br>
+<div align="center"><img moz-do-not-send="true"
+src="./oradir/modinclude.png" alt="" width="786" height="675"><br>
+</div>
+<br>
+<br>
+<br>
+<div align="center"><img moz-do-not-send="true"
+src="./oradir/CPPliballaddl.png" alt="" width="812" height="718"><br>
+</div>
+<br>
+<br>
+<br>
+<div align="center"><img moz-do-not-send="true"
+src="./oradir/dcliknkelib.png" alt="" width="827" height="718"><br>
+</div>
+<br>
+<br>
+<br>
+<br>
+<strong><strong></strong></strong>
+</body>
+</html>

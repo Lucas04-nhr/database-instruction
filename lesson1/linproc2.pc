@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+
+void sql_error(); //catch error
+
+int main() {
+        exec sql include sqlca;
+        exec sql begin declare section;
+
+        int i;
+        char s_no[6];
+        char s_name[15];
+        char s_sex[4];
+        int s_age;
+        int var_age;
+        int s_grade;
+        char c_name[15];
+        int c_no;
+        int s_avgGrade;
+        exec sql end declare section;
+
+        /**login to db info */
+        exec sql whenever SQLERROR do sql_error(); //do error
+
+        exec sql connect :"system" identified by :"wysgyh19xx" using :"222.20.94.229:1521/drugdb";
+
+        printf("\n\n user login,okkkk.\n");
+        system("pause"); //push any key continue
+
+        while (1) {
+                system("cls");
+                printf("\n tips:entier 9999 will exit");
+                printf("\n enter your name: ");
+                scanf("%s", &s_name);
+                if (var_age == 9999)
+                        break;
+                exec sql declare sx cursor for
+                 select cname, nvl((grade),0) from sc,c,s where sc.cno=c.cno and sc.sno=s.sno and sname=:s_name;
+                 exec sql open sx;
+
+                 i = 0;
+                 system("cls");
+                 printf("\n\t%s std gr table", s_name);
+                 printf("\n\t---------------------------------------------");
+                 printf("\n\t no\t Course \t\t\ Gradess \t baksdes");
+                 //printf("\n\t---------------------------------------------");
+
+                 while (1) {
+                         exec sql fetch sx into :c_name,:s_grade;
+                         if (sqlca.sqlcode != 0)
+                                 break;
+                         i++;
+                         printf("\n\t %d\t%s\t%d ", i, c_name, s_grade);
+                 }
+                 printf("\n\t---------------------------------------------------");
+                 exec sql select avg(grade) into : s_avgGrade from s, c, sc
+                 where s.sno=sc.sno and sc.cno=c.cno and sname=:s_name;
+                 if (i != 0)
+                         printf("\n\t\t\t\t avgGR:%d\n", s_avgGrade);
+                 //printf("\n\t\t\t\t?%d?\n",i);
+                 else
+                         printf("\n\t\t\t not find stdinfo%scourinfo!\n", s_name);
+                 printf("\n");
+                 system("pause");
+         }
+         system("pause");
+         exec sql close sx;
+         exec sql commit release;
+         return 0;
+ }
+
+void sql_error() {
+        printf("SQL statement error:ercode:%d errordes:%s\n", sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc);
+        system("pause");
+        exit(0);
+}
+

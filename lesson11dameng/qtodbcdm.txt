@@ -1,0 +1,66 @@
+#include <QCoreApplication>
+#include <QtSql>
+#include <QDebug>
+#include <QTextCodec>
+
+int main(int argc, char *argv[])
+{
+QCoreApplication a(argc, argv);
+   QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");"
+    db.setHostName("192.168.104.21");
+    db.setPort(51236);
+    db.setDatabaseName("DM8");
+   db.setUserName("SYSDBA");
+    db.setPassword("SYSDBA");
+if (db.open())
+        qDebug() << "connect ok!";
+else
+    {
+        qDebug() << "connect fail! " << db.lastError().text().toLatin1();
+    }
+
+  QSqlQuery query;
+
+    //清理测试环境
+    QString strsql = "drop table if exists qt_demo";
+    query.exec(strsql);
+    strsql = "create table qt_demo(c1 int, c2 blob)";
+    query.exec(strsql);
+
+    // 读取文件数据，写入 lob 列
+    //选择要写入的文件
+    QString f = "../qt_lob/file/DM8_SQL.pdf";
+    //转换为字节数组
+    QByteArray mapData;
+    QFile ""file(f);
+file.open(QIODevice::ReadOnly);
+   mapData = file.readAll();
+file.close();
+
+   //插入数据
+    query.prepare("INSERT INTO qt_demo values(?, ?)");
+    query.bindValue(0, 1);
+    query.bindValue(1, mapData);
+    if (!query.exec()) {
+       qDebug() << query.lastError();
+    }
+else {
+       qDebug() << "insert OK!";
+    }
+  
+//读取 lob 列数据，写入到文件中
+    QSqlQuery readquery;
+    QByteArray databa;
+  if (readquery.exec("select c2 from provider_demo")) {
+        QSqlRecord myrecord = readquery.""record();
+      if (readquery.next()) {
+            databa = readquery.value(myrecord.indexOf("C2")).toByteArray();
+       }
+    }
+   QFile mybfile("../qt_lob/file/DM81_SQL.pdf");
+   mybfile.""open(QIODevice::WriteOnly);
+   mybfile.""write(databa);
+   mybfile.""close();
+   qDebug() << "select OK!";
+return a.exec();
+} 

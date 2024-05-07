@@ -1,0 +1,1600 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+  </head>
+  <body>
+    <h1 class="title-article" id="articleContentId" align="center">
+      <meta http-equiv="content-type" content="text/html; charset=gbk">
+      本科教学-数据库技术及应用(CENTOS环
+      境)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      上机过程如有问题请看</h1>
+    <h1 class="title-article" id="articleContentId" align="center"> </h1>
+    <h1 class="title-article" id="articleContentId" align="center">数据库上机
+      练习八：达梦数据库-centos7安装</h1>
+    <p style="color: rgb(0, 0, 0); font-family: &quot;Microsoft
+      YaHei&quot;; font-size: medium; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-indent:
+      0px; text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; white-space: normal;
+      text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;" align="left">一
+      上机内容:&nbsp;&nbsp;
+      https://www.cnblogs.com/qingmuchuanqi48/p/10579951.html<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. 达梦数据库简介: &gt; 19.3.000<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. 练习ORACLE DB基本操作: DDL, DCL,
+      DML<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. 图形界面管理Oracle: SQL
+      Developer,&nbsp; MyEclipse和Eclipse管理Oracle数据库<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.
+      在MyEclipse中用JAVA语言进行简单的数据库访问以及基于tomcat的web前后端数据库技术(tomcat:
+      localhost:9875)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5. 在VSCode中用GO语言访问达梦数据库<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6. 拓展: c/c++访问oracle12(三种方式)<br>
+    </p>
+    <p style="color: rgb(0, 0, 0); font-family: &quot;Microsoft
+      YaHei&quot;; font-size: medium; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-indent:
+      0px; text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; white-space: normal;
+      text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;" align="left"><br>
+      二 上机目的:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. 了解关系数据库基本结构并加深对关系数据库的理解.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. 练习关系查询语言sql.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.
+      学会命令行和图形界面创建表，主键，外键，索引，视图等。<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.初步掌握利用高级语言与数据库进行交互.<br>
+    </p>
+    <p style="color: rgb(0, 0, 0); font-family: &quot;Microsoft
+      YaHei&quot;; font-size: medium; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-indent:
+      0px; text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; white-space: normal;
+      text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;" align="left">高级拓展部分：<br>
+      三 利用MyEclipse进行调试java语言及数据库访问.<br>
+      四 利用Eclipse进行调试CPP语言及数据库访问.<br>
+      五 利用VSCode进行调试GOLANG语言及数据库访问.</p>
+    <h3>达梦数据库简介</h3>
+    <p>达梦数据库(DMDB)是一种关系型数据库管理系统(RDBMS),由中国达梦公司开发和推出。它是中国国产的数据库产品之一,具有高性
+      能、高可靠性和高安全性的特点。<br>
+    </p>
+    <h3> 1. CentOS7 安装DM8 单机</h3>
+    <h3>1.环境 </h3>
+    <div class="table-box">
+      <table>
+        <thead><tr>
+            <th>操作系统</th>
+            <th>CPU</th>
+            <th>数据库</th>
+          </tr>
+        </thead><tbody>
+          <tr>
+            <td>CentOS7.9</td>
+            <td>x86_64</td>
+            <td>dm8_20230104_x86_rh6_64.iso<br>
+              dm8_20240104_x86_win_64.iso（用于安装windows的客户端工具）<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    查看cpu:&nbsp; $lscpu<br>
+    查看centos版本: $cat /etc/redhat-release<br>
+    查看多少位: $getconf LONG-BIT<br>
+    <p>根据OS的cpu: 下载x86, CENTOS,&nbsp; dm8_20230104_x86_rh6_64.iso</p>
+    <h2>2.安装前准备</h2>
+    <h3>2.1 关闭防火墙 或 开放5236端口</h3>
+    <p># firewall-cmd --state&nbsp;&nbsp;&nbsp;&nbsp; 看看是否运行？<br>
+      running<br>
+      ]# systemctl stop firewalld<br>
+      [root@localhost catalyst]# firewall-cmd --state<br>
+      not running<br>
+      <br>
+      systemctl disable firewalld<br>
+      # firewall-cmd --permanent --zone=public --add-port=5236/tcp<br>
+      success</p>
+    <br>
+    # firewall-cmd --reload<br>
+    success<br>
+    <br>
+    查看防火墙已经开放的端口，命令<br>
+    # firewall-cmd --list-ports<br>
+    1521/tcp 5500/tcp 5520/tcp 3938/tcp 5236/tcp<br>
+    <br>
+    <br>
+    2.2 创建安装数据库的操作系统用户dmdba（不是数据库的用户schema）:<br>
+    $groupadd dinstall<br>
+    # useradd -g dinstall -m -d /home/dm8 -s /bin/bash dmdba<br>
+    正在创建信箱文件: 文件已存在<br>
+    $passwd dmdba&nbsp;&nbsp;&nbsp;&nbsp;
+    //WTSgyh1972!&nbsp;&nbsp;&nbsp;&nbsp; //也可以这样: $echo "WTSgyh1972!" |
+    passwd dmdba --stdin<br>
+    $id dmdba&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //或者: $ su dmdba ; id<br>
+    2.3 修改文件打开最大数<br>
+    $su dmdba<br>
+    $ulimit -a&nbsp;&nbsp;&nbsp;&nbsp; //可以看看输出中的:&nbsp;&nbsp; <font
+      color="#ff0000"><b>open
+        files&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+        (-n) 65536(最大文件数)</b></font><br>
+    重启服务器后永久生效<br>
+    vi /etc/security/limits.conf<br>
+    dmdba hard nofile 65536<br>
+    dmdba soft nofile 65536<br>
+    dmdba hard stack 32768<br>
+    dmdba soft stack 16384<br>
+    <p>#su dmdba<br>
+      $ ulimit -a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //切换到dmdba用户，查看是否生效<br>
+      core file
+      size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (blocks, -c) 0<br>
+      data seg
+      size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (kbytes, -d) unlimited<br>
+      scheduling
+      priority&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+      (-e) 0<br>
+      file
+      size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+      (blocks, -f) unlimited<br>
+      pending
+      signals&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+      (-i) 143783<br>
+      max locked memory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (kbytes, -l)
+      64<br>
+      max memory size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (kbytes, -m) unlimited<br>
+      <font color="#ff0000"><b>open
+          files&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+          (-n) 65536</b></font><br>
+      pipe
+      size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (512 bytes, -p) 8<br>
+      POSIX message queues&nbsp;&nbsp;&nbsp;&nbsp; (bytes, -q) 819200<br>
+      real-time
+      priority&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+      (-r) 0<br>
+      <font color="#ff0000"><b>stack
+          size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+          (kbytes, -s) 16384</b></font><br>
+      cpu
+      time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+      (seconds, -t) unlimited<br>
+      max user
+      processes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+      (-u) 4096<br>
+      virtual
+      memory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (kbytes, -v) unlimited<br>
+      file
+      locks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+      (-x) unlimited<br>
+      <br>
+    </p>
+    <p>3. 数据库安装<br>
+      3.1 将dm8_20230104_x86_rh6_64.iso文件上传到 /opt 路径<br>
+      3.2 挂载镜像<br>
+      <br>
+      root 用户将DM数据库dm8_20230104_x86_rh6_64.iso镜像挂载：</p>
+    <p>$mount -o loop
+      /run/media/catalyst/IBBWORK/dmdb8/dm8_20230104_x86_rh6_64.iso /mnt</p>
+    <p>/mnt/DM8 Install.pdf<br>
+      /mnt/DMInstall.bin</p>
+    <p>3.3&nbsp; mkdir -p /opt/dm8<br>
+      chown dmdba:dinstall -R /opt/dm8<br>
+      chmod -R 755 /opt/dm8</p>
+    <p>3.4 安装<br>
+      $su dmdba&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //切换至 dmdba 用户下<br>
+      $cd /mnt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //在 /mnt
+      目录下使用命令行安装数据库程序，依次执行以下命令安装 DM 数据库。<br>
+      ./DMInstall.bin&nbsp;&nbsp;&nbsp;&nbsp; // 如果这样&nbsp;
+      $./DMInstall.bin -i&nbsp;&nbsp; 表示要用命令行安装</p>
+    <div align="center"><img moz-do-not-send="true"
+        src="kaishidminstall.png" alt="" width="498" height="221"></div>
+    <p>选择安装语言: 默认为中文, 选择时区。<br>
+      然后就来到欢迎界面：<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true" src="dmwelcome.png"
+        alt="" width="702" height="522"></div>
+    <p>接着来到许可协议页：<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true" src="damlic.png"
+        alt="" width="699" height="528"></div>
+    <p>肯定选接受！<br>
+      <br>
+    </p>
+    <p>本地安装选择【不输入 Key 文件】, 因为达梦为付费软件:<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true" src="entkey.png"
+        alt="" width="702" height="527"></div>
+    <p>然后采用默认安装(包括服务器和客户端等)：<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true"
+        src="typicalinstall.png" alt="" width="702" height="522"></div>
+    <p>选择安装路径：/opt/dm8<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true" src="installdir.png"
+        alt="" width="644" height="480"></div>
+    <p>数据库安装信息:<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true"
+        src="installinfo.png" alt="" width="702" height="523"></div>
+    <p>点安装即可。<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true"
+        src="justinstalling.png" alt="" width="705" height="528"></div>
+    <p><br>
+      需要执行脚本来注册服务，需要有root权限:<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true"
+        src="rooscriptsexe.png" alt="" width="489" height="475"></div>
+    <p><br>
+    </p>
+    <p>数据库安装完成后，需要切换至 root 用户执行上图中的命令 /dm8/script/root/root_installer.sh
+      创建 DmAPService，否则会影响数据库备份。<br>
+      ]# /opt/dm8/script/root/root_installer.sh<br>
+      移动 /opt/dm8/bin/dm_svc.conf 到/etc目录<br>
+      创建DmAPService服务<br>
+      Created symlink from
+      /etc/systemd/system/multi-user.target.wants/DmAPService.service to
+      /usr/lib/systemd/system/DmAPService.service.<br>
+      创建服务(DmAPService)完成<br>
+      启动DmAPService服务</p>
+    <p align="left">点确定就完成数据库安装:<br>
+    </p>
+    <p align="center"><img moz-do-not-send="true"
+src="file:///I:/2023hustbiodbshaji/gohustdb/src/maindbgo/hustdbroot/lesson11dameng/justcomple.png"
+        alt="" width="505" height="375"> </p>
+    然后就是进行数据库实例的初始化：<br>
+    <div align="center"><img moz-do-not-send="true"
+        src="aftercomptoinit.png" alt="" width="705" height="519"></div>
+    <p>创建实例：<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true"
+        src="createinsodb.png" alt="" width="506" height="374"></div>
+    <p align="center"><br>
+    </p>
+    <p align="left">选择一般用途即可:</p>
+    <p align="center"><img moz-do-not-send="true"
+src="file:///I:/2023hustbiodbshaji/gohustdb/src/maindbgo/hustdbroot/lesson11dameng/commonuse.png"
+        alt="" width="702" height="522"></p>
+    <p align="center"><br>
+    </p>
+    <p>/opt/dm8/data<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true" src="dbpath.png"
+        alt="" width="700" height="525"></div>
+    <p>填写以下信息<br>
+      数据库名dbname: DAMENG<br>
+    </p>
+    <p>实例名insname: DMSERVER<br>
+      端口号port: 5236 (如果有多个数据库可以用5237，5238......)<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true" src="dbsid.png"
+        alt="" width="709" height="528"></div>
+    <p>数据库文件存放地: <br>
+    </p>
+    <p>/opt/dm8/data/DAMENG/dm.ctl<br>
+    </p>
+    <div align="center"><img moz-do-not-send="true" src="ctlfile.png"
+        alt="" width="702" height="526"><br>
+      <br>
+      <div align="left"> 数据库实例初始化参数:<br>
+      </div>
+      <br>
+      <img moz-do-not-send="true" src="initparams.png" alt=""
+        width="904" height="802"><br>
+      <br>
+      <br>
+      <div align="left"> 设置用户密码: 统一一个密码便于学习:<br>
+      </div>
+      <img moz-do-not-send="true" src="setadminpasswd.png" alt=""
+        width="886" height="460"><br>
+      <br>
+      <div align="left"> 创建示例数据库两个(后面的GOLANG示例会用到):<br>
+      </div>
+      <img moz-do-not-send="true" src="createexamdb.png" alt=""
+        width="828" height="433"><br>
+      <br>
+      <div align="left"> 安装最后完成:<br>
+      </div>
+      <img moz-do-not-send="true" src="finalcomplet.png" alt=""
+        width="1101" height="577"><br>
+      <br>
+      <br>
+      <br>
+      <div align="left"><br>
+      </div>
+      <div align="left">执行root脚本添加服务：<br>
+      </div>
+      <div align="left"># mv /opt/dm8/bin/DmServiceDMSERVER.service
+        /usr/lib/systemd/system/DmServiceDMSERVER.service<br>
+        [root@localhost dm8]# systemctl enable DmServiceDMSERVER.service<br>
+        Created symlink from
+        /etc/systemd/system/multi-user.target.wants/DmServiceDMSERVER.service
+        to /usr/lib/systemd/system/DmServiceDMSERVER.service.<br>
+        [root@localhost dm8]# systemctl start DmServiceDMSERVER.service<br>
+        <div align="center"><img moz-do-not-send="true"
+            src="anotherrootscripts.png" alt="" width="495" height="486"><br>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div align="left"># systemctl restart DmServiceDMSERVER.service<br>
+        <br>
+        <div align="center"><img moz-do-not-send="true"
+            src="installfinalok.png" alt="" width="582" height="386"><br>
+        </div>
+      </div>
+      <br>
+      现在点：完成 即可（不要点继续！会进行另一个数据库创建！！）<br>
+      <br>
+      <div align="left">也可以用: /opt/dm8/tool/dbca.sh来创建实例! <br>
+      </div>
+      <br>
+    </div>
+    <h3>3.5 配置环境变量</h3>
+    <p>&nbsp; 对用户dmdba配置环境变量， 即设置DM_HOME 变量<br>
+      对于动态链接库文件的加载路径在程序安装成功后自动设置: LD_LIBRARY_PATH。<br>
+      命令如下：<br>
+    </p>
+    <p>cd /home/dm8<br>
+      vi .bash_profile</p>
+    <p>****************************<br>
+      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/dm8/bin"<br>
+      export DM_HOME="/opt/dm8"<br>
+      <b>export PATH=$PATH:$DM_HOME/bin:$DM_HOME/tool&nbsp;</b>&nbsp;
+      //add this line</p>
+    <p>4.<br>
+      # systemctl start DmServiceDMSERVER.service<br>
+    </p>
+    <p>查看数据库服务状态<br>
+      # systemctl status DmServiceDMSERVER.service<br>
+      ● DmServiceDMSERVER.service - DM Instance Service<br>
+      &nbsp;&nbsp; Loaded: loaded
+      (/usr/lib/systemd/system/DmServiceDMSERVER.service; enabled;
+      vendor preset: disabled)<br>
+      &nbsp;&nbsp; <font color="#009900"><b>Active: active (running)
+          since 六 2024-01-13 15:50:33 CST; 49min ago</b></font><br>
+      &nbsp; Process: 12461 ExecStop=/opt/dm8/bin/DmServiceDMSERVER stop
+      (code=exited, status=0/SUCCESS)<br>
+      &nbsp; Process: 12523 ExecStart=/opt/dm8/bin/DmServiceDMSERVER
+      start (code=exited, status=0/SUCCESS)<br>
+      &nbsp;Main PID: 12544 (dmserver)<br>
+      &nbsp;&nbsp;&nbsp; Tasks: 57<br>
+      &nbsp;&nbsp; CGroup: /system.slice/DmServiceDMSERVER.service<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      └─12544 /opt/dm8/bin/dmserver path=/opt/dm8/data/DAMENG/dm.ini
+      -noconsole<br>
+      <br>
+      1月 13 15:50:18 localhost systemd[1]: Starting DM Instance
+      Service...<br>
+      1月 13 15:50:33 localhost DmServiceDMSERVER[12523]: [39B blob data]<br>
+      1月 13 15:50:33 localhost systemd[1]: Started DM Instance Service.<br>
+    </p>
+    <p># systemctl stop DmServiceDMSERVER.service<br>
+      [root@localhost dm8]# systemctl status DmServiceDMSERVER.service<br>
+      ● DmServiceDMSERVER.service - DM Instance Service<br>
+      &nbsp;&nbsp; Loaded: loaded
+      (/usr/lib/systemd/system/DmServiceDMSERVER.service; enabled;
+      vendor preset: disabled)<br>
+      &nbsp;&nbsp; <font color="#ff0000"><b>Active: inactive (dead)
+          since 六 2024-01-13 16:42:29 CST; 1s ago</b></font><br>
+      &nbsp; Process: 16622 ExecStop=/opt/dm8/bin/DmServiceDMSERVER stop
+      (code=exited, status=0/SUCCESS)<br>
+      &nbsp; Process: 12523 ExecStart=/opt/dm8/bin/DmServiceDMSERVER
+      start (code=exited, status=0/SUCCESS)<br>
+      &nbsp;Main PID: 12544 (code=exited, status=0/SUCCESS)<br>
+      <br>
+      1月 13 15:50:18 localhost systemd[1]: Starting DM Instance
+      Service...<br>
+      1月 13 15:50:33 localhost DmServiceDMSERVER[12523]: [39B blob data]<br>
+      1月 13 15:50:33 localhost systemd[1]: Started DM Instance Service.<br>
+      1月 13 16:42:23 localhost systemd[1]: Stopping DM Instance
+      Service...<br>
+      1月 13 16:42:29 localhost DmServiceDMSERVER[16622]: [39B blob data]<br>
+      1月 13 16:42:29 localhost systemd[1]: Stopped DM Instance Service.<br>
+      <br>
+    </p>
+    <h3>5.前台启动</h3>
+    <p><br>
+      可前台启动，进入 DM 安装目录下的 bin 目录下<br>
+    </p>
+    <p>]$ ./dmserver /opt/dm8/data/DAMENG/dm.ini <br>
+      file dm.key not found, use default license!<br>
+      version info: develop<br>
+      instance DMSERVER is running.<br>
+    </p>
+    <p>关掉DmServiceDMSERVER.service<br>
+      # systemctl stop DmServiceDMSERVER.service<br>
+    </p>
+    $ ./dmserver
+    /opt/dm8/data/DAMENG/dm.ini&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    开启(这个命令没有用？？？？？？？)<br>
+    file dm.key not found, use default license!<br>
+    version info: develop<br>
+    DM Database Server 64 V8 03134283968-20230103-178822-20033
+    startup...<br>
+    Normal of FAST<br>
+    Normal of DEFAULT<br>
+    Normal of RECYCLE<br>
+    Normal of KEEP<br>
+    Normal of ROLL<br>
+    Database mode = 0, oguid = 0<br>
+    License will expire in 14 day(s) on 2024-01-27<br>
+    file lsn: 49738<br>
+    ndct db load finished<br>
+    ndct second level fill fast pool finished<br>
+    ndct third level fill fast pool finished<br>
+    ndct second level fill fast pool finished<br>
+    ndct third level fill fast pool finished<br>
+    ndct fill fast pool finished<br>
+    pseg_set_gtv_trxid_low next_trxid in mem:[8024]<br>
+    pseg_collect_mgr_items, total collect 0 active_trxs, 0 cmt_trxs, 0
+    pre_cmt_trxs, 0 to_release_trxs, 0 active_pages, 0 cmt_pages, 0
+    pre_cmt_pages, 0 to_release_pages, 0 mgr pages, 0 mgr recs!<br>
+    next_trxid in mem:[9026]<br>
+    next_trxid = 10028.<br>
+    pseg recv finished<br>
+    nsvr_startup end.<br>
+    aud sys init success.<br>
+    aud rt sys init success.<br>
+    systables desc init success.<br>
+    ndct_db_load_info success.<br>
+    nsvr_process_before_open begin.<br>
+    nsvr_process_before_open success.<br>
+    SYSTEM IS READY.<br>
+    <br>
+    该启动方式为前台启动，若想关闭数据库，则输入： ctrl + c 即可。<br>
+    DM Database Server shutdown successfully.<br>
+    <br>
+    也可进入 DM 安装目录下的 bin 目录下，启动/停止/重启数据库，如下所示<br>
+    ./DmServiceDMSERVER start/stop/restart<br>
+    <br>
+    查看数据库状态<br>
+    [root@localhost bin]# ./DmServiceDMSERVER
+    status&nbsp;&nbsp;&nbsp;&nbsp; //need root or dmdba user!!!!!<br>
+    DmServiceDMSERVER is stopped<br>
+    <br>
+    <br>
+    验证数据库实例是否启动$ <br>
+    # systemctl start DmServiceDMSERVER.service<br>
+    ./DmServiceDMSERVER status<br>
+    DmServiceDMSERVER (pid 18884) is running.<br>
+    <br>
+    达梦数据库disql使用：<br>
+    $ ./disql SYSDBA/'"WTSgyh1972!"'@localhost:5236&nbsp;&nbsp;&nbsp;
+    //sql&gt; conn sysdba/WTSgyh1972!<br>
+    <br>
+    服务器[localhost:5236]:处于普通打开状态<br>
+    登录使用时间 : 16.117(ms)<br>
+    disql V8<br>
+    <br>
+    SQL&gt; select * from dual;<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; DUMMY<br>
+    ---------- -----<br>
+    1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X<br>
+    <br>
+    已用时间: 4.367(毫秒). 执行号:500.<br>
+    <br>
+    检查实例状态:<br>
+    SQL&gt; select name,instance_name,status$,start_time from
+    v$instance;<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; NAME&nbsp;&nbsp;&nbsp;&nbsp;
+    INSTANCE_NAME STATUS$
+    START_TIME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    ---------- -------- ------------- ------- -------------------<br>
+    1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DMSERVER
+    DMSERVER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OPEN&nbsp;&nbsp;&nbsp;
+    2024-01-13 16:57:57<br>
+    <br>
+    已用时间: 1.315(毫秒). 执行号:501.<br>
+    <br>
+    <br>
+    SQL&gt; create user "test" identified by
+    "WTSgyh1972!";&nbsp;&nbsp;&nbsp;
+    //与oracle一样，一个用户一个模式（可以用windows版的ＤＭ管理工具看看。见后面部分）<br>
+    操作已执行<br>
+    已用时间: 8.711(毫秒). 执行号:504.<br>
+    SQL&gt; grant "PUBLIC","RESOURCE","VTI" to "test";<br>
+    操作已执行<br>
+    已用时间: 4.633(毫秒). 执行号:505.<br>
+    <br>
+    SQL&gt; grant select on "DMHR"."CITY" to "test";<br>
+    操作已执行<br>
+    已用时间: 4.852(毫秒). 执行号:507.<br>
+    <br>
+    删除用户：<br>
+    在DM管理工具中： 点开 “用户” =&gt; “管理用户”，然后点有键 选 删除 即可。（不能在模式里删除！）<br>
+    <br>
+    SQL&gt;select * from production.product;&nbsp;&nbsp;&nbsp;&nbsp;
+    //这个好像是前面安装的例子！！！！<br>
+    <strong><strong>创建一个新用户并指定缺省表空间、</strong></strong>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <br>
+    SQL&gt; CREATE USER DMDBA IDENTIFIED BY DMDBA_123 DEFAULT TABLESPACE
+    MAIN DEFAULT INDEX TABLESPACE MAIN;
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <br>
+    SQL&gt; select a.name as username, b.name as schenma from sysobjects
+    a inner join sysobjects b on a.id = b.pid where b.subtype$ is null
+    order by username desc;<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; USERNAME&nbsp;&nbsp; SCHENMA&nbsp;&nbsp;
+    <br>
+    ---------- ---------- ----------<br>
+    <font color="#ff0000"><b>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        TEST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        TEST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //</b></font><strong><strong>与
+        用户同名的模式也被创建。</strong></strong><br>
+    2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSSSO&nbsp;&nbsp;&nbsp;&nbsp; SYSSSO<br>
+    3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; SYSDBA<br>
+    4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PURCHASING<br>
+    5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; DMHR<br>
+    6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; OTHER<br>
+    7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PRODUCTION<br>
+    8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PERSON<br>
+    9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; SALES<br>
+    10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; RESOURCES<br>
+    11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SYSAUDITOR
+    SYSAUDITOR<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; USERNAME SCHENMA<br>
+    ---------- -------- -------<br>
+    12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CTISYS<br>
+    13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SYS<br>
+    <font color="#ff0000"><b>14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        DMDBA&nbsp;&nbsp;&nbsp;
+        DMDBA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //</b></font><strong><strong>与
+        用户同名的模式也被创建。</strong></strong><br>
+    <br>
+    14 rows got<br>
+    <br>
+    已用时间: 2.736(毫秒). 执行号:705. <br>
+    <br>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    SQL&gt; CONN DMDBA/DMDBA_123<br>
+    服务器[LOCALHOST:5236]:处于普通打开状态<br>
+    登录使用时间 : 4.055(ms)<br>
+    SQL&gt; create schema dmdbaw;<br>
+    2&nbsp;&nbsp;
+    /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    &lt;&lt;&lt; 这里的 “/” 需要手动输入<br>
+    create schema dmdbaw;<br>
+    [-5512]:没有创建模式权限.<br>
+    已用时间: 0.572(毫秒). 执行号:0.<br>
+    SQL&gt; select * from dba_tab_privs where grantee='DMDBA';<br>
+    select * from dba_tab_privs where grantee='DMDBA';<br>
+    [-5504]:没有[DBA_TAB_PRIVS]对象的查询权限.<br>
+    已用时间: 4.690(毫秒). 执行号:0.<br>
+    <br>
+    <h3>看看用于有哪些权限：</h3>
+    SQL&gt; select * from dba_tab_privs where grantee='DMDBA';<br>
+    未选定行<br>
+    <br>
+    已用时间: 6.322(毫秒). 执行号:1200.<br>
+    SQL&gt; select * from dba_sys_privs where grantee='DMDBA';<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; GRANTEE
+    PRIVILEGE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ADMIN_OPTION<br>
+    ---------- ------- -------------- ------------<br>
+    1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DMDBA&nbsp;&nbsp; CREATE SESSION NO<br>
+    <br>
+    已用时间: 3.181(毫秒). 执行号:1201.<br>
+    SQL&gt; select * from dba_role_privs where grantee='DMDBA';<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; GRANTEE GRANTED_ROLE ADMIN_OPTION
+    DEFAULT_ROLE<br>
+    ---------- ------- ------------ ------------ ------------<br>
+    1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DMDBA&nbsp;&nbsp; PUBLIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    NULL<br>
+    <br>
+    已用时间: 3.436(毫秒). 执行号:1202.<br>
+    <br>
+    <strong><strong>结果：可以看出，数据库的DMDBA用户被创建时，没有任何对象权限，仅有连接数据库的系统权限，以及
+        PUBLIC角色。<br>
+        <br>
+        SQL&gt; grant DBA to DMDBA;<br>
+        操作已执行<br>
+        已用时间: 2.224(毫秒). 执行号:1203.<br>
+        <br>
+      </strong></strong><strong><strong><strong><strong>为用户赋权，给予DBA角色权限<br>
+            <br>
+          </strong></strong>
+        <meta http-equiv="content-type" content="text/html; charset=gbk">
+        SQL&gt; select * from dba_role_privs where grantee='DMDBA';<br>
+        行号&nbsp;&nbsp;&nbsp;&nbsp; GRANTEE GRANTED_ROLE ADMIN_OPTION
+        DEFAULT_ROLE<br>
+        ---------- ------- ------------ ------------ ------------<br>
+        1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        DMDBA&nbsp;&nbsp;
+        DBA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        NULL<br>
+        2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        DMDBA&nbsp;&nbsp; </strong></strong><strong><strong>
+        <meta http-equiv="content-type" content="text/html; charset=gbk">
+        PUBLIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        NULL<br>
+        <br>
+        已用时间: 0.428(毫秒). 执行号:1204.<br>
+        可以查出用户DMDBA目前拥有了DBA的角色权限。<br>
+        <br>
+        SQL&gt; CONN DMDBA/DMDBA_123<br>
+        <br>
+        服务器[LOCALHOST:5236]:处于普通打开状态<br>
+        登录使用时间 : 3.921(ms)<br>
+        SQL&gt; create schema dmdbaw;<br>
+        2&nbsp;&nbsp; /<br>
+        操作已执行<br>
+        已用时间: 4.374(毫秒). 执行号:1300.<br>
+        SQL&gt; select a.name as username, b.name as schenma from
+        sysobjects a inner join sysobjects b on a.id = b.pid where
+        b.subtype$ is null order by username desc;<br>
+        <br>
+        行号&nbsp;&nbsp;&nbsp;&nbsp; USERNAME&nbsp;&nbsp;
+        SCHENMA&nbsp;&nbsp; <br>
+        ---------- ---------- ----------<br>
+        1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        TEST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TEST<br>
+        2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSSSO&nbsp;&nbsp;&nbsp;&nbsp; SYSSSO<br>
+        3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; RESOURCES<br>
+        4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PRODUCTION<br>
+        5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; SALES<br>
+        6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; DMHR<br>
+        7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PERSON<br>
+        8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; OTHER<br>
+        9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; SYSDBA<br>
+        10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PURCHASING<br>
+        11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SYSAUDITOR
+        SYSAUDITOR<br>
+        <br>
+        行号&nbsp;&nbsp;&nbsp;&nbsp; USERNAME SCHENMA<br>
+        ---------- -------- -------<br>
+        12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CTISYS<br>
+        13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        SYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SYS<br>
+        <font color="#ff0000">14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+          DMDBA&nbsp;&nbsp;&nbsp; DMDBA&nbsp;&nbsp;&nbsp;&nbsp;
+          //创建模式时，该模式默认为该用户所有<br>
+          15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          DMDBA&nbsp;&nbsp;&nbsp; DMDBAW&nbsp;&nbsp; //</font></strong></strong><strong><strong><font
+          color="#ff0000"><strong><strong>创建模式时，该模式默认为该用户所有</strong></strong>
+          <meta http-equiv="content-type" content="text/html;
+            charset=gbk">
+        </font><br>
+        <br>
+        15 rows got<br>
+        <br>
+        已用时间: 3.154(毫秒). 执行号:1301.<br>
+        <br>
+      </strong></strong><br>
+    <p style="margin-left:.0001pt;text-align:left;">
+      <meta http-equiv="content-type" content="text/html; charset=gbk">
+      如果想要为模式指定其他的用户，可以</p>
+    <strong><strong></strong></strong>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    SQL&gt; CREATE SCHEMA TESTSCH AUTHORIZATION SYSDBA;<br>
+    2&nbsp;&nbsp; /<br>
+    操作已执行<br>
+    已用时间: 4.148(毫秒). 执行号:1302.<br>
+    SQL&gt; select a.name as username, b.name as schenma from sysobjects
+    a inner join sysobjects b on a.id = b.pid where b.subtype$ is null
+    order by username desc;<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; USERNAME SCHENMA&nbsp;&nbsp; <br>
+    ---------- -------- ----------<br>
+    1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    TEST&nbsp;&nbsp;&nbsp;&nbsp; TEST<br>
+    2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSSSO&nbsp;&nbsp; SYSSSO<br>
+    3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp; SALES<br>
+    4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp; PRODUCTION<br>
+    5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp; RESOURCES<br>
+    6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp; DMHR<br>
+    7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp; PERSON<br>
+    8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp; OTHER<br>
+    <b><font color="#ff0000">9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        SYSDBA&nbsp;&nbsp; TESTSCH&nbsp;&nbsp;&nbsp;&nbsp; //</font></b><strong>
+      <meta http-equiv="content-type" content="text/html; charset=gbk">
+      <strong><strong>新建的TESTCH模式，所属用户为SYSDBA</strong></strong></strong><br>
+    10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp; PURCHASING<br>
+    11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp; SYSDBA<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; USERNAME&nbsp;&nbsp; SCHENMA&nbsp;&nbsp;
+    <br>
+    ---------- ---------- ----------<br>
+    12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SYSAUDITOR
+    SYSAUDITOR<br>
+    13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CTISYS<br>
+    14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SYS<br>
+    15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DMDBA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DMDBA<br>
+    16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DMDBA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DMDBAW<br>
+    <br>
+    16 rows got<br>
+    <br>
+    已用时间: 2.054(毫秒). 执行号:1303.<br>
+    <br>
+    在DM管理工具中刷新后查看：<br>
+    模式：&nbsp; TESHSCH&nbsp;&nbsp;&nbsp; //新增一个模式<br>
+    管理用户： 并没有新增用户TESHSCH。<br>
+    <br>
+    SQL&gt; drop schema testsch restrict<br>
+    2&nbsp;&nbsp; /<br>
+    操作已执行<br>
+    已用时间: 38.627(毫秒). 执行号:1304.<br>
+    SQL&gt; select a.name as username, b.name as schenma from sysobjects
+    a inner join sysobjects b on a.id = b.pid where b.subtype$ is null
+    order by username desc;<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; USERNAME&nbsp;&nbsp; SCHENMA&nbsp;&nbsp;
+    <br>
+    ---------- ---------- ----------<br>
+    1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    TEST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TEST<br>
+    2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSSSO&nbsp;&nbsp;&nbsp;&nbsp; SYSSSO<br>
+    3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; RESOURCES<br>
+    4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PRODUCTION<br>
+    5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; SALES<br>
+    6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; DMHR<br>
+    7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PERSON<br>
+    8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; OTHER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    //<strong><strong>模式可以删除，模式删除后，模式中的对象也会被删除，所有在数据库中的删除操作都需要小心</strong></strong>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <br>
+    9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; SYSDBA<br>
+    10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYSDBA&nbsp;&nbsp;&nbsp;&nbsp; PURCHASING<br>
+    11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SYSAUDITOR
+    SYSAUDITOR<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; USERNAME SCHENMA<br>
+    ---------- -------- -------<br>
+    12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CTISYS<br>
+    13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    SYS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SYS<br>
+    14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DMDBA&nbsp;&nbsp;&nbsp; DMDBA<br>
+    15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DMDBA&nbsp;&nbsp;&nbsp; DMDBAW<br>
+    <br>
+    15 rows got<br>
+    <br>
+    已用时间: 5.318(毫秒). 执行号:1305.<br>
+    <br>
+    SQL&gt;&nbsp;<span style="background-color:#ffff00;">DROP USER DMDBA</span>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <br>
+    <strong><strong>在删除用户时，会删除用户底下所有的模式，所以在达梦数据库中，如果一个用户有多个模式，在删除一个模式时，千
+        万注意不能使用drop user的方式，要用drop schema删除。</strong></strong>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <br>
+    <br>
+    SQL&gt; CREATE USER MONDAY IDENTIFIED BY DMDBA_123 DEFAULT
+    TABLESPACE MAIN DEFAULT INDEX TABLESPACE MAIN;<br>
+    操作已执行<br>
+    已用时间: 6.862(毫秒). 执行号:1306.<br>
+    SQL&gt; CREATE USER FRIDAY IDENTIFIED BY DMDBA_123 DEFAULT
+    TABLESPACE MAIN DEFAULT INDEX TABLESPACE MAIN;<br>
+    操作已执行<br>
+    已用时间: 9.194(毫秒). 执行号:1307.<br>
+    SQL&gt; GRANT RESOURCE TO MONDAY;<br>
+    操作已执行<br>
+    已用时间: 2.209(毫秒). 执行号:1308.<br>
+    SQL&gt; GRANT RESOURCE TO FRIDAY;<br>
+    操作已执行<br>
+    已用时间: 3.046(毫秒). 执行号:1309.<br>
+    SQL&gt; CONN MONDAY/DMDBA_123<br>
+    <br>
+    服务器[LOCALHOST:5236]:处于普通打开状态<br>
+    登录使用时间 : 14.988(ms)<br>
+    SQL&gt; CREATE TABLE TEST1 (NAME VARCHAR(10));<br>
+    操作已执行<br>
+    已用时间: 11.106(毫秒). 执行号:1400.<br>
+    SQL&gt; INSERT INTO TEST1 VALUES ('WTS');&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    影响行数 1<br>
+    <br>
+    已用时间: 1.946(毫秒). 执行号:1401.<br>
+    SQL&gt; COMMIT;<br>
+    操作已执行<br>
+    已用时间: 0.680(毫秒). 执行号:1402.<br>
+    SQL&gt; CONN FRIDAY/DMDBA_123<br>
+    <br>
+    服务器[LOCALHOST:5236]:处于普通打开状态<br>
+    登录使用时间 : 13.488(ms)<br>
+    SQL&gt; CREATE TABLE TEST1 (NAME VARCHAR(10));<br>
+    操作已执行<br>
+    已用时间: 4.994(毫秒). 执行号:1500.<br>
+    SQL&gt; INSERT INTO TEST1 VALUES ('WZT');<br>
+    影响行数 1<br>
+    <br>
+    已用时间: 1.159(毫秒). 执行号:1501.<br>
+    SQL&gt; COMMIT;<br>
+    操作已执行<br>
+    已用时间: 1.015(毫秒). 执行号:1502.<br>
+    SQL&gt; SELECT * FROM MONDAY.TEST1;<br>
+    SELECT * FROM MONDAY.TEST1;<br>
+    [-5504]:没有[TEST1]对象的查询权限.<br>
+    已用时间: 0.841(毫秒). 执行号:0.<br>
+    SQL&gt; SELECT * FROM FRIDAY.TEST1;<br>
+    <br>
+    行号&nbsp;&nbsp;&nbsp;&nbsp; NAME<br>
+    ---------- ----<br>
+    1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WZT<br>
+    <br>
+    已用时间: 0.821(毫秒). 执行号:1503.<br>
+    <br>
+    这说明： <strong><strong>默认情况下，各模式之间不可直接访问<br>
+        <br>
+        SQL&gt; conn sysdba/WTSgyh1972!<br>
+        <br>
+        服务器[LOCALHOST:5236]:处于普通打开状态<br>
+        登录使用时间 : 4.419(ms)<br>
+        SQL&gt;&nbsp; GRANT SELECT ON MONDAY.TEST1 TO FRIDAY;<br>
+        操作已执行<br>
+        已用时间: 4.891(毫秒). 执行号:1600.<br>
+        SQL&gt; CONN FRIDAY/DMDBA_123<br>
+        <br>
+        服务器[LOCALHOST:5236]:处于普通打开状态<br>
+        登录使用时间 : 16.979(ms)<br>
+        SQL&gt; SELECT * FROM MONDAY.TEST1;<br>
+        <br>
+        行号&nbsp;&nbsp;&nbsp;&nbsp; NAME<br>
+        ---------- ----<br>
+        1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        WTS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        //</strong></strong><strong><strong>此时FRIDAY用户可以查询</strong></strong><strong><strong>MONDAY.TEST1</strong></strong><strong><strong>。</strong></strong>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <br>
+    <strong><strong>
+        <meta http-equiv="content-type" content="text/html; charset=gbk">
+        <br>
+        已用时间: 1.730(毫秒). 执行号:1700.<br>
+        <br>
+        SQL&gt; CONN MONDAY/DMDBA_123<br>
+        <br>
+        服务器[LOCALHOST:5236]:处于普通打开状态<br>
+        登录使用时间 : 5.428(ms)<br>
+        SQL&gt; CREATE TABLE TEST2 (NAME VARCHAR(10));<br>
+        操作已执行<br>
+        已用时间: 14.339(毫秒). 执行号:1800.<br>
+        SQL&gt; INSERT INTO TEST2 VALUES ('guoyusheng');<br>
+        影响行数 1<br>
+        <br>
+        已用时间: 0.947(毫秒). 执行号:1801.<br>
+        SQL&gt; COMMIT;<br>
+        操作已执行<br>
+        已用时间: 0.931(毫秒). 执行号:1802.<br>
+        SQL&gt; <br>
+        <br>
+        此时MONDAY创建新表TEST2，FRIDAY想要访问还需要再次赋权。想要一次性可以用SYSDBA做以下操作<br>
+        SQL&gt; conn sysdba/WTSgyh1972!<br>
+        <br>
+        服务器[LOCALHOST:5236]:处于普通打开状态<br>
+        登录使用时间 : 5.887(ms)<br>
+        SQL&gt; GRANT SELECT ANY TABLE TO FRIDAY;<br>
+        操作已执行<br>
+        已用时间: 10.958(毫秒). 执行号:1900.<br>
+        SQL&gt; CONN FRIDAY/DMDBA_123<br>
+        <br>
+        服务器[LOCALHOST:5236]:处于普通打开状态<br>
+        登录使用时间 : 3.439(ms)<br>
+        SQL&gt; SELECT * FROM MONDAY.TEST2;<br>
+        <br>
+        行号&nbsp;&nbsp;&nbsp;&nbsp; NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+        ---------- ----------<br>
+        1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        guoyusheng<br>
+        <br>
+        已用时间: 2.774(毫秒). 执行号:2000.<br>
+        <br>
+        可以再创建一个新的用户： 测试现在的FRIDAY是否可以查询别的用户的表？？？<br>
+      </strong></strong>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <p><strong><strong>总结</strong></strong></p>
+    <br>
+    <strong><strong>1. 不同的schema之间它们没有直接的关系，不同的schema之间的表可以同名,&nbsp;</strong></strong><strong><strong>也
+        可以互相引用（但必须有权限），在没有操作别的schema的权</strong></strong><strong><strong>限
+        时</strong></strong><strong><strong>，每个用户只能操作它自己的schema下的所有的表</strong></strong><strong><strong>；</strong></strong><br>
+    <strong><strong>2.
+        用户访问非默认模式下的对象时，需要在对象名前面添加模式名（模式名.对象名），访问默认模式下的对象可以不添加模式名；</strong></strong><br>
+    <strong><strong>3. 用户的默认模式无法单独删除，需要直接删除用户，而非默认模式可以单独删除；</strong></strong><br>
+    <strong><strong>4. 在删除用户时，会删除用户底下所有的模式，所以不要轻易做删除用户的操作。</strong></strong><br>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <br>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+    <h3><b>数据库标准化配置(to be done later!!)</b></h3>
+    <h3> ６.安装windows的客户端工具</h3>
+    6.1 解压dm8_20240104_x86_win_64.zip<br>
+    &nbsp;&nbsp;&nbsp; 得到：dm8_20240104_x86_win_64.iso<br>
+    再将dm8_20240104_x86_win_64.iso解压到目录：dm8<br>
+    其中就是安装文件：setup.exe<br>
+    &nbsp;&nbsp;&nbsp; <br>
+    6.2 安装:<br>
+    <div align="center"><img src="dmwin1.png" alt="" width="616"
+        height="155"></div>
+    6.3 点击：setup.exe<br>
+    <div align="center"><img src="dmwin2.png" alt="" width="657"
+        height="510"></div>
+    <br>
+    6.4 点确定后出现下面的窗口：<br>
+    <div align="center"><img src="dmwin3.png" alt="" width="657"
+        height="510"></div>
+    <br>
+    接着是许可证协议:<br>
+    <br>
+    <img
+src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAEklEQVQImWP4////////GSAUAFO6C/UMWHU4AAAAAElFTkSuQmCC"
+      alt=""><br>
+    <div align="center"><img src="dmwin4.png" alt="" width="658"
+        height="513"><br>
+      <br>
+      <div align="left">看看key文件：不用提供<br>
+      </div>
+      <br>
+      <br>
+      <img src="dmwin5.png" alt="" width="658" height="514"><br>
+      <br>
+      <div align="left">点下一步：只安装客户端<br>
+        <br>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <img alt="" src="dmwin66.png" width="658" height="509"><br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <img alt="" src="dmwin77.png" width="656" height="509"><br>
+      <br>
+      <br>
+      <img alt="" src="dmwin88.png" width="654" height="507"><br>
+      <br>
+      <br>
+      <br>
+      <img alt="" src="dmwin99.png" width="654" height="514"><br>
+      <br>
+      <div align="left">直到完成！！！<br>
+        <br>
+        在windows下采用客户端访问ＣＥＮＴＯＳ下的达梦数据库：<br>
+        １.启动服务器端数据库<br>
+        # systemctl status DmServiceDMSERVER.service<br>
+        #　systemctl start DmServiceDMSERVER.service<br>
+        <br>
+        $ ./disql
+        SYSDBA/'"WTSgyh1972!"'@localhost:5236&nbsp;&nbsp;&nbsp;
+        //sql&gt; conn sysdba/WTSgyh1972!<br>
+        <br>
+        ２. 从DM菜单中启动:<br>
+        在 WINDOWS 系统中启动 DIsql , WINDOWS 环境下，有两种启动 DIsql
+        的方式。第一种是启动安装软件后生成的程序菜单，第二种是启动安装目录下自带的 DIsql 工具。<br>
+        如果在 WINDOWS 环境中安装了 DM 数据库产品，那么可以在应用菜单中找到: SQL交互式查询工具, 如下所示:<br>
+        直接双击即可启动。然后使用 LOGIN 或 CONN 命令登录到指定数据库。<br>
+        <br>
+        <div align="center"><img alt="" src="dmwinx1.png" width="273"
+            height="239"><br>
+          <div align="left"> LOGIN 或 CONN 命令下文有详细介绍。<br>
+            以 LOGIN 为例，登录到 IP 地址为 192.168.1.150
+            的机器上，用户名和密码为：SYSDBA/SYSDBA，端口号为
+            5236。其他全部敲回车，采用缺省输入。密码不会回显到屏幕上。<br>
+            <br>
+            自带 DIsql 工具启动DIsql 工具位于 DM 数据库安装目录的 bin 子目录下，例如 DM
+            数据库的安装目录为D:\dmdbms，则 DIsql 位于 D:\dmdbms\bin\DIsql.exe。<br>
+            <br>
+            双击启动，然后输入用户名、密码，就可登录到本地 DM
+            数据库实例。密码不会回显到屏幕上。也可以全部直接回车，采用缺省输入，缺省值为 SYSDBA/SYSDBA。<br>
+            如果后续操作想登录到其他 DM 数据库实例，可使用 LOGIN 或 CONN 命令。<br>
+            <br>
+            在 DIsql 界面中，使用 LOGIN/LOGOUT 命令登录/退出远程数据库。<br>
+            SQL&gt;LOGIN<br>
+            服务名：数据库服务名、IP 地址[:端口号]、或 UNIXSOCKET 文件路径名&nbsp;&nbsp;&nbsp;
+            端口号为 5236<br>
+            用户名: 缺省均为 SYSDBA<br>
+            密码：，密码不回显<br>
+            SSL 路径和 SSL 密码：用于服务器通信加密，不加密的用户不用设置，缺省为不设置<br>
+            MPP 类型：<br>
+            是否读写分离(y/n)：缺省为 n。如果输入 y，会提示：读写分离百分比(0-100)。<br>
+            协议类型：缺省为 TCP，可选 TCP/UDP/IPC/UNIXSOCKET/RDMA<br>
+            SQL&gt;LOGOUT<br>
+            <br>
+            CONN[ECT] 连接在 DIsql 界面中，使用 CONN[ECT]命令登录远程数据库。&nbsp; <br>
+            //使用 CONN[ECT]命令建立新会话时，会自动断开先前会话<br>
+            SQL&gt;CONN SYSDBA/SYSDBA@192.168.1.150<br>
+            <br>
+            SQL&gt;DISCONN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //断开连接而不退出
+            DIsql。与 logout 功能一样。<br>
+            <br>
+            SQL&gt;select top 5 name,id from sysobjects;<br>
+            <br>
+            SQL&gt;EXIT&nbsp;&nbsp;&nbsp; //使用 EXIT/QUIT 命令，退出 DIsql。<br>
+            <br>
+            SQL&gt;SET LINESHOW ON;&nbsp;&nbsp;&nbsp; ///认为每行输出打印行号。<br>
+            SQL&gt;select top 5 name,id from sysobjects;<br>
+            <br>
+            SQL&gt; CREATE TABLE TEST(C1 TEXT);<br>
+            SQL&gt; INSERT INTO TEST VALUES('DIsql 是 DM
+            数据库的一个命令行客户端工具，用来与 DM 数据库服务器进行交互。');<br>
+            SQL&gt; SET LONG 10<br>
+            SQL&gt; SELECT * FROM TEST;&nbsp;&nbsp; //看看输出的CI有多少个字?<br>
+            SQL&gt; SET LONG 100<br>
+            SQL&gt; SELECT * FROM TEST;&nbsp;&nbsp; //再看看输出CI有多少个字?<br>
+            <br>
+            SQL&gt; SET AUTOTRACE TRACE;SQL&gt; SELECT COUNT(*) FROM
+            SYSOBJECTS;<br>
+            <br>
+            SQL&gt; desc sysgrants;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            //获取表 sysgrants 的结构描述<br>
+            创建数据库表：<br>
+            CREATE TABLE Person(Id INT IDENTITY, Name VARCHAR(100), City
+            VARCHAR(100));<br>
+            INSERT INTO Person(Name, City) VALUES('Tom','武汉');<br>
+            INSERT INTO Person(Name, City) VALUES('Jack','北京');<br>
+            INSERT INTO Person(Name, City) VALUES('Mary','上海');<br>
+            <br>
+            SQL&gt;DEF VAR=666;&nbsp;&nbsp; //DEFINE 定义的变量会保存在环境 DIsql
+            环境中，可以在 SQL 语句中使用。默认的变量前缀是&amp;。<br>
+            SQL&gt;select * from sysobjects where id=&amp;VAR;<br>
+            <br>
+            <h3>插入大对象数据</h3>
+            当插入语句中包含大对象数据文件时，使用@。<br>
+            例如，在 test 表中插入大对象 e:\DSC_1663.jpg。<br>
+            create table test(a int,b image);<br>
+            @insert into test
+            values(1,@'e:\DSC_1663.jpg');&nbsp;&nbsp;&nbsp;&nbsp;
+            //语法:&nbsp; @&lt;插入语句&gt;<br>
+            <br>
+            <h3>如何在 DIsql 中使用脚本</h3>
+            <p>用户不必在每次使用数据库的时候都编写常用的 SQL 语句和 PL/SQL
+              程序块，而是可以将它们保存到称为脚本的文件中。这些脚本专门为反复执行的各种任务而设计。<br>
+              编写脚本使用一种文本编辑器来编写 SQL 脚本，比如 notepad
+              文本等。一个简单的脚本例子，在文本中编写脚本并保存为 D:\test.sql，内容如下：<br>
+              drop table t01;<br>
+              create table t01(c1 varchar(100), c2 varchar(100));<br>
+              begin<br>
+              for i in 1..10 loop<br>
+              insert into t01 values('a'||i, 'b'||i);<br>
+              end loop;<br>
+              end;<br>
+              /<br>
+              *******************************************************end
+              of script<br>
+            </p>
+            <p>SQL&gt;start D:\test.sql&nbsp; or&nbsp; &nbsp;
+              SQL&gt;`D:\test.sql &nbsp; &nbsp;&nbsp; //进入 DIsql 之后，运行脚本<br>
+              DISQL 在运行完脚本后会自动执行一个提交动作 <br>
+            </p>
+            <p><br>
+              disql SYSDBA/SYSDBA `D:\test.sql&nbsp;&nbsp; //启动 DIsql
+              时，运行脚本<br>
+            </p>
+            <p><br>
+              DIsql 中使用 EDIT 命令来编辑指定的脚本文件<br>
+              SQL&gt;EDIT D:\test.sql<br>
+              或<br>
+              SQL&gt;edit<br>
+            </p>
+          </div>
+          <br>
+          <div align="left">
+            <h3> 图形化连接dameng数据库: 分为Windows 和 Linux<br>
+            </h3>
+            <p>1. Windows按如下图所示的，点击DM管理工具<br>
+              <br>
+            </p>
+            <div align="center"><img moz-do-not-send="true"
+                src="dmwinx1.png" alt="" width="170" height="149"></div>
+            <p>2.CENTOS 7.9：<br>
+              #su dmdba<br>
+              #cd /opt/dm8/tool<br>
+              $./manager&nbsp;&nbsp;&nbsp; 即可打开图形界面(需要用dmdba用户环境，否则会报错：<br>
+              没有发现/opt/dm8/tool
+/pluginsorg.eclipse.core.filesystem.linux.x86_1.4.0.v20100505-1235.jar)<br>
+            </p>
+            <h3> </h3>
+          </div>
+          <img alt="" src="dmwinx2winconn.png" width="662" height="497"><br>
+          <br>
+          <div align="left"> 连接并显示DM信息:<br>
+          </div>
+          <br>
+          <img alt="" src="dmwinx3winconned.png" width="739"
+            height="677"><br>
+          <br>
+          查看示例表空间：<br>
+          <img alt="" src="dmwinx4tablespace.png" width="394"
+            height="446"><br>
+          这个就是安装阶段自定义安装的两个示例数据库所在的表空间（请看前面安装部分）<br>
+          <br>
+          <div align="left">模式及表操作：<br>
+          </div>
+          <br>
+          <img
+src="data:image/png;base64,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"
+            alt="" width="222" height="238">　点右键于某个表，如PRODUCT,
+          选浏览数据：即可看到表中数据　　<img
+src="data:image/png;base64,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"
+            alt="" width="406" height="232"><br>
+          <br>
+          <br>
+          <br>
+          <div align="left">在表上点右键：选　生成ＳＱＬ脚本　＝〉select to =&gt;　新ＳＱＬ编辑器<br>
+            <div align="center"><img moz-do-not-send="true"
+                src="dmsqlselect.png" alt="" width="903" height="726"><br>
+              <br>
+            </div>
+            select"PRODUCTID","NAME","AUTHOR","PUBLISHER","PUBLISHTIME","PRODUCT_SUBCATEGORYID","PRODUCTNO","SATETYSTOCKLEVEL","ORIGINALPRICE",
+
+
+
+
+
+
+
+
+            　"NOWPRICE",　"DISCOUNT",　"DESCRIPTION",
+　"PHOTO","TYPE","PAPERTOTAL","WORDTOTAL","SELLSTARTTIME","SELLENDTIME"<br>
+          </div>
+          <div align="left">from "PRODUCTION"."PRODUCT";<br>
+          </div>
+          <br>
+        </div>
+      </div>
+      <div align="left"><br>
+        <br>
+        SQL&gt;CONN SYSDBA/SYSDBA@192.168.1.150<br>
+        <h3>创建示例库</h3>
+        安装 DM 时，如果选择安装示例库，系统会自动安装一个名为 BOOKSHOP 的示例库。该示例库中，默认数据库名称为
+        DAMENG，默认实例名为 DMSERVER。如果安装时没有选择安装示例库，可以通过如下 SQL
+        语句自行创建：//创建示例库CREATE TABLESPACE BOOKSHOP DATAFILE 'BOOKSHOP.DBF'
+        size 150;<br>
+        <br>
+        <br>
+        <br>
+        &nbsp;数据库修改语句<br>
+        ALTER DATABASE ADD LOGFILE 'C:\DMDBMS\data\dmlog_0.log' SIZE
+        200;&nbsp;&nbsp;&nbsp; //数据库增加一个日志文件
+        C:\DMDBMS\data\dmlog_0.log，大小为200M。<br>
+        <br>
+        管理用户 <br>
+        CREATE USER BOOKSHOP_USER IDENTIFIED BY BOOKSHOP_PASSWORD LIMIT
+        CONNECT_TIME 3;<br>
+        //创建用户名为 BOOKSHOP_USER、口令为 BOOKSHOP_PASSWORD、会话超时为 30 分钟的用户。<br>
+        <br>
+        //使用 SYSDBA/SYSDBA 登录<br>
+        CREATE USER user1 IDENTIFIED BY s123456789 PASSWORD EXPIRE; <br>
+        <br>
+        //使用 user1/s123456789 登录。显示密码过期。无法进行下一步操作<br>
+        SQL&gt; conn user1/s123456789@localhost:5236<br>
+        //使用 SYSDBA/SYSDBA 登录。重设密码<br>
+        ALTER USER user1 IDENTIFIED BY x1234567890;<br>
+        //使用 user1/x1234567890 登录。密码正常。可继续操作数据库<br>
+        SQL&gt; conn user1/x1234567890@localhost:5236<br>
+        <br>
+        修改用户语句<br>
+        ALTER USER BOOKSHOP_USER LIMIT SESSION_PER_USER 10,
+        CONNECT_IDLE_TIME UNLIMITED;&nbsp; //修改用户
+        BOOKSHOP_USER，会话空闲期为无限制，最大连接数为 10。<br>
+        <br>
+        DROP USER BOOKSHOP_USER;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //删除用户
+        BOOKSHOP_USER<br>
+        <br>
+        管理模式 <br>
+        模式定义语句创建一个架构，并且可以在概念上将其看作是包含表、视图和权限定义的对象。<br>
+        在 DM 中，一个用户可以创建多个模式，一个模式中的对象(表、视图)可以被多个用户使用。<br>
+        系统为每一个用户自动建立了一个与用户名同名的模式作为默认模式，用户还可以用模式定义语句建立其它模式。<br>
+        <br>
+        <br>
+        <h1 class="title-article" id="articleContentId">
+          <meta http-equiv="content-type" content="text/html;
+            charset=gbk">
+        </h1>
+        <h1 class="title-article" id="articleContentId">达梦数据库存二进制大文件</h1>
+        <div id="content_views" class="htmledit_views">
+          <meta http-equiv="content-type" content="text/html;
+            charset=gbk">
+          <p>达梦数据库存储文件的2种方式：</p>
+          <p>1.通过存储过程在数据库中存储二进制大文件：<br>
+            /使用BFILE、BLOB类型，通过存储过程在数据库中存储二进制大对象<br>
+            create directory LOGDIR as '/home';<br>
+            CREATE TABLE FILE_LOB(<br>
+            T_ID INT NOT NULL,<br>
+            T_FILE BLOB NOT NULL,<br>
+            PRIMARY KEY(T_ID));<br>
+            <br>
+            CREATE OR REPLACE PROCEDURE FILE_INSERT<br>
+            (<br>
+            TID INT,<br>
+            FILENAME VARCHAR(200)<br>
+            )<br>
+            AS<br>
+            F_LOB BFILE;<br>
+            B_LOB BLOB;<br>
+            BEGIN<br>
+            &nbsp;&nbsp;&nbsp; INSERT INTO FILE_LOB (T_ID,T_FILE) VALUES
+            (TID,EMPTY_BLOB())<br>
+            &nbsp;&nbsp;&nbsp; RETURN T_FILE INTO B_LOB;<br>
+            &nbsp;&nbsp;&nbsp; F_LOB := BFILENAME('LOGDIR',FILENAME);<br>
+            &nbsp;&nbsp;&nbsp;
+            DBMS_LOB.FILEOPEN(F_LOB,DBMS_LOB.FILE_READONLY);<br>
+            &nbsp;&nbsp;&nbsp; DBMS_LOB.LOADFROMFILE(B_LOB,F_LOB,<br>
+            &nbsp;&nbsp;&nbsp; DBMS_LOB.GETLENGTH(F_LOB));<br>
+            &nbsp;&nbsp;&nbsp; DBMS_LOB.FILECLOSE(F_LOB);<br>
+            &nbsp;&nbsp;&nbsp; COMMIT;<br>
+            END;<br>
+          </p>
+          <p>2. 直接在程序中将文件内容转为二进制，并插入表中的BLOB字段：<br>
+          </p>
+          <p><a href="qtodbcdm.txt">QT自带有QODBC Driver</a> </p>
+          <p><br>
+          </p>
+        </div>
+        <h3>GO语言访问达梦数据库</h3>
+        数据库访问是数据库应用系统中非常重要的组成部分。DM 作为一个通用数据库管理系统，提供了多种数据库访问接口，包括
+        ODBC、JDBC、DPI 以及嵌入方式等<br>
+        <br>
+        1.&nbsp; 官方做法(DM8 Program.pdf):<br>
+        godamengdb1: go<br>
+        <meta http-equiv="content-type" content="text/html; charset=gbk">
+        练习：编写GOLANG程序，创建书目表，并插入本学期所学课程信息<br>
+        <br>
+        2. godamengdb2:<br>
+        最低要求<br>
+        go 1.18：https://go.dev/dl/<br>
+        gorm v2：https://github.com/go-gorm/gorm<br>
+        达梦数据库 DM8：https://eco.dameng.com/download/<br>
+        安装<br>
+        go get -d github.com/godoes/gorm-dameng<br>
+        <br>
+        结果是以下包下载并添加到项目:<br>
+        PS D:\goworkspaces\godamengdb2&gt; go get -d
+        github.com/godoes/gorm-dameng<br>
+        go: downloading github.com/godoes/gorm-dameng v0.0.6<br>
+        go: added github.com/godoes/gorm-dameng v0.0.6<br>
+        go: added github.com/golang/snappy v0.0.4<br>
+        go: added github.com/jinzhu/inflection v1.0.0<br>
+        go: added github.com/jinzhu/now v1.1.5<br>
+        go: added golang.org/x/text v0.14.0<br>
+        go: added gorm.io/gorm v1.25.5<br>
+        <br>
+        运行GOLANG程序，看看结果如何？<br>
+        <br>
+        将GOLANG得到的结果与disql查询的结果比较：<br>
+        SQL&gt; select * from SYS.V$VERSION;<br>
+        <br>
+        行号&nbsp;&nbsp;&nbsp;&nbsp;
+        BANNER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <br>
+        ---------- ---------------------------------<br>
+        1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DM
+        Database Server 64 V8<br>
+        2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DB
+        Version: 0x7000c<br>
+        3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        03134283968-20230103-178822-20033<br>
+        <br>
+        已用时间: 0.557(毫秒). 执行号:2001.<br>
+        <br>
+        <br>
+        <br>
+        2. godamengdb3<br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 style="box-sizing: border-box; font-family: -apple-system,
+          BlinkMacSystemFont, &quot;Segoe UI&quot;, Helvetica, Arial,
+          &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;,
+          &quot;Segoe UI Symbol&quot;, &quot;Liberation Sans&quot;,
+          &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;,
+          &quot;Hiragino Sans GB&quot;, &quot;Wenquanyi Micro Hei&quot;,
+          &quot;WenQuanYi Zen Hei&quot;, &quot;ST Heiti&quot;, SimHei,
+          SimSun, &quot;WenQuanYi Zen Hei Sharp&quot;, sans-serif;
+          line-height: 1.25; margin: 24px 0em 16px; font-weight: 600;
+          padding: 0em; font-size: 1.5em; position: relative; color:
+          rgb(64, 72, 91); font-style: normal; font-variant-ligatures:
+          normal; font-variant-caps: normal; letter-spacing: normal;
+          orphans: 2; text-align: left; text-indent: 0px;
+          text-transform: none; widows: 2; word-spacing: 0px;
+          -webkit-text-stroke-width: 0px; white-space: normal;
+          background-color: rgb(255, 255, 255);
+          text-decoration-thickness: initial; text-decoration-style:
+          initial; text-decoration-color: initial;">考文档</h2>
+        <h3 style="box-sizing: border-box; font-family: -apple-system,
+          BlinkMacSystemFont, &quot;Segoe UI&quot;, Helvetica, Arial,
+          &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;,
+          &quot;Segoe UI Symbol&quot;, &quot;Liberation Sans&quot;,
+          &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;,
+          &quot;Hiragino Sans GB&quot;, &quot;Wenquanyi Micro Hei&quot;,
+          &quot;WenQuanYi Zen Hei&quot;, &quot;ST Heiti&quot;, SimHei,
+          SimSun, &quot;WenQuanYi Zen Hei Sharp&quot;, sans-serif;
+          line-height: 1.25; margin: 24px 0em 16px; font-weight: 600;
+          padding: 0em; font-size: 1.25em; position: relative; color:
+          rgb(64, 72, 91); font-style: normal; font-variant-ligatures:
+          normal; font-variant-caps: normal; letter-spacing: normal;
+          orphans: 2; text-align: left; text-indent: 0px;
+          text-transform: none; widows: 2; word-spacing: 0px;
+          -webkit-text-stroke-width: 0px; white-space: normal;
+          background-color: rgb(255, 255, 255);
+          text-decoration-thickness: initial; text-decoration-style:
+          initial; text-decoration-color: initial;">达梦技术文档</h3>
+        <ul style="box-sizing: border-box; padding-left: 2em;
+          margin-top: 0px; margin-bottom: 16px; padding-bottom: 1px;
+          color: rgb(64, 72, 91); font-family: -apple-system,
+          BlinkMacSystemFont, &quot;Segoe UI&quot;, Helvetica, Arial,
+          &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;,
+          &quot;Segoe UI Symbol&quot;, &quot;Liberation Sans&quot;,
+          &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;,
+          &quot;Hiragino Sans GB&quot;, &quot;Wenquanyi Micro Hei&quot;,
+          &quot;WenQuanYi Zen Hei&quot;, &quot;ST Heiti&quot;, SimHei,
+          SimSun, &quot;WenQuanYi Zen Hei Sharp&quot;, sans-serif;
+          font-size: 16px; font-style: normal; font-variant-ligatures:
+          normal; font-variant-caps: normal; font-weight: 400;
+          letter-spacing: normal; orphans: 2; text-align: left;
+          text-indent: 0px; text-transform: none; widows: 2;
+          word-spacing: 0px; -webkit-text-stroke-width: 0px;
+          white-space: normal; background-color: rgb(255, 255, 255);
+          text-decoration-thickness: initial; text-decoration-style:
+          initial; text-decoration-color: initial;">
+          <li style="box-sizing: border-box; list-style: initial;">产品手册：<a
+href="https://gitee.com/link?target=https%3A%2F%2Feco.dameng.com%2Fdocument%2Fdm%2Fzh-cn%2Fpm%2F"
+              style="box-sizing: border-box; background: transparent;
+              color: rgb(0, 155, 255) !important; text-decoration: none;
+              cursor: pointer; outline: 0px; overflow-wrap: break-word;">https://eco.dameng.com/document/dm/zh-cn/pm/</a></li>
+          <li style="box-sizing: border-box; list-style: initial;
+            margin-top: 0.25em;">常见问题：<a
+href="https://gitee.com/link?target=https%3A%2F%2Feco.dameng.com%2Fdocument%2Fdm%2Fzh-cn%2Ffaq%2F"
+              style="box-sizing: border-box; background: transparent;
+              color: rgb(9, 94, 171); text-decoration: none; cursor:
+              pointer; overflow-wrap: break-word;">https://eco.dameng.com/document/dm/zh-cn/faq/</a></li>
+          <li style="box-sizing: border-box; list-style: initial;
+            margin-top: 0.25em;">GO 数据库接口：<a
+href="https://gitee.com/link?target=https%3A%2F%2Feco.dameng.com%2Fdocument%2Fdm%2Fzh-cn%2Fapp-dev%2Fgo_go.html"
+              style="box-sizing: border-box; background: transparent;
+              color: rgb(9, 94, 171); text-decoration: none; cursor:
+              pointer; overflow-wrap: break-word;">https://eco.dameng.com/document/dm/zh-cn/app-dev/go_go.html</a></li>
+          <li style="box-sizing: border-box; list-style: initial;
+            margin-top: 0.25em;">DM Go 编程指南：<a
+href="https://gitee.com/link?target=https%3A%2F%2Feco.dameng.com%2Fdocument%2Fdm%2Fzh-cn%2Fpm%2Fgo-rogramming-guide.html"
+              style="box-sizing: border-box; background: transparent;
+              color: rgb(9, 94, 171); text-decoration: none; cursor:
+              pointer; overflow-wrap: break-word;">https://eco.dameng.com/document/dm/zh-cn/pm/go-rogramming-guide.html</a></li>
+          <li style="box-sizing: border-box; list-style: initial;
+            margin-top: 0.25em;">SQL 开发指南：<a
+href="https://gitee.com/link?target=https%3A%2F%2Feco.dameng.com%2Fdocument%2Fdm%2Fzh-cn%2Fsql-dev%2F"
+              style="box-sizing: border-box; background: transparent;
+              color: rgb(9, 94, 171); text-decoration: none; cursor:
+              pointer; overflow-wrap: break-word;">https://eco.dameng.com/document/dm/zh-cn/sql-dev/</a></li>
+        </ul>
+        <h3 style="box-sizing: border-box; font-family: -apple-system,
+          BlinkMacSystemFont, &quot;Segoe UI&quot;, Helvetica, Arial,
+          &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;,
+          &quot;Segoe UI Symbol&quot;, &quot;Liberation Sans&quot;,
+          &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;,
+          &quot;Hiragino Sans GB&quot;, &quot;Wenquanyi Micro Hei&quot;,
+          &quot;WenQuanYi Zen Hei&quot;, &quot;ST Heiti&quot;, SimHei,
+          SimSun, &quot;WenQuanYi Zen Hei Sharp&quot;, sans-serif;
+          line-height: 1.25; margin: 24px 0em 16px; font-weight: 600;
+          padding: 0em; font-size: 1.25em; position: relative; color:
+          rgb(64, 72, 91); font-style: normal; font-variant-ligatures:
+          normal; font-variant-caps: normal; letter-spacing: normal;
+          orphans: 2; text-align: left; text-indent: 0px;
+          text-transform: none; widows: 2; word-spacing: 0px;
+          -webkit-text-stroke-width: 0px; white-space: normal;
+          background-color: rgb(255, 255, 255);
+          text-decoration-thickness: initial; text-decoration-style:
+          initial; text-decoration-color: initial;">GORM 文档</h3>
+        <ul style="box-sizing: border-box; padding-left: 2em;
+          margin-top: 0px; margin-bottom: 0px !important;
+          padding-bottom: 1px; color: rgb(64, 72, 91); font-family:
+          -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+          Helvetica, Arial, &quot;Apple Color Emoji&quot;, &quot;Segoe
+          UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Liberation
+          Sans&quot;, &quot;PingFang SC&quot;, &quot;Microsoft
+          YaHei&quot;, &quot;Hiragino Sans GB&quot;, &quot;Wenquanyi
+          Micro Hei&quot;, &quot;WenQuanYi Zen Hei&quot;, &quot;ST
+          Heiti&quot;, SimHei, SimSun, &quot;WenQuanYi Zen Hei
+          Sharp&quot;, sans-serif; font-size: 16px; font-style: normal;
+          font-variant-ligatures: normal; font-variant-caps: normal;
+          font-weight: 400; letter-spacing: normal; orphans: 2;
+          text-align: left; text-indent: 0px; text-transform: none;
+          widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+          white-space: normal; background-color: rgb(255, 255, 255);
+          text-decoration-thickness: initial; text-decoration-style:
+          initial; text-decoration-color: initial;">
+          <li style="box-sizing: border-box; list-style: initial;">文档首页：<a
+href="https://gitee.com/link?target=https%3A%2F%2Fgorm.io%2Fzh_CN%2Fdocs%2F"
+              style="box-sizing: border-box; background: transparent;
+              color: rgb(9, 94, 171); text-decoration: none; cursor:
+              pointer; overflow-wrap: break-word;">https://gorm.io/zh_CN/docs/</a></li>
+          <li style="box-sizing: border-box; list-style: initial;
+            margin-top: 0.25em;">声明模型：<a
+href="https://gitee.com/link?target=https%3A%2F%2Fgorm.io%2Fzh_CN%2Fdocs%2Fmodels.html"
+              style="box-sizing: border-box; background: transparent;
+              color: rgb(9, 94, 171); text-decoration: none; cursor:
+              pointer; overflow-wrap: break-word;">https://gorm.io/zh_CN/docs/models.html</a></li>
+          <li style="box-sizing: border-box; list-style: initial;
+            margin-top: 0.25em;">连接到数据库：<a
+href="https://gitee.com/link?target=https%3A%2F%2Fgorm.io%2Fzh_CN%2Fdocs%2Fconnecting_to_the_database.html"
+              style="box-sizing: border-box; background: transparent;
+              color: rgb(9, 94, 171); text-decoration: none; cursor:
+              pointer; overflow-wrap: break-word;">https://gorm.io/zh_CN/docs/connecting_to_the_database.html</a></li>
+        </ul>
+        <br>
+      </div>
+    </div>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+  </body>
+</html>

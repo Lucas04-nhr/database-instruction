@@ -1,0 +1,9 @@
+/* Version 1.0
+** Oracle By Example (OBE) CSS Document to control supressing elements from being printed.
+** Usage: <link 
+** Author: Glenn Stokol
+** History
+** =======
+** 23-Mar-09	GS	Created initial file 
+*/
+.no_print { display:none; }

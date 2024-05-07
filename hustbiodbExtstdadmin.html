@@ -1,0 +1,610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=GBK">
+  </head>
+  <body>
+    <div align="center">
+      <h1> </h1>
+      <h1>Oracle数据库上机实例练习：学生信息管理系统</h1>
+    </div>
+    <br>
+    上机器内容<br>
+    一. 引言<br>
+    二. 概念模型设计阶段<br>
+    三. 创建biodbuser用户<br>
+    四. 建表建表并进行表注释 <br>
+    五. 添加约束<br>
+    六. 录入起始数据<br>
+    七. 创建视图<br>
+    八. 创建数据统计页面<br>
+    九. 通过使用%rowtype定义记录类型<br>
+    十. 游标的使用<br>
+    十一. 嵌套表<br>
+    十二. 例外的举例<br>
+    十三. 触发器<br>
+    十四. 使用包<br>
+    <br>
+    <h3> 一. 引言</h3>
+    要求：<br>
+    完成一个简单的应用系统设计开发。<br>
+    <br>
+    背景：<br>
+    本次实践中实现学生信息管理系统的数据库结构的创建。<br>
+    <br>
+    需求：<br>
+    实现学生信息管理系统中教学模块的数据库设计。<br>
+    <br>
+    功能描述：<br>
+    教学模块包括：<br>
+    1. 学生基本信息管理；<br>
+    2.课程信息管理；<br>
+    3.班级信息管理；<br>
+    4.选课信息管理；<br>
+    5.教师基本信息管理；<br>
+    6.教师授课信息管理。<br>
+    <br>
+    <h3> 详细信息描述如下：</h3>
+    1. 学生基本信息包括：学号、姓名、年龄、性别、入学日期、家庭住址。<br>
+    2. 教师基本信息包括：教师号、姓名、年龄、担当的课程号。<br>
+    3. 课程基本信息包括：课程号、课程名、课程学分。<br>
+    <br>
+    选课（选教师）信息包括：学号、教师号、成绩。（由于每门课可能有多个授课老师，所以在选课时需要同时指定此门课程的授课老师，故在此存储的是老
+    师的教师号）<br>
+    <br>
+    班级信息包括：班级号、系、年级、班级。<br>
+    <br>
+    各实体之间关系如下：<br>
+    一个学生只能属于一个班级，一个班级有多个学生；<br>
+    一个学生可以选择多门课程，一门课程可以被多个学生选择；<br>
+    一个老师只能教授一门课，一门课程可以由多个老师教。<br>
+    <br>
+    二. 概念模型设计阶段<br>
+    分析业务实体：<br>
+    <br>
+    4个实体：教师、班级、学生和课程。<br>
+    <br>
+    分析业务实体之间的关系、清除业务实体的数据冗余：<br>
+    <br>
+    从题目分析学生和课程、教师和课程、班级和学生之间存在实体关联：学生-课程（m:n），课程-教师（1:n），班级-学生（1:n）。学生选课
+    可以用教师编号代替课程编号，教师编号可唯一确定课程信息。<br>
+    <br>
+    三. 创建biodbuser用户(可能已经创建)<br>
+    grant dba to hr;<br>
+    conn hr/hr;<br>
+    --创建biodbuser用户<br>
+    create user biodbuser identified by biodb123;<br>
+    --为biodbuser用户授权dba;<br>
+    grant dba to biodbuser;<br>
+    --连接biodbuser用户<br>
+    conn biodbuser/biodbuser;<br>
+    --建表空间llf<br>
+    create tablespace llf datafile 'd:llf.dbf'size 20m uniform size
+    128k;<br>
+    <br>
+    <h3> 四. 建表并进行表注释</h3>
+    <h3> 1、class表</h3>
+    create table class(clno varchar(5) primary key,dept varchar2(40) not
+    null,grade varchar(8) not null,branch varchar2(20) not
+    null)tablespace llf;<br>
+    <h3> 2、student表</h3>
+    create table student(sno varchar2(5) primary key,name varchar2(12)
+    not null,age number(2) not null,sex char(1) not null,entrance
+    date,address varchar2(100),<br>
+    clno varchar2(5),constraint fk_clno foreign key(clno) references
+    class(clno))tablespace llf;<br>
+    <h3> 3、course表</h3>
+    create table course(cno varchar2(5) primary key,name varchar2(60)
+    not null,score number(2) not null)tablespace llf;<br>
+    <h3> 4、teacher 表</h3>
+    create table teacher(tno varchar2(5) primary key,name varchar2(12)
+    not null,age number(2),cno varchar2(5) not null)tablespace llf;<br>
+    <h3> 5、学生选课表st</h3>
+    create table st(sno varchar2(5) not null,tno varchar2(5) not
+    null,grade number(2) default 0)tablespace llf;<br>
+    <br>
+    <h3> 五. 追加表的注释</h3>
+    comment on table class is '生科院2022级班级信息表';<br>
+    comment on table student is '生科院2022级学生信息表';<br>
+    comment on table course is '生科院2022级课程信息表';<br>
+    comment on table teacher is '生科院教师信息表';<br>
+    comment on table st is '生科院2022级学生选课表';<br>
+    <br>
+    <h3> 5. 添加约束</h3>
+    class.grade约束check<br>
+    <br>
+    alter table class<br>
+    add CONSTRAINT ck_class_grade check(grade in('大一','大二','大三','大四'));<br>
+    <br>
+    student.age/student.sex约束<br>
+    <br>
+    alter table student<br>
+    add constraint ck_student_age check(age&gt;=10 and age&lt;41);<br>
+    alter table student<br>
+    add constraint ck_student_sex check(sex in ('1','0'));<br>
+    comment on column student.sex is'性别,1:男,0:女';<br>
+    <br>
+    course.score的check约束<br>
+    <br>
+    alter table course<br>
+    add constraint ck_course_score check(score&gt;0 and score&lt;10);<br>
+    <br>
+    teacher表约束<br>
+    <br>
+    alter table teacher<br>
+    add constraint fk_teacher_cno foreign key(cno) references
+    course(cno);<br>
+    alter table teacher<br>
+    add constraint ck_teacher_age check(age&gt;20 and age&lt;66);<br>
+    <br>
+    st表的约束<br>
+    <br>
+    --st的外键约束<br>
+    alter table st<br>
+    add constraint fk_st_sno foreign key(sno) references student(sno);<br>
+    alter table st<br>
+    add constraint fk_st_tno foreign key(tno) references teacher(tno);<br>
+    --st的check约束<br>
+    alter table st<br>
+    add constraint ck_st_grade check(grade &gt;= 0 and grade &lt;= 9);<br>
+    <h3> 6. 录入起始数据</h3>
+    向班级表添加数据<br>
+    <br>
+    insert into class values ('CC101','生信','大一','一班');<br>
+    insert into class values ('CC102','生信','大一','二班');<br>
+    <br>
+    向学生表添加数据<br>
+    insert into student
+    values('95001','张飞',23，1，to_date('2006-9-1','yyyy-mm-dd'),'青岛','CC101');<br>
+    insert into student
+    values('95002','赵云',21，1，to_date('2006-9-1','yyyy-mm-dd'),'青岛','CC101');<br>
+    insert into student
+    values('95003','关羽',22，1，to_date('2006-9-1','yyyy-mm-dd'),'天津','CC101');<br>
+    insert into student
+    values('95004','貂蝉',20，0，to_date('2006-9-1','yyyy-mm-dd'),'北京','CC102');<br>
+    insert into student
+    values('95005','小乔',19，0，to_date('2006-9-1','yyyy-mm-dd'),'上海','CC102');<br>
+    <br>
+    向课程信息表添加数据<br>
+    insert into course values('CN001','数据库原理',6);<br>
+    insert into course values('CN002','数据结构',2);<br>
+    insert into course values('CN003','编译原理',2);<br>
+    insert into course values('CN004','程序设计',2);<br>
+    insert into course values('CN005','高等数学',3);<br>
+    <br>
+    <br>
+    向教师信息表添加数据<br>
+    insert into teacher values('T8101','刘华',34,'CN001');<br>
+    insert into teacher values('T8103','王刚',28,'CN002');<br>
+    insert into teacher values('T8104','张雪',33,'CN003');<br>
+    insert into teacher values('T8105','赵顺',32,'CN004');<br>
+    insert into teacher values('T8106','周刚',32,'CN005');<br>
+    <br>
+    <br>
+    向选课信息表添加数据<br>
+    <br>
+    insert into st values('95001','T8101',0);<br>
+    insert into st values('95001','T8102',0);<br>
+    insert into st values('95001','T8104',0);<br>
+    insert into st values('95002','T8101',0);<br>
+    insert into st values('95002','T8103',0);<br>
+    insert into st values('95002','T8104',0);<br>
+    insert into st values('95002','T8106',0);<br>
+    insert into st values('95003','T8102',0);<br>
+    insert into st values('95003','T8104',0);<br>
+    insert into st values('95003','T8105',0);<br>
+    <h3> 7. 创建视图</h3>
+    在学生信息管理系统——教学模块开发过程中，需要实现如下页面（创建视图）：<br>
+    <br>
+    学生信息查询页面：系，年级，班级，学生号，学生姓名，年龄，性别，入学日期<br>
+    <br>
+    create or replace view vw_class_student<br>
+    as<br>
+    select c.dept, c.branch,s.sno,s.age,s.sex,s.entrance<br>
+    from class c join student s on c.clno=s.clno<br>
+    with read only;<br>
+    <br>
+    授课信息页面查询：提供教师号、教师姓名、年龄、所担任课程的编号和名称<br>
+    <br>
+    create or replace view vw_teacher_course <br>
+    as <br>
+    select t.tno 教师号,t.name 教师姓名,t.age 教师年龄,c.cno 课程号,c.name 课程名称<br>
+    from teacher t join course c on t.cno=c.cno with read only;<br>
+    <br>
+    <br>
+    选课信息查询页面：提供学生号、学生姓名、所选课程编号、课程名称<br>
+    <br>
+    create or replace view vw_student_course<br>
+    as<br>
+    select s.sno 学生号,s.name 学生姓名,c.cno 课程号,c.name 课程名称<br>
+    from student s join st st on s.sno=st.sno<br>
+    join teacher t on st.tno=t.tno<br>
+    join course c on t.cno=c.cno<br>
+    with read only;<br>
+    <br>
+    任教信息查询页面：提供系、年级、班级及在当前班担任授课任务的教师姓名<br>
+    <br>
+    create or replace view vw_class_teacher<br>
+    as<br>
+    select c.dept 系,c.grade 年级,c.branch 班级,t.name 教师姓名<br>
+    from class c join student s on c.clno=s.clno<br>
+    join st st on s.sno=st.sno<br>
+    join teacher t on st.tno=t.tno<br>
+    with read only;<br>
+    <br>
+    <br>
+    班级课程查询页面：提供系、年级、班级及当前班所覆盖的课程名称<br>
+    <br>
+    create or replace view vw_class_course<br>
+    as<br>
+    select cl.dept 系,cl.grade 年级,cl.branch 班级,c.name 课程名称<br>
+    from class cl join student s on cl.clno=s.clno<br>
+    join st st on s.sno=st.sno<br>
+    join teacher t on st.tno=t.tno<br>
+    join course c on t.cno=c.cno<br>
+    with read only;<br>
+    <br>
+    <h3> 8. 创建数据统计页面</h3>
+    班级人数统计页面<br>
+    create or replace view vw_class_count<br>
+    as<br>
+    select cl.dept 系,cl.grade 年级,cl.branch 班级,count(*) 学生人数<br>
+    from class cl join student s on cl.clno=s.clno<br>
+    group by(cl.dept,cl.grade,cl.branch);<br>
+    <br>
+    <br>
+    学生成绩统计页面：按班级、学生分组，统计每个学生的成绩信息总和及选修的课程数<br>
+    <br>
+    create or replace view vw_student_count<br>
+    as<br>
+    select cl.dept 系,cl.grade 年级,cl.branch 班级,s.name 学生姓名,count(*)
+    课程数,sum(st.grade) 总成绩<br>
+    from class cl join student s on cl.clno=s.clno<br>
+    join st st on s.sno=st.sno<br>
+    group by(cl.dept,cl.grade,cl.branch,s.name);<br>
+    <br>
+    <br>
+    学生成绩列表页面<br>
+    <br>
+    这里会使用到decode函数<br>
+    <br>
+    decode(条件,值1,返回值1,值2,返回值2,…值n,返回值n,缺省值)<br>
+    <br>
+    该函数的含义如下：<br>
+    <br>
+    IF 条件=值1 THEN<br>
+    　　　　RETURN(翻译值1)<br>
+    ELSIF 条件=值2 THEN<br>
+    　　　　RETURN(翻译值2)<br>
+    　　　　......<br>
+    ELSIF 条件=值n THEN<br>
+    　　　　RETURN(翻译值n)<br>
+    ELSE<br>
+    　　　　RETURN(缺省值)<br>
+    END IF<br>
+    <br>
+    创建页面：<br>
+    <br>
+    create or replace view vw_student_grade<br>
+    as<br>
+    select s.name 姓名,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    sum(decode(c.name,'数据库原理',grade,null))数据库原理,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; sum(decode(c.name,'数据结构',grade,null))数据结构,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; sum(decode(c.name,'编译原理',grade,null))编译原理,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; sum(decode(c.name,'程序设计',grade,null))程序设计,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; sum(decode(c.name,'高等数学',grade,null))高等数学<br>
+    from student s join st st on s.sno=st.sno<br>
+    join teacher t&nbsp; on st.tno=t.tno<br>
+    join course c on t.cno=c.cno<br>
+    where c.name in ('数据库原理','数据结构','编译原理','程序设计','高等数学')<br>
+    group by s.name;<br>
+    <br>
+    <br>
+    9. 通过使用%rowtype定义记录类型<br>
+    declare<br>
+    --使用%rowtype声明class的记录类型变量<br>
+    class_record class%rowtype;<br>
+    row_id rowid;<br>
+    info varchar2(60);<br>
+    begin<br>
+    &nbsp; class_record.clno:='CC103';<br>
+    &nbsp; class_record.dept:='自动化';<br>
+    &nbsp; class_record.grade:='大三';<br>
+    &nbsp; class_record.branch:='二班';<br>
+    --使用记录类型变量完成数据插入操作<br>
+    &nbsp; insert into class values class_record<br>
+    &nbsp; returning rowid,clno||','||dept||','||grade||','||branch<br>
+    &nbsp; into row_id,info;<br>
+    &nbsp; dbms_output.put_line('插入:'||row_id||':'||info);<br>
+    --基于记录类型变量完成数据的整行修改<br>
+    &nbsp; class_record.clno:='CC104';<br>
+    &nbsp; update class set row=class_record where clno='CC103'<br>
+    &nbsp; returning rowid,clno||','||dept||','||grade||','||branch
+    into&nbsp;&nbsp; row_id,info;<br>
+    &nbsp; dbms_output.put_line('修改:'||row_id||':'||info);<br>
+    --基于记录类型变量进行数据删除<br>
+    &nbsp; class_record.clno:='CC104';<br>
+    &nbsp; delete from class where clno=class_record.clno<br>
+    &nbsp; returning rowid,clno||','||dept||','||grade||','||branch
+    into&nbsp;&nbsp; row_id,info;<br>
+    &nbsp; dbms_output.put_line('删除：'||row_id||':'||info);<br>
+    &nbsp; exception<br>
+    &nbsp;&nbsp;&nbsp; when others then<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dbms_output.put_line('出现某种异常');<br>
+    end;<br>
+    <h3> 10. 游标的使用</h3>
+    游标：<br>
+    <br>
+    Oracle为用户开设的一个数据缓冲区，存放SQL语句的执行结果。Oracle数据库中执行的每一个SQL语句都有对应的游标。<br>
+    <br>
+    游标分两类：<br>
+    <br>
+    隐式游标：处理单行select into 和DML语句；<br>
+    显示游标：处理select语句返回的多行数据<br>
+    显式游标的使用（处理）步骤：<br>
+    <br>
+    定义游标<br>
+    <br>
+    cursor cursor_name[…]select_statement;<br>
+    <br>
+    打开游标<br>
+    <br>
+    open cursor_name[…];<br>
+    <br>
+    提取游标数据<br>
+    <br>
+    fetch cursor_name into {};<br>
+    <br>
+    对游标指针指向的数据进行处理<br>
+    <br>
+    继续处理，直到没有记录可以处理为止<br>
+    <br>
+    关闭游标<br>
+    <br>
+    close cursor_name;<br>
+    <br>
+    案例：<br>
+    <br>
+    declare<br>
+    --声明游标<br>
+    &nbsp; cursor class_cursor is select clno,dept from class;<br>
+    &nbsp; v_clno class.clno%type;<br>
+    &nbsp; v_dept class.dept%type;<br>
+    begin<br>
+    --打开游标<br>
+    &nbsp; open class_cursor;<br>
+    --循环取值<br>
+    &nbsp; loop<br>
+    &nbsp;&nbsp;&nbsp; --将当前行数据提取到变量中<br>
+    &nbsp;&nbsp;&nbsp; fetch class_cursor into v_clno,v_dept;<br>
+    &nbsp;&nbsp;&nbsp; exit when class_cursor%notfound;<br>
+    &nbsp;&nbsp;&nbsp;
+    dbms_output.put_line('班级号：'||v_clno||'系：'||v_dept);<br>
+    &nbsp; end loop;<br>
+    --关闭游标<br>
+    &nbsp; close class_cursor;<br>
+    end;<br>
+    <br>
+    11. 嵌套表<br>
+    创建嵌套表列时，需要首先创建嵌套表类型<br>
+    <br>
+    create or replace type family_type is table of varchar2(20);<br>
+    1<br>
+    重新调整学生表，增加一列family_type类型的新的属性列<br>
+    <br>
+    alter table student add(<br>
+    &nbsp; family family_type<br>
+    )nested table family store as family_table;<br>
+    <br>
+    为嵌套表添加数据<br>
+    <br>
+    insert into student <br>
+    values('95006','昭君',19,0,to_date('2006-09-01','yyyy-mm-dd'),'上海
+    ','CC102',family_type('父亲','母亲','姐姐'));<br>
+    <br>
+    需要检索嵌套表列的数据时，也需要定义嵌套表变量接收数据<br>
+    <br>
+    declare<br>
+    --声明family_type类型用于接受检索结果<br>
+    family_table family_type;<br>
+    v_name student.name%type;<br>
+    begin<br>
+    &nbsp; select name,family into v_name,family_table<br>
+    &nbsp; from student where sno=&amp;sno;<br>
+    &nbsp; dbms_output.put_line('学生'||v_name||'的亲属有：');<br>
+    &nbsp; for i in 1..family_table.count<br>
+    &nbsp; loop<br>
+    &nbsp;&nbsp;&nbsp; dbms_output.put_line(family_table(i)||' ');<br>
+    &nbsp; end loop;<br>
+    &nbsp;&nbsp;&nbsp; dbms_output.new_line();<br>
+    &nbsp; exception<br>
+    &nbsp;&nbsp;&nbsp; when no_data_found then<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dbms_output.put_line('你指定的学生号不存在！');<br>
+    end;<br>
+    <br>
+    更新嵌套表列数据<br>
+    <br>
+    declare<br>
+    &nbsp; family_table1
+    family_type:=family_type('父亲','母亲','哥哥','姐姐','弟弟');<br>
+    &nbsp; family_table2 family_type;<br>
+    &nbsp; v_sno student.sno%type:=&amp;sno;<br>
+    &nbsp; v_name student.name%type;<br>
+    begin<br>
+    --使用嵌套表变量更新嵌套表列<br>
+    &nbsp; update student<br>
+    &nbsp; set family=family_table1 where sno=v_sno;<br>
+    --获得更新后的数据<br>
+    &nbsp; select name,family into v_name,family_table2<br>
+    &nbsp; from student where sno=v_sno;<br>
+    &nbsp; dbms_output.put_line('学生'||v_name||'的亲属有：');<br>
+    &nbsp; for i in 1..family_table2.count<br>
+    &nbsp; loop<br>
+    &nbsp;&nbsp;&nbsp; dbms_output.put_line(family_table2(i)||' ');<br>
+    &nbsp; end loop;<br>
+    &nbsp;&nbsp;&nbsp; dbms_output.new_line();<br>
+    &nbsp; exception<br>
+    &nbsp;&nbsp;&nbsp; when no_data_found then<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dbms_output.put_line('你指定的学生号不存在！');<br>
+    end;<br>
+    <br>
+    <h3> 12. 例外的举例</h3>
+    declare<br>
+    &nbsp; v_n1 int:=&amp;n1;<br>
+    &nbsp; v_n2 int:=&amp;n2;<br>
+    &nbsp; v_div int;<br>
+    begin<br>
+    &nbsp; v_div:=v_n1/v_n2;<br>
+    &nbsp; dbms_output.put_line(v_n1||'/'||v_n2||'='||v_div);<br>
+    &nbsp; exception<br>
+    &nbsp;&nbsp;&nbsp; when zero_divide then<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dbms_output.put_line('除数不能为零！');<br>
+    end;<br>
+    <h3> 13. 触发器</h3>
+    触发器（trigger）：<br>
+    <br>
+    当数据库发生操作时（DML操作），会发生一些事件，从而自动执行相应程序。<br>
+    触发器分类：<br>
+    <br>
+    语句触发器 ：在执行DML操作（insert、update、delete）时，激活该类触发器。<br>
+    <br>
+    行触发器。<br>
+    <br>
+    语句触发器：<br>
+    <br>
+    create or replace trigger trg_class<br>
+    before insert or update or delete on class<br>
+    declare<br>
+    &nbsp; v_now varchar2(30);<br>
+    begin<br>
+    &nbsp; v_now:=to_char(sysdate,'yyyy-mm-dd hh24:mi:ss');<br>
+    &nbsp; case<br>
+    &nbsp;&nbsp;&nbsp; when INSERTING THEN<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DBMS_OUTPUT.PUT_LINE(v_now||'对class表进行了insert操作');<br>
+    &nbsp;&nbsp;&nbsp; when updating then<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    dbms_output.put_line(v_now||'对class表进行了update操作');<br>
+    &nbsp;&nbsp;&nbsp; when deleting then<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    dbms_output.put_line(v_now||'对class表进行了delete操作');<br>
+    &nbsp; end case;<br>
+    end;<br>
+    <br>
+    测试：<br>
+    insert into class values('CC106','自动化','大二','二班');<br>
+    delete from class where clno='CC106';<br>
+    <br>
+    <br>
+    行触发器：<br>
+    create or replace trigger trg_class_before<br>
+    before insert or update or delete on class<br>
+    for each row<br>
+    declare<br>
+    &nbsp; v_now varchar2(30);<br>
+    begin<br>
+    &nbsp; v_now:=to_char(sysdate,'yyyy-mm-dd hh24:mi:ss');<br>
+    &nbsp; case<br>
+    &nbsp;&nbsp;&nbsp; when INSERTING THEN<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DBMS_OUTPUT.PUT_LINE('添加数
+    据：'||:new.clno||','||:new.dept||','||:new.grade||','||:new.branch);<br>
+    &nbsp;&nbsp;&nbsp; when updating then<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    dbms_output.put_line('修改前数据：'||:old.clno||','||:old.dept);<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    dbms_output.put_line('修改后数据：'||:new.clno||','||:new.dept);<br>
+    &nbsp;&nbsp;&nbsp; end case;<br>
+    end;<br>
+    <br>
+    测试：<br>
+    insert into class values('CC106','自动化','大一','一班');<br>
+    update class<br>
+    set clno='CC109',dept='化工'<br>
+    where clno='CC106';<br>
+    <br>
+    <br>
+    14. 使用包<br>
+    鉴于系统要求，经常需要打印报表信息。为了方便维护，我们将打印报表的过程统一封装，并且放入包内统一维护。<br>
+    <br>
+    分析：<br>
+    <br>
+    包结构的功能，一般是根据模块功能来定义的，可以将对学生表的操作定义为一个包。<br>
+    对于报表的打印，一般涉及到多行语句的处理，引入游标。<br>
+    由于报表打印，一般不需要返回值，可以使用过程来封装。<br>
+    案例：<br>
+    <br>
+    --1、定义包规范<br>
+    create or replace package report_pack<br>
+    &nbsp; is<br>
+    &nbsp;&nbsp;&nbsp; --根据输入的班级号，打印当前班级信息以及当前班的学生信息<br>
+    &nbsp;&nbsp;&nbsp; procedure student_of_class(p_clno
+    class.clno%type);<br>
+    &nbsp; end report_pack;<br>
+    &nbsp; <br>
+    --2、对于report_pack包的包体代码如下：<br>
+    &nbsp; create or replace package body report_pack<br>
+    &nbsp; is<br>
+    &nbsp; --实现过程student_of_class<br>
+    &nbsp; procedure student_of_class(p_clno class.clno%type)&nbsp; --过程<br>
+    &nbsp; is<br>
+    &nbsp;&nbsp;&nbsp; cursor student_cursor is <br>
+    &nbsp;&nbsp;&nbsp; select * from student where clno=p_clno;&nbsp;
+    --游标<br>
+    &nbsp;&nbsp;&nbsp; student_record student%rowtype;&nbsp;
+    --定义学生记录类型的变量<br>
+    &nbsp;&nbsp;&nbsp; class_record class%rowtype;&nbsp;&nbsp;
+    --定义班级记录类型<br>
+    &nbsp;&nbsp;&nbsp; v_count number(2);<br>
+    &nbsp;&nbsp;&nbsp; v_sex varchar2(3);<br>
+    &nbsp; begin<br>
+    &nbsp;&nbsp;&nbsp; select * into class_record from class where clno
+    = p_clno;&nbsp; --取得班级信息<br>
+    &nbsp;&nbsp;&nbsp; select count(*) into v_count <br>
+    &nbsp;&nbsp;&nbsp; from student <br>
+    &nbsp;&nbsp;&nbsp; where clno=p_clno<br>
+    &nbsp;&nbsp;&nbsp; group by clno;&nbsp;&nbsp; --取得班级人数<br>
+    &nbsp;&nbsp;&nbsp; dbms_output.put_line(class_record.dept||'系'||<br>
+    &nbsp;&nbsp;&nbsp;
+    class_record.grade||'，'||class_record.branch||'总共有：'||v_count||'人');<br>
+    &nbsp;&nbsp;&nbsp;
+    dbms_output.put_line('--------------------------------------------');<br>
+    &nbsp;&nbsp;&nbsp; --取得当前班级的学生信息<br>
+    &nbsp;&nbsp;&nbsp; open student_cursor;<br>
+    &nbsp;&nbsp;&nbsp; loop<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fetch student_cursor into
+    student_record;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit when student_cursor%notfound;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if student_record.sex='1' then
+    v_sex:='男';<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    else v_sex:='女';<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; end if;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    dbms_output.put_line('学生号:'||student_record.sno||',姓名:'||<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    student_record.name||',年龄:'||student_record.age||',性别:'||v_sex<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    ||',入学日期:'||to_char(student_record.entrance,'yyyy-mm-dd'));<br>
+    &nbsp;&nbsp; end loop;<br>
+    &nbsp;&nbsp; close student_cursor;<br>
+    &nbsp;&nbsp; exception<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; when no_data_found then <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    dbms_output.put_line('指定的班级号不存在！');<br>
+    end student_of_class;<br>
+    end report_pack;<br>
+    <br>
+    <br>
+    测试：<br>
+    <br>
+    begin<br>
+    &nbsp; report_pack.student_of_class('CC101');<br>
+    end;<br>
+    <br>
+    <br>
+  </body>
+</html>

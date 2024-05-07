@@ -1,0 +1,651 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=windows-1252">
+  </head>
+  <body>
+    <h1 class="title-article" id="articleContentId" align="center">centos8.7
+
+
+      &#20043;Oracle Database 23c&#29256;&#23433;&#35013;</h1>
+    <h3 align="center">(&#22909;&#35937;CentOS9.X/Redhat9.x&#20063;&#21487;&#20197;&#23433;&#35013;)<br>
+    </h3>
+    <p>&#23433;&#35013;&#23436;&#20102;&#21518;&#36816;&#34892;&#65306;<br>
+      /etc/init.d/oracle-free-23c start<br>
+      /etc/init.d/oracle-free-23c stop<br>
+      <br>
+      ./sqlplus sys/wtsgyh1972@localhost:1521 as sysdba<br>
+      &#22914;&#26524;&#25253;&#38169;&#65292;&#21017;&#30475;&#30475;:<br>
+      # /etc/init.d/oracle-free-23c status<br>
+      Status of the Oracle FREE 23c service:<br>
+      <br>
+      LISTENER status: RUNNING<br>
+      FREE Database status:&nbsp;&nbsp; STOPPED<br>
+      &#22914;&#26524;&#26174;&#31034;&#65306;STOPPED&#65292;&#21017;&#29992;<br>
+      ./dbua&nbsp; &#25171;&#24320;&#31383;&#21475;&#21518;&#65292;&#29992;sysuser/passwd:&nbsp; sys/wtsgyh1972<br>
+      <br>
+      if:ORA-12504: TNS:listener was not given the SERVICE_NAME in
+      CONNECT_DATA<br>
+      then:<br>
+      ./sqlplus sys/wtsgyh1972@localhost:1521/FREE as sysdba</p>
+    <p>2. &#22914;&#26524;&#25253;&#20013;&#25991;&#20081;&#30721;:<br>
+      SQL&gt; shutdown immediate;<br>
+      ????????<br>
+      ????????<br>
+      ORACLE ???????<br>
+      SQL&gt; startup<br>
+      ORACLE ???????<br>
+      <br>
+      Total System Global Area 1603679416 bytes<br>
+      Fixed Size&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+      5313720 bytes<br>
+      Variable Size&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+      587202560 bytes<br>
+      Database Buffers&nbsp;&nbsp;&nbsp; &nbsp;1006632960 bytes<br>
+      Redo Buffers&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; 4530176 bytes<br>
+      ????????<br>
+      ????????<br>
+      &#38656;&#35201;&#35774;&#32622;&#29615;&#22659;&#21464;&#37327;&#65306;&#22312; ~/.bash_profile<br>
+      #&#26435;&#38480;&#65288;&#21453;&#30721;&#65289;<br>
+      umask 022<br>
+      #oracle&#30340;BASE&#30446;&#24405;&#23450;&#20041;<br>
+      ORACLE_BASE=/opt/oracle<br>
+      #oracle&#30340;HOME&#30446;&#24405;&#23450;&#20041;<br>
+      ORACLE_HOME=/opt/oracle/product/23c/dbhomeFree<br>
+      #&#35774;&#32622;SID<br>
+      ORACLE_SID=FREE<br>
+      ORACLE_UNQNAME=FREEE<br>
+      NLS_DATE_FORMAT="YYYY:MM:DDHH24:MI:SS"<br>
+      #&#31616;&#20307;&#20013;&#25991;&#29256;<br>
+      NLS_LANG="SIMPLIFIED CHINESE_CHINA".UTF8<br>
+      export TNS_ADMIN=$ORACLE_HOME/network/admin<br>
+      export ORA_NLS11=$ORACLE_HOME/nls/data<br>
+      #&#37325;&#26032;&#23450;&#20041;&#31995;&#32479;&#29615;&#22659;&#21464;&#37327;<br>
+      PATH=$PATH:$HOME/.local/bin:$HOME/bin:$ORACLE_HOME/bin<br>
+      #&#23450;&#20041;&#35821;&#31995;<br>
+      LANG=zh_CN.UTF-8<br>
+      #&#23548;&#20837;&#31995;&#32479;&#21464;&#37327;<br>
+      export PATH LANG NLS_DATE_FORMAT NLS_LANG ORACLE_BASE ORACLE_HOME
+      ORACLE_SID ORACLE_UNQNAME<br>
+      export
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib:$ORACLE_HOME/oracm/lib:/lib:/usr/lib:/usr/lib64<br>
+      export
+CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib:$ORACLE_HOME/network/jlib<br>
+    </p>
+    <h2>&#22312;RHEL 8&#19978;&#23433;&#35013;Oracle Database 23c&#27604;&#20043;&#21069;&#30340;&#29256;&#26412;&#23481;&#26131;&#65306;<br>
+    </h2>
+    <p>&#19968;&#12289;oracle23c&#31616;&#20171;<br>
+      &#8195;&#8195;Oracle Database 23c&#26159;Oracle Database&#30340;&#19979;&#19968;&#20010;&#38271;&#26399;&#25903;&#25345;&#29256;&#26412;&#12290;Oracle Database
+      23c&#65292;&#20195;&#21495;&#20026;“App Simple”&#65292;&#21152;&#36895;&#20102;Oracle&#30340;&#20351;&#21629;&#65292;&#20351;&#24320;&#21457;&#21644;&#36816;&#34892;&#25152;&#26377;&#25968;&#25454;&#39537;&#21160;&#30340;&#24212;&#29992;&#31243;&#24207;&#21464;&#24471;&#31616;&#21333;&#12290;&#36825;&#26159;Oracle
+      Database
+      21c&#21019;&#26032;&#21457;&#24067;&#30340;&#25152;&#26377;&#21151;&#33021;&#21152;&#19978;300&#22810;&#39033;&#26032;&#21151;&#33021;&#21644;&#22686;&#24378;&#21151;&#33021;&#30340;&#24635;&#21644;&#12290;&#37325;&#28857;&#39046;&#22495;&#21253;&#25324;JSON&#12289;&#22270;&#24418;&#12289;&#24494;&#26381;&#21153;&#21644;&#24320;&#21457;&#20154;&#21592;&#29983;&#20135;&#21147;&#12290;Oracle
+      23c&#25968;&#25454;&#24211;&#20855;&#26377;&#20197;&#19979;&#29305;&#28857;&#65306;<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; &#39640;&#24615;&#33021;&#65306;Oracle
+      23c&#25968;&#25454;&#24211;&#37319;&#29992;&#20102;&#20808;&#36827;&#30340;&#22810;&#32447;&#31243;&#26550;&#26500;&#21644;&#20248;&#21270;&#25216;&#26415;&#65292;&#21487;&#20197;&#22788;&#29702;&#22823;&#35268;&#27169;&#30340;&#25968;&#25454;&#21644;&#39640;&#24182;&#21457;&#35775;&#38382;&#35831;&#27714;&#65292;&#25552;&#20379;&#24555;&#36895;&#30340;&#25968;&#25454;&#22788;&#29702;&#33021;&#21147;&#12290;<br>
+      &nbsp;&nbsp;&nbsp; &#39640;&#21487;&#29992;&#24615;&#65306;Oracle
+      23c&#25968;&#25454;&#24211;&#25552;&#20379;&#20102;&#22810;&#31181;&#39640;&#21487;&#29992;&#24615;&#35299;&#20915;&#26041;&#26696;&#65292;&#21253;&#25324;&#25968;&#25454;&#22797;&#21046;&#12289;&#25925;&#38556;&#36716;&#31227;&#21644;&#33258;&#21160;&#25925;&#38556;&#24674;&#22797;&#31561;&#21151;&#33021;&#65292;&#30830;&#20445;&#25968;&#25454;&#24211;&#30340;&#36830;&#32493;&#24615;&#21644;&#21487;&#38752;&#24615;&#12290;<br>
+      &nbsp;&nbsp;&nbsp; &#23433;&#20840;&#24615;&#65306;Oracle
+      23c&#25968;&#25454;&#24211;&#25552;&#20379;&#20102;&#24378;&#22823;&#30340;&#23433;&#20840;&#21151;&#33021;&#65292;&#21253;&#25324;&#36523;&#20221;&#39564;&#35777;&#12289;&#26435;&#38480;&#31649;&#29702;&#12289;&#25968;&#25454;&#21152;&#23494;&#21644;&#23457;&#35745;&#31561;&#65292;&#20445;&#25252;&#25968;&#25454;&#24211;&#20013;&#30340;&#25968;&#25454;&#20813;&#21463;&#26410;&#32463;&#25480;&#26435;&#30340;&#35775;&#38382;&#21644;&#24694;&#24847;&#25915;&#20987;&#12290;<br>
+      &nbsp;&nbsp;&nbsp; &#25193;&#23637;&#24615;&#65306;Oracle 23c&#25968;&#25454;&#24211;&#25903;&#25345;&#27700;&#24179;&#21644;&#22402;&#30452;&#25193;&#23637;&#65292;&#21487;&#20197;&#26681;&#25454;&#38656;&#27714;&#28789;&#27963;&#35843;&#25972;&#25968;&#25454;&#24211;&#30340;&#35268;&#27169;&#21644;&#24615;&#33021;&#12290;<br>
+      &nbsp;&nbsp;&nbsp; &#22823;&#25968;&#25454;&#22788;&#29702;&#65306;Oracle
+      23c&#25968;&#25454;&#24211;&#38598;&#25104;&#20102;&#22823;&#25968;&#25454;&#22788;&#29702;&#25216;&#26415;&#65292;&#21487;&#20197;&#19982;Hadoop&#21644;Spark&#31561;&#24320;&#28304;&#26694;&#26550;&#26080;&#32541;&#38598;&#25104;&#65292;&#23454;&#29616;&#23545;&#22823;&#35268;&#27169;&#25968;&#25454;&#30340;&#20998;&#26512;&#21644;&#22788;&#29702;&#12290;<br>
+      <br>
+      <br>
+      &#20108;&#12289;&#23433;&#35013;&#35201;&#27714;&#21450;&#29615;&#22659;&#35828;&#26126;<br>
+      &#8195;&#8195;Oracle Database
+      23c&#23433;&#35013;&#35201;&#27714;&#21253;&#25324;&#31995;&#32479;&#35201;&#27714;&#12289;swap&#35201;&#27714;&#12289;&#31995;&#32479;&#20869;&#26680;&#21442;&#25968;&#35201;&#27714;&#65292;&#20855;&#20307;&#35201;&#27714;&#22914;&#19979;&#65292;&#20854;&#20013;&#20869;&#26680;&#21442;&#25968;&#21487;&#20197;&#36890;&#36807;&#39044;&#23433;&#35013;&#33050;&#26412;&#23436;&#25104;&#35774;&#32622;&#12290;&#21338;&#20027;&#26159;&#22312;CentOS
+      Stream release 8&#29615;&#22659;&#19979;&#23433;&#35013;&#30340;Oracle Database 23c&#12290;<br>
+      &nbsp;&nbsp;&nbsp; &#31995;&#32479;&#35201;&#27714;&#65306;centos8&#20197;&#19978;<br>
+      &nbsp;&nbsp;&nbsp; &#20869;&#23384;&#65306;&#26368;&#23567;1G&#65292;&#24314;&#35758;2G&#20197;&#19978;<br>
+      &nbsp;&nbsp;&nbsp; SWAP&#20998;&#21306;&#65306;&#24314;&#35758;2G&#20197;&#19978;<br>
+      &nbsp;&nbsp;&nbsp; &#31995;&#32479;&#21442;&#25968;&#35201;&#27714;<br>
+      <br>
+      table Kernel Parameter settings<br>
+      <br>
+      <br>
+      8888888888888888888888888888<br>
+      88888888888888888888888<br>
+      <br>
+      &#19977;&#12289;&#23433;&#35013;&#27493;&#39588;<br>
+      1&#12289;&#19979;&#36733;&#39044;&#23433;&#35013;&#33050;&#26412;<br>
+      [root@oracledb opt]# wget
+https://yum.oracle.com/repo/OracleLinux/OL8/developer/x86_64/getPackage/oracle-database-preinstall-23c-1.0-1.el8.x86_64.rpm<br>
+      <br>
+      2&#12289;&#23433;&#35013;&#39044;&#23433;&#35013;rpm&#21253;<br>
+      dnf&#23433;&#35013;&#39044;&#23433;&#35013;rpm&#21253;&#26102;&#20250;&#23433;&#35013;&#37096;&#20998;&#20381;&#36182;&#65292;<br>
+      [root@oracledb opt]# dnf -y localinstall
+      oracle-database-preinstall-23c-1.0-1.el8.x86_64.rpm<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+      or: yum -y localinstall oracle-database-preinstall-23c-*<br>
+      [root@oracledb opt]#
+      /etc/init.d/oracle-database-preinstall-23c-firstboot start<br>
+      &nbsp;Starting oracle-database-preinstall-23c-firstboot (via syst[
+      OK ]<br>
+      &#27491;&#22312;&#21551;&#21160; oracle-database-preinstall-23c-firstboot (via syst[&nbsp;
+      &#30830;&#23450;&nbsp; ]<br>
+      <br>
+      &#20381;&#36182;&#20851;&#31995;&#35299;&#20915;&#12290;<br>
+========================================================================================================<br>
+      &nbsp;&#36719;&#20214;
+      &#21253;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      &#26550;&#26500;&nbsp;&nbsp;&nbsp;&nbsp; &#29256;
+      &#26412;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      &#20179;
+      &#24211;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      &#22823;&#23567;<br>
+========================================================================================================<br>
+      &#23433;&#35013;:<br>
+      &nbsp;oracle-database-preinstall-23c&nbsp;&nbsp;
+      x86_64&nbsp;&nbsp;
+      1.0-1.el8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      @commandline&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      30 k<br>
+      &#23433;&#35013;&#20381;&#36182;&#20851;&#31995;:<br>
+      &nbsp;compat-openssl10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      x86_64&nbsp;&nbsp; 1:1.0.2o-4.el8_6&nbsp;&nbsp;&nbsp;
+      rhel-8-for-x86_64-appstream-rpms&nbsp;&nbsp; 1.1 M<br>
+      &nbsp;ksh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      x86_64&nbsp;&nbsp;
+      20120801-259.el8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      rhel-8-for-x86_64-appstream-rpms&nbsp;&nbsp; 925 k<br>
+      &nbsp;sysstat&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      x86_64&nbsp;&nbsp;
+      11.7.3-11.el8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      rhel-8-for-x86_64-appstream-rpms&nbsp;&nbsp; 426 k<br>
+========================================================================================================<br>
+      <br>
+      3&#12289;&#19979;&#36733;oracle-free&#36719;&#20214;rpm&#21253;<br>
+      [root@oracledb opt]# wget
+https://download.oracle.com/otn-pub/otn_software/db-free/oracle-database-free-23c-1.0-1.el8.x86_64.rpm<br>
+      <br>
+      4&#12289;&#25191;&#34892;dnf&#26412;&#22320;&#23433;&#35013;<br>
+      [root@oracledb opt]# dnf -y localinstall
+      oracle-database-free-23c-1.0-1.el8.x86_64.rpm<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+      or: yum -y localinstall oracle-database-free*<br>
+      5&#12289;&#37197;&#32622;oracle<br>
+      &#25191;&#34892;configure&#37197;&#32622;&#26102;&#38656;&#35201;&#35774;&#32622;SYS&#36134;&#25143;&#23494;&#30721;&#65292;&#23494;&#30721;&#22797;&#26434;&#24230;&#35201;&#27714;&#22823;&#23567;&#23383;&#27597;&#12289;&#25968;&#23383;&#32452;&#25104;&#65292;8&#20010;&#23383;&#31526;&#20197;&#19978;&#12290;&#37197;&#32622;&#23436;&#25104;&#21518;&#20250;&#21551;&#21160;&#19968;&#20010;&#23454;&#20363;&#65292;&#20250;&#26174;&#31034;
+      &#23454;&#20363;&#30417;&#21548;&#31471;&#21475;&#65292;&#22914;1539&#12290;<br>
+      <br>
+      &nbsp; [root@localhost catalyst]# /etc/init.d/oracle-free-23c
+      configure<br>
+      Specify a password to be used for database accounts. Oracle
+      recommends that the password entered should be at least 8
+      characters in length, contain at least 1 uppercase character, 1
+      lower case character and 1 digit [0-9]. Note that the same
+      password will be used for SYS, SYSTEM and PDBADMIN accounts:&nbsp;
+      **************&nbsp;&nbsp; &lt;&lt; wtsgyh1972<br>
+      Confirm the password:<br>
+      Configuring Oracle Listener.<br>
+      Listener configuration succeeded.<br>
+      Configuring Oracle Database FREE.<br>
+      &#36755;&#20837; SYS &#29992;&#25143;&#21475;&#20196;: <br>
+      *************<br>
+      &#36755;&#20837; SYSTEM &#29992;&#25143;&#21475;&#20196;: <br>
+      **********<br>
+      &#36755;&#20837; PDBADMIN &#29992;&#25143;&#21475;&#20196;: <br>
+      **********<br>
+      &#20934;&#22791;&#25191;&#34892;&#25968;&#25454;&#24211;&#25805;&#20316;<br>
+      &#24050;&#23436;&#25104; 7%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      /opt/oracle/product<br>
+      &#22797;&#21046;&#25968;&#25454;&#24211;&#25991;&#20214;<br>
+      &#24050;&#23436;&#25104; 29%<br>
+      &#27491;&#22312;&#21019;&#24314;&#24182;&#21551;&#21160; Oracle &#23454;&#20363;<br>
+      &#24050;&#23436;&#25104; 30%<br>
+      &#24050;&#23436;&#25104; 33%<br>
+      &#24050;&#23436;&#25104; 36%<br>
+      &#24050;&#23436;&#25104; 39%<br>
+      &#24050;&#23436;&#25104; 43%<br>
+      &#27491;&#22312;&#36827;&#34892;&#25968;&#25454;&#24211;&#21019;&#24314;<br>
+      &#24050;&#23436;&#25104; 47%<br>
+      &#24050;&#23436;&#25104; 49%<br>
+      &#24050;&#23436;&#25104; 50%<br>
+      &#27491;&#22312;&#21019;&#24314;&#25554;&#25509;&#24335;&#25968;&#25454;&#24211;<br>
+      <br>
+      &#24050;&#23436;&#25104; 54%<br>
+      &#24050;&#23436;&#25104; 71%<br>
+      &#25191;&#34892;&#37197;&#32622;&#21518;&#25805;&#20316;<br>
+      &#24050;&#23436;&#25104; 93%<br>
+      &#27491;&#22312;&#36816;&#34892;&#23450;&#21046;&#33050;&#26412;<br>
+      &#24050;&#23436;&#25104; 100%<br>
+      &#25968;&#25454;&#24211;&#21019;&#24314;&#23436;&#25104;&#12290;&#26377;&#20851;&#35814;&#32454;&#20449;&#24687;, &#35831;&#26597;&#30475;&#20197;&#19979;&#20301;&#32622;&#30340;&#26085;&#24535;&#25991;&#20214;:<br>
+      &nbsp;/opt/oracle/cfgtoollogs/dbca/FREE&#12290;<br>
+      &#25968;&#25454;&#24211;&#20449;&#24687;:<br>
+      &#20840;&#23616;&#25968;&#25454;&#24211;&#21517;:FREE<br>
+      &#31995;&#32479;&#26631;&#35782;&#31526; (SID):FREE<br>
+      &#26377;&#20851;&#35814;&#32454;&#20449;&#24687;, &#35831;&#21442;&#38405;&#26085;&#24535;&#25991;&#20214; "/opt/oracle/cfgtoollogs/dbca/FREE/FREE.log"&#12290;<br>
+      <br>
+      Connect to Oracle Database using one of the connect strings:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Pluggable database:
+      localhost.localdomain/FREEPDB1<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Multitenant container database:
+      localhost.localdomain<br>
+      <br>
+      ******************************************other like:<br>
+      &nbsp;&nbsp;&nbsp; Connect to Oracle Database using one of the
+      connect strings:<br>
+      &nbsp;&nbsp;&nbsp; Pluggable database: oracledb:1539/FREEPDB1<br>
+      &nbsp;&nbsp;&nbsp; Multitenant container database: oracledb:1539<br>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br>
+      <br>
+      7&#12289;&#37197;&#32622;&#29615;&#22659;&#21464;&#37327;<br>
+      &nbsp;&nbsp;&nbsp; [root@oracledb opt]# echo "export
+      ORACLE_HOME=/opt/oracle/product/23c/dbhomeFree" &gt;&gt;
+      /etc/profile<br>
+      &nbsp;&nbsp;&nbsp; [root@oracledb opt]# echo "export
+      PATH=${ORACLE_HOME}/bin:$PATH" &gt;&gt; /etc/profile<br>
+      &nbsp;&nbsp;&nbsp; [root@oracledb opt]# source /etc/profile<br>
+      <br>
+      8&#12289;&#36830;&#25509;&#25968;&#25454;&#24211;<br>
+      [root@oracledb bin]# ./sqlplus sys/password@localhost:1539 as
+      sysdba&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //for 23c not port: 1521 but
+      1539<br>
+      [root@localhost bin]# ./sqlplus sys/wtsgyh1972@localhost:1521 as
+      sysdba&nbsp;&nbsp;&nbsp;&nbsp; //wts RHEL8 still : 1521!!!!!<br>
+      SQL*Plus: Release 23.0.0.0.0 - Production on Fri Mar 1 05:22:49
+      2024<br>
+      Version 23.3.0.23.09<br>
+      <br>
+      Copyright (c) 1982, 2023, Oracle.&nbsp; All rights reserved.<br>
+      <br>
+      <br>
+      ???: <br>
+      Oracle Database 23c Free Release 23.0.0.0.0 - Develop, Learn, and
+      Run for Free<br>
+      Version 23.3.0.23.09<br>
+      <br>
+      <br>
+      9&#12289;&#26597;&#30475;&#25968;&#25454;&#24211;&#29256;&#26412;<br>
+      &nbsp;SQL&gt; select * from V$version;<br>
+      <br>
+      BANNER<br>
+--------------------------------------------------------------------------------<br>
+      BANNER_FULL<br>
+--------------------------------------------------------------------------------<br>
+      BANNER_LEGACY<br>
+--------------------------------------------------------------------------------<br>
+      &nbsp;&nbsp;&nbsp; CON_ID<br>
+      ----------<br>
+      Oracle Database 23c Free Release 23.0.0.0.0 - Develop, Learn, and
+      Run for Free<br>
+      Oracle Database 23c Free Release 23.0.0.0.0 - Develop, Learn, and
+      Run for Free<br>
+      Version 23.3.0.23.09<br>
+      Oracle Database 23c Free Release 23.0.0.0.0 - Develop, Learn, and
+      Run for Free<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;0<br>
+      <br>
+      BANNER<br>
+--------------------------------------------------------------------------------<br>
+      BANNER_FULL<br>
+--------------------------------------------------------------------------------<br>
+      BANNER_LEGACY<br>
+--------------------------------------------------------------------------------<br>
+      &nbsp;&nbsp;&nbsp; CON_ID<br>
+      ----------<br>
+      <br>
+      <br>
+      10&#12289;&#26597;&#30475;&#25152;&#26377;&#24211;&#23454;&#20363;<br>
+      SQL&gt; select * from V$version;<br>
+      <br>
+      BANNER<br>
+--------------------------------------------------------------------------------<br>
+      BANNER_FULL<br>
+--------------------------------------------------------------------------------<br>
+      BANNER_LEGACY<br>
+--------------------------------------------------------------------------------<br>
+      &nbsp;&nbsp;&nbsp; CON_ID<br>
+      ----------<br>
+      Oracle Database 23c Free Release 23.0.0.0.0 - Develop, Learn, and
+      Run for Free<br>
+      Oracle Database 23c Free Release 23.0.0.0.0 - Develop, Learn, and
+      Run for Free<br>
+      Version 23.3.0.23.09<br>
+      Oracle Database 23c Free Release 23.0.0.0.0 - Develop, Learn, and
+      Run for Free<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;0<br>
+      <br>
+      BANNER<br>
+--------------------------------------------------------------------------------<br>
+      BANNER_FULL<br>
+--------------------------------------------------------------------------------<br>
+      BANNER_LEGACY<br>
+--------------------------------------------------------------------------------<br>
+      &nbsp;&nbsp;&nbsp; CON_ID<br>
+      ----------<br>
+      <br>
+      <br>
+      SQL&gt; select name From v$database;<br>
+      <br>
+      NAME<br>
+      ---------<br>
+      FREE<br>
+      <br>
+      &#22235;&#12289;oracle&#25968;&#25454;&#24211;&#26381;&#21153;&#21551;&#20572;&#31649;&#29702;<br>
+      1&#12289;&#20572;&#27490;&#25968;&#25454;&#24211;<br>
+      [root@localhost bin]# /etc/init.d/oracle-free-23c stop<br>
+      Shutting down Oracle Database instance FREE.<br>
+      Oracle Database instance FREE shut down.<br>
+      Stopping Oracle Net Listener.<br>
+      Oracle Net Listener stopped.<br>
+      <br>
+      <br>
+      2&#12289;&#21551;&#21160;&#25968;&#25454;&#24211;<br>
+      [root@localhost bin]# /etc/init.d/oracle-free-23c start<br>
+      Starting Oracle Net Listener.<br>
+      Oracle Net Listener started.<br>
+      Starting Oracle Database instance FREE.<br>
+      Oracle Database instance FREE started.<br>
+      <br>
+      <br>
+      3&#12289;&#26597;&#30475;&#25968;&#25454;&#24211;&#29366;&#24577;<br>
+      [root@localhost bin]# /etc/init.d/oracle-free-23c status<br>
+      Status of the Oracle FREE 23c service:<br>
+      <br>
+      LISTENER status: RUNNING<br>
+      FREE Database status:&nbsp;&nbsp; RUNNING<br>
+      <br>
+      <br>
+      4&#12289;&#26597;&#30475;&#25968;&#25454;&#24211;&#30417;&#29366;&#24577;<br>
+      [root@localhost bin]# ./lsnrctl status<br>
+      <br>
+      LSNRCTL for Linux: Version 23.0.0.0.0 - Production on 01-MAR-2024
+      05:29:46<br>
+      <br>
+      Copyright (c) 1991, 2023, Oracle.&nbsp; All rights reserved.<br>
+      <br>
+      Connecting to
+      (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521)))<br>
+      STATUS of the LISTENER<br>
+      ------------------------<br>
+      Alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      LISTENER<br>
+      Version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      TNSLSNR for Linux: Version 23.0.0.0.0 - Production<br>
+      Start
+      Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      01-MAR-2024 05:27:34<br>
+      Uptime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      0 days 0 hr. 2 min. 11 sec<br>
+      Trace
+      Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      off<br>
+      Security&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      ON: Local OS Authentication<br>
+      SNMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      OFF<br>
+      Default
+      Service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      FREE<br>
+      Listener Parameter File&nbsp;&nbsp;
+      /opt/oracle/product/23c/dbhomeFree/network/admin/listener.ora<br>
+      Listener Log File&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /opt/oracle/diag/tnslsnr/localhost/listener/alert/log.xml<br>
+      Listening Endpoints Summary...<br>
+      &nbsp;
+      (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521)))<br>
+      &nbsp; (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))<br>
+      Services Summary...<br>
+      Service "1297928c6a9971d8e065000000000001" has 1 instance(s).<br>
+      &nbsp; Instance "FREE", status READY, has 1 handler(s) for this
+      service...<br>
+      Service "FREE" has 1 instance(s).<br>
+      &nbsp; Instance "FREE", status READY, has 1 handler(s) for this
+      service...<br>
+      Service "FREEXDB" has 1 instance(s).<br>
+      &nbsp; Instance "FREE", status READY, has 1 handler(s) for this
+      service...<br>
+      Service "freepdb1" has 1 instance(s).<br>
+      &nbsp; Instance "FREE", status READY, has 1 handler(s) for this
+      service...<br>
+      The command completed successfully<br>
+      <br>
+      5&#12289;&#37325;&#21551;&#25968;&#25454;&#24211;<br>
+      &nbsp;[root@localhost bin]# /etc/init.d/oracle-free-23c restart<br>
+      <br>
+      6&#12289;&#20351;&#29992;systemctl&#31649;&#29702;&#26381;&#21153;<br>
+      &#8195;&#8195;&#20063;&#21487;&#29992;systemctl&#31649;&#29702;oracle-free-23c&#26381;&#21153;&#65292;&#22914;&#26524;&#23433;&#35013;&#21518;&#31995;&#32479;&#26410;&#37325;&#21551;&#25105;&#20204;&#38656;&#35201;&#37325;&#36733;systemctl&#26381;&#21153;&#12290;<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; #&#37325;&#36733;systemctl&#26381;&#21153;<br>
+      &nbsp;&nbsp;&nbsp; [root@localhost bin]# systemctl daemon-reload<br>
+      &nbsp;&nbsp;&nbsp; #&#20572;&#27490;oracle&#26381;&#21153;<br>
+      &nbsp;&nbsp;&nbsp; [root@localhost bin]# systemctl stop
+      oracle-free-23c<br>
+      &nbsp;&nbsp;&nbsp; #&#21551;&#21160;oracle&#26381;&#21153;<br>
+      &nbsp;&nbsp;&nbsp; [root@localhost bin]# systemctl start
+      oracle-free-23c<br>
+      &nbsp;&nbsp;&nbsp; #&#26597;&#30475;oracle&#26381;&#21153;&#29366;&#24577;<br>
+      &nbsp;&nbsp;&nbsp; [root@localhost bin]# systemctl status
+      oracle-free-23c<br>
+      &nbsp;&nbsp;&nbsp; #&#37325;&#21551;oracle&#26381;&#21153;<br>
+      &nbsp;&nbsp;&nbsp; [root@localhost bin]# systemctl restart
+      oracle-free-23c<br>
+      &nbsp;&nbsp;&nbsp; #&#23558;oracle&#26381;&#21153;&#28155;&#21152;&#21040;&#24320;&#26426;&#33258;&#21551;&#21160;<br>
+      &nbsp;&nbsp;&nbsp; [root@localhost bin]# systemctl enable
+      oracle-free-23c<br>
+      &nbsp;&nbsp;&nbsp; #&#21462;&#28040;oracle&#26381;&#21153;&#20174;&#24320;&#26426;&#33258;&#21551;&#21160;<br>
+      &nbsp;&nbsp;&nbsp; [root@localhost bin]# systemctl disable
+      oracle-free-23c<br>
+      <br>
+      &#20116;&#12289;Oracle&#20813;&#36153;&#29256;23c&#30340;&#38480;&#21046;&#31574;&#30053;<br>
+      &#8195;&#8195;Oracle&#20813;&#36153;&#29256;23c&#24182;&#19981;&#26159;&#26080;&#38480;&#21046;&#20351;&#29992;&#30340;&#65292;&#23427;&#23545;CPU&#12289;&#20869;&#23384;&#12289;&#23384;&#20648;&#31354;&#38388;&#22823;&#23567;&#12289;&#23454;&#20363;&#25968;&#37327;&#37117;&#26377;&#38480;&#21046;&#65292;&#35814;&#32454;&#38480;&#21046;&#20449;&#24687;&#22914;&#19979;&#12290;<br>
+      1&#12289;Oracle&#25968;&#25454;&#24211;&#21487;&#29992;CPU&#38480;&#21046;<br>
+      &#8195;&#8195;Oracle Database
+      Free&#33258;&#21160;&#23558;&#33258;&#24049;&#38480;&#21046;&#20026;&#20004;&#20010;&#26680;&#24515;&#36827;&#34892;&#22788;&#29702;&#12290;&#20363;&#22914;&#65292;&#22312;&#20855;&#26377;2&#20010;&#21452;&#26680;CPU&#65288;4&#20010;&#26680;&#24515;&#65289;&#30340;&#35745;&#31639;&#26426;&#19978;&#65292;&#22914;&#26524;&#22823;&#37327;&#25968;&#25454;&#24211;&#23458;&#25143;&#31471;&#35797;&#22270;&#21516;&#26102;&#36816;&#34892;CPU&#23494;&#38598;&#22411;&#26597;&#35810;&#65292;&#21017;
+      &#21363;&#20351;&#26377;&#26356;&#22810;&#30340;CPU&#23481;&#37327;&#65292;Oracle database Free&#20063;&#23558;&#20165;&#20197;&#20004;&#20010;&#26680;&#24515;&#30340;&#36895;&#29575;&#22788;&#29702;&#26597;&#35810;&#12290;<br>
+      <br>
+      2&#12289;Oracle&#25968;&#25454;&#24211;&#20813;&#36153;&#23433;&#35013;&#21644;&#36816;&#34892;&#26102;&#38480;&#21046;<br>
+      &#8195;&#8195;Oracle Database
+      Free&#23558;&#20854;&#33258;&#36523;&#38480;&#21046;&#20026;&#27599;&#20010;&#36923;&#36753;&#29615;&#22659;&#21482;&#33021;&#23433;&#35013;&#19968;&#27425;&#12290;&#36923;&#36753;&#29615;&#22659;&#21487;&#20197;&#26159;&#35832;&#22914;VM&#25110;&#23481;&#22120;&#20043;&#31867;&#30340;&#34394;&#25311;&#20027;&#26426;&#65292;&#20063;&#21487;&#20197;&#26159;&#29289;&#29702;&#20027;&#26426;&#12290;&#22914;&#26524;&#24744;&#35797;&#22270;&#22312;&#36825;&#26679;&#30340;&#36923;&#36753;&#29615;&#22659;&#20013;&#21551;&#21160;&#22810;
+      &#20010;Oracle Database Free&#23433;&#35013;&#65292;&#21017;&#20250;&#26174;&#31034;ORA-00442&#65306;Oracle Database
+      Free&#21333;&#23454;&#20363;&#20914;&#31361;&#38169;&#35823;&#65292;&#24182;&#19988;&#24744;&#30340;&#25968;&#25454;&#24211;&#23558;&#19981;&#20250;&#21551;&#21160;&#12290;&#36825;&#19981;&#20250;&#24433;&#21709;Oracle Database Standard Edition
+      2&#25110;Oracle Database Enterprise Edition&#30340;&#20219;&#20309;&#29616;&#26377;&#23433;&#35013;&#25110;&#26032;&#23433;&#35013;&#12290;<br>
+      <br>
+      3&#12289;Oracle&#25968;&#25454;&#24211;&#20813;&#36153;&#29992;&#25143;&#25968;&#25454;&#38480;&#21046;<br>
+      &#8195;&#8195;Oracle Database Free&#20013;&#30340;&#26368;&#22823;&#29992;&#25143;&#25968;&#25454;&#37327;&#19981;&#33021;&#36229;&#36807;12
+      GB&#12290;&#22914;&#26524;&#29992;&#25143;&#25968;&#25454;&#22686;&#38271;&#36229;&#36807;&#27492;&#38480;&#21046;&#65292;&#21017;&#31995;&#32479;&#26174;&#31034;ORA-12954&#65306;&#35831;&#27714;&#36229;&#36807;&#20102;&#20801;&#35768;&#30340;&#26368;&#22823;&#25968;&#25454;&#24211;&#22823;&#23567;12 GB&#38169;&#35823;&#12290;<br>
+      <br>
+      4&#12289;Oracle&#25968;&#25454;&#24211;&#21487;&#29992;RAM&#38480;&#21046;<br>
+      &#8195;&#8195;Oracle Database Free&#30340;&#26368;&#22823;RAM&#37327;&#19981;&#33021;&#36229;&#36807;2 GB&#65292;&#21363;&#20351;&#26377;&#26356;&#22810;&#21487;&#29992;RAM<br>
+      <br>
+      <br>
+      <br>
+      [root@localhost opt]# rpm -Uih
+      sqldeveloper-23.1.0.097.1607.noarch.rpm <br>
+      ################################# [100%]<br>
+      ################################# [100%]<br>
+      &#27491;&#22312;&#21319;&#32423;/&#23433;&#35013;...<br>
+      ################################# [100%]<br>
+      <br>
+      ## sqldeveloper<br>
+      then: give path:&nbsp; /opt/jdk17linuxx64bin<br>
+    </p>
+    <p> 4. &#25509;&#19979;&#26469;&#36830;&#25509;&#21040;&#25968;&#25454;&#24211;<br>
+      &#35774;&#21464;&#37327;<br>
+      #export ORACLE-SID=FREE<br>
+      #export ORAENV_ASK=NO<br>
+      . /opt/oracle/product/23c/dbhomeFree/bin/oraenv<br>
+      <br>
+      say:<br>
+      ORACLE_HOME = []?&nbsp;&nbsp; /opt/oracle/product/23c/dbhomeFree<br>
+      <br>
+      &#20063;&#21487;&#30452;&#25509;&#20889;&#21040;&#65306; ~/.bash_profile<br>
+      <br>
+      #&#26435;&#38480;&#65288;&#21453;&#30721;&#65289;<br>
+      umask 022<br>
+      #oracle&#30340;BASE&#30446;&#24405;&#23450;&#20041;<br>
+      ORACLE_BASE=/opt/oracle<br>
+      #oracle&#30340;HOME&#30446;&#24405;&#23450;&#20041;<br>
+      ORACLE_HOME=/opt/oracle/product/23c/dbhomeFree<br>
+      #&#35774;&#32622;SID<br>
+      ORACLE_SID=FREE<br>
+      ORACLE_UNQNAME=FREEE<br>
+      NLS_DATE_FORMAT="YYYY:MM:DDHH24:MI:SS"<br>
+      #&#31616;&#20307;&#20013;&#25991;&#29256;<br>
+      NLS_LANG="SIMPLIFIED CHINESE_CHINA".UTF8<br>
+      export TNS_ADMIN=$ORACLE_HOME/network/admin<br>
+      export ORA_NLS11=$ORACLE_HOME/nls/data<br>
+      #&#37325;&#26032;&#23450;&#20041;&#31995;&#32479;&#29615;&#22659;&#21464;&#37327;<br>
+      PATH=$PATH:$HOME/.local/bin:$HOME/bin:$ORACLE_HOME/bin<br>
+      #&#23450;&#20041;&#35821;&#31995;<br>
+      LANG=zh_CN.UTF-8<br>
+      #&#23548;&#20837;&#31995;&#32479;&#21464;&#37327;<br>
+      export PATH LANG NLS_DATE_FORMAT NLS_LANG ORACLE_BASE ORACLE_HOME
+      ORACLE_SID ORACLE_UNQNAME<br>
+      export
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib:$ORACLE_HOME/oracm/lib:/lib:/usr/lib:/usr/lib64<br>
+      export
+CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib:$ORACLE_HOME/network/jlib<br>
+      <br>
+      <br>
+      &#36830;&#25509;Oracle Database 23c in RHEL 8 &#65288;&#20063;&#21487;&#29992;sqldeveloper&#65289;<br>
+      $ ./sqlplus sys/wtsgyh1972@localhost:1521/FREE as sysdba<br>
+      SQL&gt; show pdbs;<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; CON_ID CON_NAME&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; OPEN MODE&nbsp;
+      RESTRICTED<br>
+      ---------- ------------------------------ ---------- ----------<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;2 PDB$SEED&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ ONLY&nbsp; NO<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;3 FREEPDB1&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ WRITE NO<br>
+      ##################################################################<br>
+      #cd $ORACLE_HOME/bin<br>
+      ./sqlplus sys@localhost:1521/FREEPDB1 as sysdba<br>
+      SQL&gt; show pdbs;<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; CON_ID CON_NAME&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; OPEN MODE&nbsp;
+      RESTRICTED<br>
+      ---------- ------------------------------ ---------- ----------<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;3 FREEPDB1&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ WRITE NO<br>
+      (sure by wts for 23c CN show)<br>
+    </p>
+    <br>
+    <br>
+    <br>
+    # listener.ora Network Configuration File:
+    /opt/oracle/product/23c/dbhomeFree/network/admin/listener.ora<br>
+    # Generated by Oracle configuration tools.<br>
+    <br>
+    DEFAULT_SERVICE_LISTENER = FREE<br>
+    <br>
+    LISTENER =<br>
+    &nbsp; (DESCRIPTION_LIST =<br>
+    &nbsp;&nbsp;&nbsp; (DESCRIPTION =<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+    localhost)(PORT = 1521))<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = IPC)(KEY =
+    EXTPROC1521))<br>
+    &nbsp;&nbsp;&nbsp; )<br>
+    &nbsp; )<br>
+    <br>
+    <br>
+    #################################################&nbsp; the
+    listener.org like:<br>
+    LISTENER =<br>
+    &nbsp; (DESCRIPTION_LIST =<br>
+    &nbsp;&nbsp;&nbsp; (DESCRIPTION =<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+    222.20.94.229)(PORT = 1521))<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = IPC)(KEY =
+    EXTPROC1521))<br>
+    &nbsp;&nbsp;&nbsp; )<br>
+    &nbsp; )<br>
+    <br>
+    SID_LIST_LISTENER=<br>
+    &nbsp; (SID_LIST=<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SID_DESC=<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #BEQUEATH CONFIG<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    (GLOBAL_DBNAME=FREE)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SID_NAME=FREE)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    (ORACLE_HOME=/opt/oracle/product/23c/dbhomeFree)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #(PROGRAM =
+    extproc)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #PRESPAWN CONFIG<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (PRESPAWN_MAX=20)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (PRESPAWN_LIST=<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    (PRESPAWN_DESC=(PROTOCOL=tcp)(POOL_SIZE=2)(TIMEOUT=1))<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )<br>
+    <br>
+    PASSWORDS_LISTENER = wtsgyh1972<br>
+    <br>
+    <br>
+    <br>
+    #########################<br>
+    # tnsnames.ora Network Configuration File:
+    /opt/oracle/product/23c/dbhomeFree/network/admin/tnsnames.ora<br>
+    # Generated by Oracle configuration tools.<br>
+    <br>
+    FREE =<br>
+    &nbsp; (DESCRIPTION =<br>
+    &nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+    localhost)(PORT = 1521))<br>
+    &nbsp;&nbsp;&nbsp; (CONNECT_DATA =<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SERVER = DEDICATED)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SERVICE_NAME = FREE)<br>
+    &nbsp;&nbsp;&nbsp; )<br>
+    &nbsp; )<br>
+    <br>
+    LISTENER_FREE =<br>
+    &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))<br>
+    <br>
+    <br>
+    #################<br>
+    # sqlnet.ora Network Configuration File:
+    /opt/oracle/product/23c/dbhomeFree/network/admin/sqlnet.ora<br>
+    # Generated by Oracle configuration tools.<br>
+    <br>
+    NAMES.DIRECTORY_PATH= (TNSNAMES, EZCONNECT)<br>
+    <br>
+  </body>
+</html>

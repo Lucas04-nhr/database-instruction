@@ -1,0 +1,94 @@
+//proc code=cpp test.pc test.cpp
+//记得：在sqldeveloper中：
+//INSERT INTO "C##DRUGDBUSER"."DRUGCOURSEUSER" (STD_ID, STD_NAME, STD_NUM, STD_MAJOR, STD_PASSWORD, STD_RECORDS) VALUES ('222', 'dengjia', 'yyy', 'yyyyyyhyh', '323232', '12')
+//需要点提交后才可以真正将数据插入表，才可以实现删除一行！！！
+
+//#include "stdafx.h"  //not use for linux
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "sqlca.h"
+
+int main(){
+struct sqlca sqlca; //必须要有
+
+char reply;
+//定义主变量
+EXEC SQL BEGIN DECLARE SECTION;
+    char strsql[512]={0};
+    char dbuser[20]={0};
+    char dbpwd[20] ={0};
+    char dbname[20]={0};
+    int mySTD_ID;//1. 学生编号
+    char mySTD_NAME[100]={0};//2. 学生名字
+    char mySTD_NUM[50]={0};//3. 学生学号
+    char mySTD_MAJOR[50]={0};//4.学生专业
+    char mySTD_PASSWORD[200]={0};//5.密码
+    int mySTD_RECORDS;//6.学生成绩
+    char myISVIP[50];//7.是否VIP
+    char myROWID[512];
+EXEC SQL END DECLARE SECTION;
+
+//strcpy for linux  //// strcpy_s for windows vs2015
+strcpy(dbuser,"c##drugdbuser"); 
+strcpy(dbpwd,"wtsgyh1972");
+strcpy(dbname,"drugdb");
+
+//用主变量作为SQL参数连接数据库
+EXEC SQL CONNECT :dbuser IDENTIFIED BY :dbpwd USING :dbname;
+printf("Connect to oracle!");
+
+//EXEC SQL select count(A.STD_ID) ,sum(B.STD_TIMES)
+//INTO :TotalRecord, :TotalMoney //INTO绑定变量
+//from DRUGCOURSEUSER A , PRACSTAT B
+//WHERE A.STD_ID = B.STD_ID;
+
+//设置捕获异常信息标志
+//EXEC SQL WHENEVER SQLERROR goto ORA_ERR; ////发生异常的时候推出整个程序,
+//if(0 >= ::snprintf(strsql,sizeof(strsql), "select STD_NAME from DRUGCOURSEUSER" )){
+//    printf("%s snprintf create sql fail !\n", __FUNCTION__);
+//    return -1;
+//}
+
+strcpy(strsql,"select STD_ID,STD_NAME,ROWID from DRUGCOURSEUSER");
+
+//游标
+//动态游标方式获取查询结果
+EXEC SQL PREPARE sqlTestCursor FROM :strsql;
+EXEC SQL DECLARE CurRegion CURSOR FOR sqlTestCursor; //CURSOR FOR可以直接跟SQL语句
+EXEC SQL OPEN CurRegion;
+
+do{
+    EXEC SQL FETCH CurRegion INTO :mySTD_ID, :mySTD_NAME, :myROWID;
+    if (sqlca.sqlcode ==1403) 
+        break;
+    
+    if(sqlca.sqlcode ==0) {
+        printf("stdname=%s, len=%d, mySTD_ID=%d\n",mySTD_NAME, strlen(mySTD_NAME), mySTD_ID);
+        printf("Delete what you want?\n");
+        //scanf("%c", &reply); //scanf_s for C++
+        if(mySTD_ID == 222){
+            printf("Now the myROWID = %s \n", myROWID);
+            EXEC SQL DELETE FROM DRUGCOURSEUSER WHERE CURRENT OF CurRegion;
+            //EXEC SQL DELETE FROM DRUGCOURSEUSER WHERE STD_ID = :mySTD_ID; 
+            EXEC SQL commit;
+            //EXEC SQL DELETE FROM DRUGCOURSEUSER WHERE STD_D=:Hsno;
+            printf("delete sqlcode = %d \n", sqlca.sqlcode);
+        }
+    }
+}while(1);
+
+//关闭异常捕获信息
+EXEC SQL whenever sqlerror stop;
+EXEC SQL CLOSE CurRegion;
+
+//设置回滚事物
+EXEC SQL rollback work release;
+//return sqlca.sqlcode;
+//ORA_ERR:
+//printf("sqlca.sqlcode=%d, sqlca.sqlerrp=%s\n",sqlca.sqlcode, sqlca.sqlerrp);
+//return sqlca.sqlcode;
+
+return 0 ;
+
+}

@@ -1,0 +1,34 @@
+//This file the first test success on Linux-Oracle 19.3: for connect oracle with imbeded SQL: with proc compile the pc code.
+//1. compile pc file from Linux CMD terminal
+//#>/opt/app/oracle/product/19.3.000/db_home/bin/proc code=cpp parse=none iname=test44.pc oname=testora.cpp
+//2. create a C++ proj with eclipse202309-cpp version
+//3. copy sqlca.h from oracle 193 to this project
+//4. set g++ compile parameters: click the project and select the property
+// a. just use Debug Mode for this project
+// b. C/C++ build： environments  not set: CPP_INCLUDE_PATH AND C_INCLUDE_PATH IS OK!!
+//                  settings: GCC C++ compiler: command g++, include path:   /opt/app/oracle/product/19.3.000/db_home/precomp/public               
+//                            GCC Linker: command with : g++ -lclntsh
+//                                                      library path: /opt/app/oracle/product/19.3.000/db_home/lib  (linux)
+//                                                                    /opt/app/oracle/product/19.3.000/db_home/precomp/lib(no need this in linux)
+//                                                      Libraries: NULL, no any real library files here!!!
+#include <stdio.h>
+#include <string.h>
+#include "sqlca.h"  // /opt/app/oracle/product/19.3.000/db_home/precomp/public
+
+EXEC SQL BEGIN DECLARE SECTION;
+char *serverid = "c##drugdbuser/wtsgyh1972@drugdb";
+EXEC SQL END DECLARE SECTION; 
+
+int main() {
+        int ret  = 0;
+        printf("hello....");
+        printf("serverid:%s ", serverid);
+        EXEC SQL connect :serverid; 
+        if (sqlca.sqlcode != 0) {
+                ret = sqlca.sqlcode;
+                printf("EXEC SQL connect:err, %d", ret);
+                return ret;
+        }
+        printf("connect ok");
+        return ret;
+}

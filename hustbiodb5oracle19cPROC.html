@@ -1,0 +1,2484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+  </head>
+  <body>
+    <h2 align="left">本科教学-数据库技术及应用(CENTOS环
+      境)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+      上机过程如有问题请看 &nbsp; <a href="/hustdbroot/hustbiodbqaa.html">oracle
+        出错集锦</a><br>
+    </h2>
+    <h1 align="center">Oracle上机练习五： 关系数据库Oracle 19c嵌入式操作</h1>
+    <p>pro*c是高级的用法，OCI是oracle的基础用法<br>
+    </p>
+    <p align="left">一 上机内容: <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. Oracle 数据库简介: &gt;
+      19.3.000<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. 练习ORACLE DB基本操作: DDL, DCL,
+      DML<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. 图形界面管理Oracle: SQL
+      Developer,&nbsp; MyEclipse和Eclipse管理Oracle数据库<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.
+      在MyEclipse中用JAVA语言进行简单的数据库访问以及基于tomcat的web前后端数据库技术(tomcat:
+      localhost:9875)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.
+      在VSCode中用GO语言访问Oracle数据库(MyEclipse的goeclipse似乎不好用)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6. 拓展: c/c++访问oracle12(三种方式)<br>
+    </p>
+    <p align="left"><br>
+      二 上机目的: <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.
+      了解关系数据库SQL语言嵌入到高级语言的编程技巧妙并加深对关系数据库的理解.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. 练习关系PROC编译SQL.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.
+      学会命令行和图形界面创建表，主键，外键，索引，视图等。<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4. 掌握利用高级语言与数据库进行交互.<br>
+    </p>
+    <p align="left">如何编译.pc文件： <br>
+      proc code=cpp&nbsp; parse=none iname=filename.pc
+      oname=filename.cpp<br>
+      <span style="color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">gcc -o connect connect.c -L/usr/lib/oracle/18.3/client64/lib -lclntsh -lecpg &nbsp; &nbsp;//C语言程序编译执行时通过“-lecpg”参数, libecpg：为ecpg提供连接、执行SQL、事务等实现的动态库，包括libecpg.so、libecpg.so.6和libecpg.so.6.4<br></span></p>
+    <div style="font-size:16px;">
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <p>要使用预编译器生成合适的C++代码，你需要注意下面的事项：<br>
+        代码被预编译器展开。要得到C++代码，你需要在执行proc时设置CODE=CPP选项。<br>
+        解析能力。proc的PARSE选项可以是下面的值：<br>
+        PARSE=NONE. C预处理指令只能在声明节中被解析，所以所有的宿主变量需要在声明节中声明。<br>
+        PARSE=PARTIAL. C预处理指令能被解析；然而，所有的宿主变量需要在声明节中声明。<br>
+        PARSE=FULL. C预处理指令能被解析，而且宿主变量可以声明在任何地方。当CODE不为
+        CPP时，这是默认设置；但当CODE=CPP时，指定PARSE=FULL却是个错误。</p>
+    </div>
+    <p align="left"><br>
+      一， 首先要包涵头文件#include&nbsp;这个头文件<br>
+      <br>
+      二,&nbsp; 在声明宿主变量之前一定要先定义struct sqlca sqlca;这个变量。<br>
+      <br>
+      三， 所有与oracle数据库SQL语句有关的变量必须在前面声明为宿主变量分配空间才可以使用，<br>
+      <br>
+      宿主变量只能是oracle支持的数据类型，一般是基本类型的，结构体类型。只有宿主变量才可以和SQL还有函数中的其他变量之间相互通信。<br>
+    </p>
+    <br>
+    SQL提供了将SQL语句嵌入到某种高级语言中的使用方式，通常采用预编译的方法将SQL语句嵌入高级语言中。采用的方法由DBMS的预处理程序
+    对源程序进行扫码、识别出SQL语句，把它们转换为主语言调用语句，这样可以让主语言编译程序能识别它，最后由主语言的编译程序将整个源程序编译
+    成目标码。<br>
+    <br>
+    SQL嵌入主语言涉及的几个问题<br>
+    区分主语言语句与SQL语句：通常在SQL语句前加前缀EXEC SQL，结束标志会跟着主语言不同而不同。<br>
+    <br>
+    主语言工作单元与数据库工作单元的通信机制<br>
+    <br>
+    <h3> 1、SQL通信区：</h3>
+    向主语言传递SQL语句执行状态信息，使主语言能够根据此信息控制程序流程。<br>
+    <h3> 2、主变量：也称共享变量。</h3>
+    主语言向SQL语句提供参数主要通过主变量，主变量由主语言的程序定义，并用SQl的DECLARE语句说明。<br>
+    比如C语言中用法<br>
+    <br>
+    exec sql begin delcare section<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; char sno[4],cno[3]<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; int grade;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; char sqlstate[7] <br>
+    exec sql end declare section&nbsp; <br>
+    根据共享变量givesno值查询学生关系students 中的学生姓名、年龄、性别<br>
+    exec sql select sname,age,sexinto : Msno, :Mcno; given sno from
+    students where sno:Msno;<br>
+    <h3> 3、游标</h3>
+    Oracle中的游标<br>
+    &nbsp;&nbsp;&nbsp; Oracle使用两种游标: 显式游标和隐式游标.&nbsp; 不管语句返回多少条记录,
+    Oracle为每条使用的SQL语句隐式地定义一个游标. Oracle 为每个DELETE , UPDATE, INSERT
+    等SQL命令隐式地声明游标. 用户声明并使用显式游标处理SELECT语句返回的多条记录.<br>
+    &nbsp;&nbsp;&nbsp;
+    游标是ORACLE和PRO*C存放查询结果的工作区域。一个游标（已命名的）与一条SELECT语句相关联。操作游标有由4条命令：<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; （1）DECLARE CURSOR；<br>
+    &nbsp; &nbsp; （2）OPEN CURSOR；<br>
+    &nbsp;&nbsp;&nbsp; （3）FETCH；<br>
+    &nbsp;&nbsp;&nbsp; （4）CLOSE CURSOR。<br>
+    必须使用游标的SQL语句有:<br>
+    查询结果为多条记录的select语句;<br>
+    current形式的update语句;<br>
+    current形式的delete语句。<br>
+    <br>
+    SQl语言主要是面向集合的，一条SQL语句可产生或处理多条记录。而主语言是面向记录的，一组主变量一次只能放一条记录，因此引入游标，通过移
+    动游标指针来决定获取那一条记录。<br>
+    查询结果为多条记录的select语句<br>
+    一般情况下，select语句查询结果为多条记录，因此需要使用游标机制将多条记录一次一条的送主程序处理，从而把集合的操作转换为对单个记录的
+    处理，使用游标的步骤<br>
+    <br>
+    <h4> 3.1 定义游标：一个游标必须首先定义，&nbsp; 才能使用, 定义游标要用DECLARE语句, 其定义格式为：</h4>
+    EXEC SQL DECLARE &lt;游标名&gt; CURSOR FOR &lt;SELECT语句&gt;; <br>
+    或者这样写:&nbsp; <br>
+    EXEC SQL DECLARE 〈游标名〉CORSOR FOR &nbsp;<br>
+    SELECT 〈列〉<br>
+    FROM&nbsp; 〈表〉<br>
+    如:&nbsp; EXEC SQL DECLARE <b>myCURSORname</b> CURSOR FOR&nbsp; <b>SELECT
+
+
+rno,
+
+
+
+
+
+      rname FROM readertable</b>;<br>
+    功能：定义语句只是一条说明性语句，DBMS并不执行SELECT指定的查询操作<br>
+    <br>
+    <h4> 3.2 打开游标: 使用OPEN语句。 语句格式： EXEC SQL OPEN &lt;游标名&gt;;</h4>
+    如: EXEC SQL OPEN myCURSORname;<br>
+    <br>
+    功能：打开游标实际上是执行相应的SELECT语句，把所有满足查询条件的记录从指定表取到缓冲区中。<br>
+    这时游标处于活动状态，指针指向查询结果集中第一条记录之前。<br>
+    <br>
+    <h4> 3.3 推进游标: 移动游标指针，然后取当前记录，使用FETCH语句。语句格式：</h4>
+    EXEC SQL FETCH [[NEXT|PRIOR|FIRST|LAST] FROM] &lt;游标名&gt; INTO
+    &lt;主变量&gt;[&lt;指示变量&gt;] [,&lt;主变量&gt;[&lt;指示变量&gt;]]...;<br>
+    功能：指定方向推动游标指针，然后将缓冲区中的当前记录取出来送至主变量供主语言进一步处理。<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;NEXT|PRIOR|FIRST|LAST：指定推动游标指针的方式。NEXT：向前推进一
+    条记录；PRIOR：向回退一条记<br>
+    录；FIRST：推向第一条记录；LAST：推向最后一条记录；缺省值为NEXT。<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;说明：<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(1) 主变量必须与SELECT语句中的目标列表达式具有一一对应关系；<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(2)
+    FETCH语句通常用在一个循环结构中，通过循环执行FETCH语句逐条取出结果集中的行进行处理；<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(3)
+    为进一步方便用户处理数据，现在一些关系数据库管理系统对FETCH语句做了扩充，允许用户向任<br>
+    意方向以任意步长移动游标指针。<br>
+    <br>
+    exec sql fetch from into endexec<br>
+    该语句使用时，游标推进一行，并把游标指向的行中的值取出来，送到共享变量中去<br>
+    <h4> 3.4 关闭游标 使用CLOSE语句。取完活动集中所有行后，必须关闭游标，以释放与该游标有关的资源。语句格式：</h4>
+    EXEC SQL CLOSE &lt;游标名&gt;;<br>
+    如: EXEC SQL CLOSE myCURSORname;<br>
+    <br>
+    功能：关闭游标，释放结果集占用的缓冲区及其他资源。<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;说明：游标被关闭后，就不再和原来的查询结果集相联系，被关闭的游标可以再次被打开，与新的查
+    询<br>
+    结果相联系。<br>
+    <br>
+    ORACLE V5.0版支持SQL格式“CURRENT OF CURSOR”。这条语句将指向一个游标中最新取出的行，
+    以用于修改和删除操作。该语句必须有取操作之后使用，它等同存储一个ROWID，并使用它。<br>
+    <br>
+    <h4>3.5 释放游标</h4>
+    CLOSE语句在关闭游标变量时,&nbsp; 并未释放游标变量所点用的内存.&nbsp; 所以,&nbsp;
+    以游标变量关闭之后应用程序可以重新打开游标变量,&nbsp; 实现各种游标操作.&nbsp;
+    需要关闭游标变量并释放经所点用的内存.&nbsp; 方法如下:<br>
+    EXEC SQL FREE :cursor_name;<br>
+    <br>
+    成功的实例: <a href="lesson2/testcursorOKvs2015.pc">使用游标</a><br>
+    <br>
+    二、CURRENT形式的UPDATE语句和DELETE语句<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;CURRENT形式的UPDATE语句和DELETE语句的用途，非CURRENT形式的
+    UPDATE语句和DELETE语句，面向集合<br>
+    的操作。一次修改或删除所有满足条件的记录，如果只想修改或删除其中某个记录。用带游标的SELECT语句<br>
+    查出所有满足条件的记录，从中进一步找出要修改或删除的记录。用CURRENT形式的UPDATE语句和DELETE语<br>
+    句修改或删除之。步骤：<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(1) DECLARE, 说明游标；<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(2) OPEN, 打开游标，把所有满足查询条件的记录从指定表取至缓冲区；<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(3) FETCH, 推进游标指针，把当前记录从缓冲区中取出来送至主变量；<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(4) 检查该记录是否是要修改或删除的记录，是则处理之；<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(5) 重复第(3)和(4)步，用逐条取出结果集中的行进行判断和处理；<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;(6) CLOSE，关闭游标，释放结果集占用的缓冲区和其他资源。<br>
+    <br>
+    <h3> 成功的实例：</h3>
+    插入数据：<br>
+    <h3> 1. 在sqldeveloper中输入：</h3>
+    CREATE USER:<br>
+    CREATE TABLE: <br>
+    INSERT INTO "C##DRUGDBUSER"."DRUGCOURSEUSER" (STD_ID, STD_NAME,
+    STD_NUM, STD_MAJOR, STD_PASSWORD, STD_RECORDS) VALUES ('222',
+    'dengjia', 'tttttttt', 'nnnnnnnnn', 'jjjjjjjjjj', '10')<br>
+    <div align="center"><img moz-do-not-send="true"
+        src="../hustdbroot/oradir/insertforcurupdel.png" alt=""
+        width="1334" height="492"><br>
+      <br>
+      <div align="left">注意：<br>
+        输入SQL命令后，点绿色箭头，然后在表中点刷新按钮即可看到新增的一行，但是这时数据并没有真正插入到表中，需要点：提交按钮！！！
+        （切记）<br>
+      </div>
+      <br>
+    </div>
+    <h3> 五 c语言操作oracle数据库CDB（c++操作oracle数据库）: C##DRUGDBUSER</h3>
+    <p>需要用到: Eclipse 2023 linux（调试好，可以用）<br>
+      create c/c++ proj:<br>
+      ecpporaproj:<br>
+      <br>
+    </p>
+    <h3> 5.1&nbsp; c程序通过什么连接oracle</h3>
+    <p> &nbsp;&nbsp; <span style="color: rgb(78, 78, 78); font-family:
+        &quot;Microsoft YaHei&quot;, Verdana, sans-serif; font-size:
+        15px; font-style: normal; font-variant-ligatures: normal;
+        font-variant-caps: normal; font-weight: 400; letter-spacing:
+        normal; orphans: 2; text-align: start; text-indent: 30px;
+        text-transform: none; white-space: normal; widows: 2;
+        word-spacing: 0px; -webkit-text-stroke-width: 0px;
+        background-color: rgb(255, 255, 255); text-decoration-thickness:
+        initial; text-decoration-style: initial; text-decoration-color:
+        initial; display: inline !important; float: none;">C语言连接oracle数据
+        库通过使用oracle提供的OCI接口和PROC编程接口两种方式</span> <br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">C语言和Oracle12c连接: <br>
+      有三种办法：<br>
+      1、用ODBC，安装ODBC驱动，使用微软提供的ODBC的API访问数据库；<br>
+      2、用ORACLE提供的OCI/OCCI API调用方式；</p>
+    <h3> 在CENTOS 7.9下编译：（gcc: devtoolset-8, devtoolset-9, devtoolset-11
+      all&nbsp; ok）/////&nbsp;&nbsp; note string sqldrugdb = "select *
+      from \"C##BIODBUSER\".\"biodbstd\"";</h3>
+    新建工程：<br>
+    <br>
+    <div align="center"><img moz-do-not-send="true"
+        src="../hustdbroot/oradir/newecliporaproj.png" alt=""
+        width="793" height="455"><br>
+      <br>
+      <br>
+      <div align="left">正式编译前需要进行一些配置:&nbsp; Release Active
+        !!!!!!!!!!!!!!!!!<br>
+        1. 右键点项目后选属性<br>
+        在C/C++Build下面的Environment的右边，加入INCLUDE
+        oracle-instantclient的头文件路径的环境变量(也就是前面安装的oracle-
+        instantclient19.18***.rpm)：<br>
+      </div>
+      <div align="left">CPLUS_INCLUDE_PATH:
+        /usr/include/oracle/19.18/client64&nbsp;&nbsp; （如果是oracle-
+        instantclient19.19就用：/usr/include/oracle/19.19/client64）<br>
+      </div>
+      <div align="left">C_INCLUDE_PATH:
+        /usr/include/oracle/19.19/client64<br>
+        CWD: /opt/eclipse2022cpplin64/workspces/yyyyyyyy/Release
+        （这个可能会与课件的不太一样）<br>
+        CWD: /opt/eclipse2022cpplin64/workspces/yyyyyyyy/Release<br>
+        <br>
+        <div align="center"><img moz-do-not-send="true"
+            src="oradir/cwdpwdset.png" alt="" width="996" height="390">
+          <br>
+          <div align="left"><br>
+            #需要拷贝一下库文件：不然会报错找不到 -locc<br>
+          </div>
+        </div>
+        #对于：oracle-instantclient19.19<br>
+        #cp /usr/lib/oracle/19.19/client64/lib/libocci.so.19.1
+        /usr/lib/oracle/19.19/client64/lib/libocci.so &nbsp;
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>
+        #对于：oracle-instantclient19.18<br>
+        #cp /usr/lib/oracle/19.18/client64/lib/libocci.so.19.1
+        /usr/lib/oracle/19.18/client64/lib/libocci.so&nbsp;&nbsp;&nbsp;&nbsp;
+        //如果报：
+        /opt/rh/devtoolset-8/root/usr/libexec/gcc/x86_64-redhat-linux/8/ld:
+        找不到 -locci</div>
+      <br>
+      <img moz-do-not-send="true" src="oradir/howoccilib.png" alt=""
+        width="1564" height="1059"><br>
+      <div align="left">注意：按照上面的样子填写: <br>
+        在GCC C++ Compiler: <br>
+        输入Command:&nbsp;&nbsp; g++ -I/usr/include/oracle/19.18/client64/<br>
+        其下的All options 类似这样:&nbsp; -I/usr/include/oracle/19.18/client64
+        -O3 -g -Wall -c -fmessage-length=0<br>
+        <div align="center"><br>
+        </div>
+        在GCC C++ Compiler中的Includes:点右侧那个编辑按钮，添加一行:&nbsp;&nbsp;
+        /usr/include/oracle/19.18/client64<br>
+        <div align="center"><img moz-do-not-send="true"
+            src="oradir/gccincludeall.png" alt="" width="688"
+            height="220"></div>
+        <div align="center"><br>
+        </div>
+        类似在GCC C++ Linker的右上方:<br>
+        Command: g++ -L/usr/lib/oracle/19.18/client64/lib&nbsp; -lclntsh
+        -locci<br>
+        其下面的All options:&nbsp; -L/usr/lib/oracle/19.18/client64/lib<br>
+        <div align="center"><br>
+        </div>
+        在GCC C++ Linker的Libraries添加Library search path: -L:&nbsp;&nbsp;
+        /usr/lib/oracle/19.18/client64/lib<br>
+      </div>
+      <br>
+      <br>
+      <table width="100%" cellspacing="2" cellpadding="2" border="1">
+        <tbody>
+          <tr>
+            <td valign="top">CENTOS7.9&nbsp; OCCI方式连接oracle 12c<br>
+            </td>
+            <td valign="top">or<br>
+            </td>
+            <td valign="top">success on CENTOS&nbsp;&nbsp;
+              7.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+              <br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">input code as: xxxx.cpp&nbsp;&nbsp;
+              filename<br>
+              #include &lt;iostream&gt;<br>
+              <br>
+              #define LINUXOCCI<br>
+              #include &lt;occi.h&gt;<br>
+              #include &lt;occiControl.h&gt;<br>
+              using namespace std;<br>
+              using namespace oracle::occi;<br>
+              <br>
+              int main() {<br>
+              &nbsp;&nbsp;&nbsp; Environment *env =
+              Environment::createEnvironment(Environment::DEFAULT);<br>
+              &nbsp;&nbsp;&nbsp; cout &lt;&lt; "success" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; string name = "c##biodbuser";<br>
+              &nbsp;&nbsp;&nbsp; string pwd = "biodb123";<br>
+              &nbsp;&nbsp;&nbsp; string sid =
+              "222.20.94.229:1521/biohustdb"; // 此处: 1521/biohust&nbsp;
+              not: 1521:biohustdb<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; string date;<br>
+              &nbsp;&nbsp;&nbsp; try {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Connection *conn =
+              env-&gt;createConnection(name, pwd, sid);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (conn)<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;&lt; "You are
+              successfully connecting to Oracle DBMS! Congratulations!"<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "connect fail" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Statement *stmt =
+              conn-&gt;createStatement();<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; string sSQL =<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp; "select to_char(sysdate,'yyyy-mm-dd
+              hh24:mi:ss') from dual";<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              stmt-&gt;setSQL(sSQL);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ResultSet *rs =
+              stmt-&gt;executeQuery();<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (rs-&gt;next()) {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              date = rs-&gt;getString(1);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; "now
+              time:" &lt;&lt; date &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              env-&gt;terminateConnection(conn);<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; string sqldrugdb =
+              "select * from drugdbuser";<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              stmt-&gt;setSQL(sqldrugdb);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ResultSet *drugrs =
+              stmt-&gt;executeQuery();<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while
+              (drugrs-&gt;next()) {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              int stdid = drugrs-&gt;getInt(1);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "Your StdID:" &lt;&lt; stdid &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              string stdname = drugrs-&gt;getString(2);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              string stdnum = drugrs-&gt;getString(3);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              string stdmajor = drugrs-&gt;getString(4);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              int stdrecords = drugrs-&gt;getInt(5);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "Your records:" &lt;&lt; stdrecords &lt;&lt;
+              endl;<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; } catch (SQLException e) {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt;
+              e.what() &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return -1;<br>
+              &nbsp;&nbsp;&nbsp; }<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; Environment::terminateEnvironment(env);<br>
+              &nbsp;&nbsp;&nbsp; cout &lt;&lt; "end!" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; return 0;<br>
+              }<br>
+              <br>
+              <br>
+              <br>
+              <br>
+            </td>
+            <td valign="top">#include
+              &lt;iostream&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+              <br>
+              #define LINUXOCCI<br>
+              #include &lt;occi.h&gt;<br>
+              #include &lt;occiControl.h&gt;<br>
+              using namespace std;<br>
+              using namespace oracle::occi;<br>
+              <br>
+              int main() {<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; Environment *env =
+              Environment::createEnvironment(Environment::DEFAULT);<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; cout &lt;&lt; "success" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; string name = "build";<br>
+              &nbsp;&nbsp;&nbsp; string pwd = "123456";<br>
+              &nbsp;&nbsp;&nbsp; string sid = "90.0.10.140/biohustdb";
+              // 此处: 1521/biohustdb&nbsp; not: 1521:biohustdb<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; string date;<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; try {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Connection *conn =
+              env-&gt;createConnection(name, pwd, sid);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (conn)<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "connect success" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "connect fail" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Statement *stmt =
+              conn-&gt;createStatement();<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; string sSQL =<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp; "select to_char(sysdate,'yyyy-mm-dd
+              hh24:mi:ss') from dual";<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              stmt-&gt;setSQL(sSQL);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ResultSet *rs =
+              stmt-&gt;executeQuery();<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (rs-&gt;next()) {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              date = rs-&gt;getString(1);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; "now
+              time:" &lt;&lt; date &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              env-&gt;terminateConnection(conn);<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; } catch (SQLException e) {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt;
+              e.what() &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return -1;<br>
+              &nbsp;&nbsp;&nbsp; }<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; Environment::terminateEnvironment(env);<br>
+              &nbsp;&nbsp;&nbsp; cout &lt;&lt; "end!" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; return 0;<br>
+              }</td>
+            <td valign="top">#include &lt;iostream&gt;<br>
+              <br>
+              #define LINUXOCCI<br>
+              #include &lt;occi.h&gt;<br>
+              #include &lt;occiControl.h&gt;<br>
+              using namespace std;<br>
+              using namespace oracle::occi;<br>
+              <br>
+              int main() {<br>
+              &nbsp;&nbsp;&nbsp; Environment *env =
+              Environment::createEnvironment(Environment::DEFAULT);<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; cout &lt;&lt;
+              "************************************************************"
+              &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; cout &lt;&lt; "Welcome to HUST Database
+              course For BioStudents!!!" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; cout &lt;&lt;
+              "************************************************************"
+              &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; string name = "c##biodbuser";<br>
+              &nbsp;&nbsp;&nbsp; string pwd = "biodb123";<br>
+              &nbsp;&nbsp;&nbsp; string sid =
+              "222.20.94.229:1521/biohustdb"; // 此处:
+              1521/biohustdb&nbsp; not: 1521:biohustdb<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; string date;<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; try {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Connection *conn =
+              env-&gt;createConnection(name, pwd, sid);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (conn)<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "Successfully connected to Oracle DBMS on
+              CentOS 7.9!" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "connect fail" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Statement *stmt =
+              conn-&gt;createStatement();<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; string sSQL =
+              "select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') from
+              dual";<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              stmt-&gt;setSQL(sSQL);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ResultSet *rs =
+              stmt-&gt;executeQuery();<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (rs-&gt;next()) {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              date = rs-&gt;getString(1);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; "now
+              time:" &lt;&lt; date &lt;&lt; endl;<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Statement *drugstmt
+              = conn-&gt;createStatement();<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; string sqldrugdb =
+              "select * from drugdbuser";<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              drugstmt-&gt;setSQL(sqldrugdb);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ResultSet *drugrs =
+              drugstmt-&gt;executeQuery();<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              //'2021002','李子晨','U202112156','生物信息学202101班
+              ','U202112156','1000'<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while
+              (drugrs-&gt;next()) {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              int stdid = drugrs-&gt;getInt(1);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "1. Your StdID:" &lt;&lt; stdid &lt;&lt;
+              endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              string stdname = drugrs-&gt;getString(2);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "2. Your name:" &lt;&lt; stdname &lt;&lt;
+              endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              string stdnum = drugrs-&gt;getString(3);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "3. Your number:" &lt;&lt; stdnum &lt;&lt;
+              endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              string stdmajor = drugrs-&gt;getString(4);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "4. Your pwdes:" &lt;&lt; stdmajor &lt;&lt;
+              endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              string stdpwd = drugrs-&gt;getString(5);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "5. Your pwdes:" &lt;&lt; stdpwd &lt;&lt;
+              endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              int stdrecords = drugrs-&gt;getInt(6);<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              cout &lt;&lt; "6. Your records:" &lt;&lt; stdrecords
+              &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              env-&gt;terminateConnection(conn); //note: this line close
+              the conn!!!!<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; } catch (SQLException e) {<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt;
+              e.what() &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return -1;<br>
+              &nbsp;&nbsp;&nbsp; }<br>
+              <br>
+              &nbsp;&nbsp;&nbsp; Environment::terminateEnvironment(env);<br>
+              &nbsp;&nbsp;&nbsp; cout &lt;&lt; "end!" &lt;&lt; endl;<br>
+              &nbsp;&nbsp;&nbsp; return 0;<br>
+              }<br>
+              <br>
+              <br>
+              note 编译的效果要这样才会成功:<br>
+              03:49:58 **** Build of configuration Release for project
+              yyyyyyyy ****<br>
+              make all <br>
+              Building file: ../hhh.cpp<br>
+              Invoking: GCC C++ Compiler<br>
+              g++ -I/usr/include/oracle/19.18/client64/
+              -I/usr/include/oracle/19.18/client64 -O3 -Wall -c
+              -fmessage-length=0 -MMD -MP -MF"hhh.d" -MT"hhh.o" -o
+              "hhh.o" "../hhh.cpp"<br>
+              Finished building: ../hhh.cpp<br>
+              &nbsp;<br>
+              Building file: ../nnn.cpp<br>
+              Invoking: GCC C++ Compiler<br>
+              g++ -I/usr/include/oracle/19.18/client64/
+              -I/usr/include/oracle/19.18/client64 -O3 -Wall -c
+              -fmessage-length=0 -MMD -MP -MF"nnn.d" -MT"nnn.o" -o
+              "nnn.o" "../nnn.cpp"<br>
+              Finished building: ../nnn.cpp<br>
+              &nbsp;<br>
+              Building target: yyyyyyyy<br>
+              Invoking: GCC C++ Linker<br>
+              g++ -I/usr/include/oracle/19.18/client64/&nbsp; -lclntsh
+              -locci -L/usr/lib/oracle/19.18/client64/lib -o
+              "yyyyyyyy"&nbsp; ./hhh.o ./nnn.o&nbsp;&nbsp; <br>
+              Finished building target: yyyyyyyy</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <div align="left"><br>
+        输入代码：<br>
+        <br>
+        右键点击工程： ===&gt; 找到 properties:&nbsp; 结果会打开下面俩个窗口：<br>
+        点C/C++ Build&nbsp; ==&gt; Settings ===&gt;&nbsp; GCC C++
+        Compiler：输入&nbsp; g++ -I/usr/include/oracle/19.19/client64/<br>
+        点C/C++ Build&nbsp; ==&gt; Settings ===&gt;&nbsp; GCC C++
+        Linker:&nbsp;&nbsp;&nbsp; 输入&nbsp; g++
+        -I/usr/include/oracle/19.19/client64/&nbsp;
+        -L/usr/lib/oracle/19.19/client64/lib&nbsp; -lclntsh -locci<br>
+        <br>
+        <img moz-do-not-send="true"
+          src="../hustdbroot/oradir/setoralibs.png" alt="" width="726"
+          height="568">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+        <img moz-do-not-send="true"
+          src="../hustdbroot/oradir/setloccilib.png" alt="" width="742"
+          height="572"><br>
+        &nbsp;<br>
+        也可以命令行编译： (/usr/bin/ld: 找不到 -locci)<br>
+        [catalyst@localhost yyyyyyyy]$ g++ nnn.cpp -o mylinora
+        -I/usr/include/oracle/19.19/client64/
+        -L/usr/lib/oracle/19.19/client64/lib&nbsp; -lclntsh
+        -locci&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //用 #ls
+        列表看看，是不是生成了可执行文件？？？？<br>
+        /usr/lib/oracle/19.19/client64/lib/libclntsh.so：对‘ztce_getctx’未定
+        义的引用<br>
+        /usr/lib/oracle/19.19/client64/lib/libclntsh.so：对
+        ‘sslss_sigset_raise_signals’未定义的引用<br>
+        /usr/lib/oracle/19.19/client64/lib/libclntsh.so：对
+        ‘sslss_sig_pending_’未定义的引用<br>
+        /usr/lib/oracle/19.19/client64/lib/libclntsh.so：对
+        ‘sslss_async_call_cnt_’未定义的引用<br>
+        /usr/lib/oracle/19.19/client64/lib/libclntsh.so：对‘ztce_setctx’未定
+        义的引用<br>
+        dont use: gcc 7.5 ( it will say:<span>ORA-24960：属性
+          OCI_ATTR_USERNAME大于最大允许长度255</span>compile it by your own!!!!)<br>
+        ]# yum install gcc g++&nbsp;&nbsp;&nbsp;&nbsp; //4.8.5 sure ok
+        for biohustdb !!!!!!!!!!!!!!!!!!<br>
+        <br>
+        you can solve it by:<br>
+        su:<br>
+        [admin@PC201-10-002 ecpporaproj]$ cd /opt/gcc75/gcc-7.5.0/build/<br>
+        [admin@PC201-10-002 build]$ su<br>
+        密码：<br>
+        [root@PC201-10-002 build]# make install<br>
+        then:<br>
+        [root@PC201-10-002 build]# cd
+        /home/admin/eclipse-workspace/ecpporaproj/<br>
+        [root@PC201-10-002 ecpporaproj]# g++ viora.cpp -o mylinora
+        -I/usr/include/oracle/19.19/client64/
+        -L/usr/lib/oracle/19.19/client64/lib&nbsp; -lclntsh -locci<br>
+        <br>
+        now all ok!!!!<br>
+        Building file: ../nnn.cpp<br>
+        Invoking: GCC C++ Compiler<br>
+        g++ -I/usr/include/oracle/19.18/client64/
+        -I/usr/include/oracle/19.18/client64 -O3 -g -Wall -c
+        -fmessage-length=0 -MMD -MP -MF"nnn.d" -MT"nnn.o" -o "nnn.o"
+        "../nnn.cpp"<br>
+        Finished building: ../nnn.cpp<br>
+        &nbsp;<br>
+        Building target: yyyyyyyy<br>
+        Invoking: GCC C++ Linker<br>
+        g++ -I/usr/include/oracle/19.18/client64/&nbsp; -lclntsh -locci
+        -L/usr/lib/oracle/19.18/client64/lib -o "yyyyyyyy"&nbsp; ./hhh.o
+        ./nnn.o&nbsp;&nbsp; <br>
+        Finished building target: yyyyyyyy<br>
+        <br>
+        <br>
+        <br>
+        <h3> 6:&nbsp; visit&nbsp; Oracle PDB with C++ by occi</h3>
+        <p>switch to PDB, create table and insert values<br>
+          then modify the c++ code, compile it, run it!!!!<br>
+        </p>
+        <p><br>
+        </p>
+        <p><br>
+        </p>
+        <p><br>
+        </p>
+        <h3>7. just change to your menu of HUST!!!<br>
+        </h3>
+        <h1><br>
+        </h1>
+        <p><br>
+        </p>
+        <p>[admin@PC201-10-001 ~]$ su<br>
+          [root@PC201-10-001 admin]#
+          /opt/eclipse2023/eclipse&nbsp;&nbsp; (NOW WITH GCC
+          4.8.5:&nbsp; OK)&nbsp; CAN RUN ORACL (BOOT ORACLE: $ ./lsnrctl
+          start;&nbsp; $ ./sqlplus /nolog)<br>
+        </p>
+        &nbsp;<br>
+        <br>
+        <br>
+        [catalyst@localhost yyyyyyyy]$ ./mylinora <br>
+        ************************************************************<br>
+        Welcome to HUST Database course For BioStudents!!!<br>
+        ************************************************************<br>
+        Successfully connected to Oracle DBMS on CentOS 7.9!<br>
+        now time:2023-04-30 04:03:14<br>
+        1. Your StdID:2021002<br>
+        2. Your name:李子晨<br>
+        3. Your number:U202112156<br>
+        4. Your pwdes:生物信息学202101班<br>
+        5. Your pwdes:U202112156<br>
+        6. Your records:1000<br>
+        end!<br>
+        <br>
+      </div>
+    </div>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">))))))))))))))))))))))))))))))))))))))))))</p>
+    <h2 align="center">OCCI方式访问Oracle:&nbsp;&nbsp; windows版(仅作为参考练习)</h2>
+    <h2 align="center">&nbsp;同样需要下载instantclient相关的几个文件才能正式运行代码</h2>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">环境：windows7 64bit&nbsp;&nbsp;&nbsp; IDE ：VS 2015
+      &nbsp;&nbsp;&nbsp;&nbsp; 服务端： Oracle 11g</p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">1. 创建一个W32控制台工程<br>
+      <img src="../hustdbroot/oradir/vs2015oroci1.png" alt=""
+        width="679" height="242" align="middle"><br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">打开一个新窗口:<br>
+      <img src="../hustdbroot/oradir/newwinwin32console.png" alt=""
+        width="817" height="573"></p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">填写工程名: testforoci<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指定工程目录: D:\MSVCPROJECTS <br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">代码如下所示: <br>
+      //&nbsp; testforoci.cpp : 定义控制台应用程序的入口点。<br>
+      //winows: must copy all .h file from: oracle oci dir&nbsp;&nbsp;
+      to&nbsp;&nbsp;&nbsp; D:\APPsoftwares\msvs2015\VC\include<br>
+      #include "stdafx.h"<br>
+      #include &lt;iostream&gt;<br>
+      //#define LINUXOCCI<br>
+      #define WIN32COMMON<br>
+      #pragma managed(push, off)<br>
+      #include &lt;occi.h&gt;<br>
+      #include &lt;occiControl.h&gt;<br>
+      #include &lt;oratypes.h&gt; <br>
+      #pragma managed(pop)<br>
+      using namespace std;<br>
+      using namespace oracle::occi;<br>
+      <br>
+      #pragma once<br>
+      int main(){</p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><span style="color: rgb(77, 77, 77); font-family:
+        -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang
+        SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft
+        YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif,
+        SimHei, SimSun; font-size: 16px; font-style: normal;
+        font-variant-ligatures: normal; font-variant-caps: normal;
+        font-weight: 400; letter-spacing: normal; orphans: 2;
+        text-align: start; text-indent: 0px; text-transform: none;
+        white-space: normal; widows: 2; word-spacing: 0px;
+        -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+        255); text-decoration-thickness: initial; text-decoration-style:
+        initial; text-decoration-color: initial; display: inline
+        !important; float: none;">//创建一个环境，与后面的terminateEnvironment对应</span><br>
+      &nbsp;&nbsp;&nbsp; Environment *env =
+      Environment::createEnvironment(Environment::DEFAULT);<br>
+      &nbsp;&nbsp;&nbsp; cout &lt;&lt; "success" &lt;&lt; endl;<br>
+      &nbsp;&nbsp;&nbsp; string name = "build";<br>
+      &nbsp;&nbsp;&nbsp; string pwd = "123456";<br>
+      &nbsp;&nbsp;&nbsp; string sid = "192.168.1.13:1521/biohustdb"; //
+      此处根据各个数据库参数而定<br>
+      &nbsp;&nbsp;&nbsp; int stdid;<br>
+      &nbsp;&nbsp;&nbsp; try {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Connection *conn =
+      env-&gt;createConnection(name, pwd, sid);<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (conn)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout
+      &lt;&lt; "connect success" &lt;&lt; endl;<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout
+      &lt;&lt; "connect fail" &lt;&lt; endl;<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Statement *stmt =
+      conn-&gt;createStatement();<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //string sSQL = "select
+      to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') from dual";<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; string sSQL = "select *
+      from DRUGCOURSEUSER";<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; stmt-&gt;setSQL(sSQL);<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ResultSet *rs =
+      stmt-&gt;executeQuery();<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (rs-&gt;next()) {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; stdid=
+      rs-&gt;getString(1);<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; "now time:"
+      &lt;&lt; stdid&lt;&lt; endl;<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+      env-&gt;terminateConnection(conn);<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; catch (SQLException e) {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; e.what()
+      &lt;&lt; endl;<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return -1;<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; Environment::terminateEnvironment(env);<br>
+      &nbsp;&nbsp;&nbsp; cout &lt;&lt; "end!" &lt;&lt; endl;<br>
+      &nbsp;&nbsp;&nbsp; return 0;<br>
+      &nbsp;&nbsp;&nbsp; return 0;<br>
+      }<br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">进行一些设置: 点下图所示的属性按钮,&nbsp;&nbsp; 也可以点项目菜单中最下面的那个：<b>属性</b>&nbsp;&nbsp;
+
+
+
+
+
+      菜单项,&nbsp;&nbsp; 即可打开新窗口<br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;" align="center"><img
+        src="../hustdbroot/oradir/setsoluwin32.png" alt="" width="316"
+        height="360"><br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">在属性窗口中找到: VC++ 目录, 点击后在右侧会显示很多项,&nbsp;&nbsp;
+      编辑其中的包含目录和库目录分别填上:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      包含目录&nbsp;&nbsp;&nbsp;&nbsp;
+      D:\app\Administrator\product\11.2.0\dbhome_1
+      \OCI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; windows版oralce12c的OCI
+      头文件(有可能需要将头文件拷到:&nbsp; D:\APPsoftwares\msvs2015\VC\include)<br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">库目录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      D:\app\Administrator\product\11.2.0\dbhome_1\OCI\lib\MSVC\vc9
+      (vc8也是可以的) &nbsp;&nbsp; windows版oralce12c的库文件</p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><img src="../hustdbroot/oradir/setlibwin32.png" alt=""
+        width="901" height="580"><br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">也可以在C/C++中点常规, 然后在右侧的附加包含目录中编辑<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; 附加包含目录:&nbsp;
+      D:\app\Administrator\product\11.2.0\dbhome_1
+      \OCI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同上面的&nbsp;
+      windows版oralce12c的OCI 头文件</p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"> <img src="../hustdbroot/oradir/setincludedir.png"
+        alt="" width="757" height="403"></p>
+    <h1 style="box-sizing: border-box; outline: 0px; margin: 24px 0px
+      8px; padding: 0px; font-weight: 600; font-family: &quot;PingFang
+      SC&quot;, &quot;Microsoft YaHei&quot;, SimHei, Arial, SimSun;
+      font-size: 22px; color: rgb(79, 79, 79); line-height: 32px;
+      overflow-wrap: break-word; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><br>
+      <span style="box-sizing: border-box; outline: 0px; margin: 0px;
+        padding: 0px; font-weight: normal; overflow-wrap: break-word;
+        font-size: 14px;"></span></h1>
+    <h1 style="box-sizing: border-box; outline: 0px; margin: 24px 0px
+      8px; padding: 0px; font-weight: 600; font-family: &quot;PingFang
+      SC&quot;, &quot;Microsoft YaHei&quot;, SimHei, Arial, SimSun;
+      font-size: 22px; color: rgb(79, 79, 79); line-height: 32px;
+      overflow-wrap: break-word; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">此外还需要:</h1>
+    <p><br>
+      <img src="../hustdbroot/oradir/vc8alsoindex.png" alt=""
+        width="1075" height="466"></p>
+    <h1 style="box-sizing: border-box; outline: 0px; margin: 24px 0px
+      8px; padding: 0px; font-weight: 600; font-family: &quot;PingFang
+      SC&quot;, &quot;Microsoft YaHei&quot;, SimHei, Arial, SimSun;
+      font-size: 22px; color: rgb(79, 79, 79); line-height: 32px;
+      overflow-wrap: break-word; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><span style="box-sizing: border-box; outline: 0px;
+        margin: 0px; padding: 0px; font-weight: normal; overflow-wrap:
+        break-word; font-size: 14px;">可能出现的问题: <br>
+      </span></h1>
+    <p>建立了项目，关联了相应的头文件和库文件后，编译时发现出现链接失败：<br>
+      <br>
+      &nbsp;&nbsp;&nbsp;
+      提示无法解析的外部符号oracle::occi::Environment::createEnvironment以及
+      oracle::occi::Environment:: terminateEnvironment<br>
+    </p>
+    <p>提示: <br>
+      错误&nbsp;&nbsp;&nbsp; LNK2019&nbsp;&nbsp;&nbsp; 无法解析的外部符号 "public:
+      static class oracle::occi::Environment * __cdecl
+      oracle::occi::Environment::createEnvironment<br>
+    </p>
+    <h1>&nbsp;原来建是Win32项目，即是32位的应用程序(x86)，却关联64位Oracle库，就出问题。</h1>
+    <h1>需要改成: x64,&nbsp;&nbsp; 就没有问题了</h1>
+    <p><br>
+      调试及运行VS2015版的C代码: 可能需要拷贝
+      D:\app\Administrator\product\11.2.0\dbhome_1\OCI\lib\MSVC\vc9
+      \oraocci11d.dll到<br>
+    </p>
+    <p>D:\MSVCPROJECTS\ConsoleApplication4\x64\Debug目录,
+      即编译成功得到的exe所有的目录!!!<br>
+      然后就可以点VS2015主界面的调试功能进行调试了, 结果会显示在另一个win32的窗口中:<br>
+    </p>
+    <p><br>
+    </p>
+    <h1 class="title-article" id="articleContentId" style="box-sizing:
+      border-box; outline: 0px; margin: 0px; padding: 0px; font-weight:
+      600; font-family: &quot;PingFang SC&quot;, &quot;Microsoft
+      YaHei&quot;, SimHei, Arial, SimSun; font-size: 28px;
+      overflow-wrap: break-word; color: rgb(34, 34, 38); word-break:
+      break-all; font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">ORALCE的OCCI方式出字符串型数据用
+      getString()报错,以及将getString()放在while循环里面报错的问题</h1>
+    <p>用vs2010&nbsp; 请先下载对应的版本详细如下：occi 不需要像ado那样需下载客户端才能访问oracle服务器。<br>
+      <br>
+      &nbsp;&nbsp;
+      这里下载的是vs连接需要的一些dll文件，有了这些就可以直接访问其他机器上面的oracle服务器，甚至不需要安装客户端。<br>
+    </p>
+    <p> 下载: <span style="color: rgb(0, 0, 0); font-family:
+        OracleSansVF, OracleSansVFCyGr, -apple-system,
+        BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Helvetica
+        Neue&quot;, sans-serif; font-size: 13.7052px; font-style:
+        normal; font-variant-ligatures: normal; font-variant-caps:
+        normal; font-weight: 400; letter-spacing: normal; orphans: 2;
+        text-align: start; text-indent: 0px; text-transform: none;
+        white-space: normal; widows: 2; word-spacing: 0px;
+        -webkit-text-stroke-width: 0px; background-color: rgb(251, 249,
+        248); text-decoration-thickness: initial; text-decoration-style:
+        initial; text-decoration-color: initial; display: inline
+        !important; float: none;">Oracle Call Interface 19 can connect
+        to Oracle Database 11.2 or later.</span></p>
+    <p>https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html</p>
+    <p>instantclient-basic-nt-11.2.0.2.0,
+http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html<br>
+      下载instantclient-sdk-nt-11.2.0.2.0,
+      http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html
+
+
+
+
+
+      <br>
+      下载occivc10_11202_win32，
+      http://www.oracle.com/technetwork/database/occidownloads-083553.html
+      <br>
+      &nbsp;这里需要注意的是请下载32位的&nbsp; 无论你的电脑是64还是32的&nbsp; 请下载32位版的
+      。否则需要将编译器配置成X64的。<br>
+      把下载的1压缩包解压&nbsp;&nbsp;&nbsp; 解压出来是一个叫instantclient_11_2的文件夹
+      把里面的东西全部复制到：&nbsp;&nbsp; D:\instantclient_11_2下面 。<br>
+      再解压下载2的压缩包，解压出来是一个sdk的文件夹&nbsp;
+      请把这个文件夹放在D:\instantclient_11_2这个文件夹下面&nbsp;&nbsp; <br>
+      &nbsp;最后一个压缩包解压出来是一堆dll&nbsp; , 把这里面的dll 放在一个新建的文件夹下面
+      给这个新文件夹取名vc10 <br>
+      &nbsp;然后把vc10放在：D:\instantclient_11_2\sdk\lib\msvc下面<br>
+      <br>
+      <br>
+      下面配置vs2015工程：<br>
+      <br>
+      注意：我们先删除D:\instantclient_11_2\sdk\lib\msvc下面的oraocci11.lib，然后配置环境变
+      量我的名字为ORACLE11<br>
+      <br>
+      环境变量值是D:\instantclient_11_2<br>
+      <br>
+      配置好环境变量后如果不行， 我们重启电脑 ,让环境变量生效。<br>
+      <br>
+      &nbsp;配置vs ：<br>
+      &nbsp;1.工程&gt;属性&gt;vc++目录&gt;包含目录 点击编辑后
+      添加上$(ORACLE11)\sdk\include&nbsp; <br>
+      2.然后在包库目录里面添加$(ORACLE11)\sdk\lib\msvc
+      和$(ORACLE11)\sdk\lib\msvc\vc10<br>
+      <br>
+      最后需要将D:\instantclient_11_2下面的三个dll（oci.dll&nbsp; oraocci11d.dll
+      oraociei11.dll）拷贝 到工程debug()的路径下面。<br>
+      <br>
+      上面成功后&nbsp;
+      你可以发现你可以连接oracle10g的和11g的服务器，无论你怎么调用getstring()都不会报错了！！！<br>
+    </p>
+    <p> </p>
+    <br>
+    <h1>上面的例子也可以用: instantclient_19_18在VS2015下编译(win7不能运行!!!)</h1>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">对于win7下安装的Oracle 11g/12c,&nbsp; 配置VS2015用于编译Proc:</p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">&nbsp;&nbsp;&nbsp; 先创建一个空工程occiwin7proc</p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">1.&nbsp; 添加头文件目录：</p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">解决方案中右键occiwin7proc-&gt;属性-&gt;c/c++-&gt;常规-&gt;附加包
+      含目录，中输入库目录地址：<br>
+D:\MSVCPROJECTS\occiwin7proc\occiwin7proc\instantclientsdkwinx641918\include<br>
+      <img src="../hustdbroot/oradir/ins1819aindex.png" alt=""
+        width="860" height="372"></p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">2.&nbsp; 添加库文件目录：</p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">属性-&gt;链接器-&gt;常规-&gt;附加库目录：D:\instantclient-sdk-nt-
+      12.1.0.2.0\instantclient_12_1\sdk\lib\msvc\vc10<br>
+      <img src="../hustdbroot/oradir/ins1918bdex.png" alt="" width="783"
+        height="231"><br>
+    </p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><br>
+      然后可以输入: D:\MSVCPROJECTS\occiwin7proc\occiwin7proc
+      \instantclientsdkwinx641918\lib\msvc
+      \vc14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //其中有库文件
+      oraocci19d.lib&nbsp;&nbsp; 和 oraocci19.lib<br>
+    </p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><img src="../hustdbroot/oradir/ins1918csetdex.png"
+        alt="" width="1021" height="457"></p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">3.&nbsp; 添加库文件：</p>
+    <p style="margin: 10px auto; line-height: 1.5; text-indent: 0px;
+      color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;,
+      &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;,
+      Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(238, 238, 221); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">属性-&gt;链接器-&gt;输入-&gt;附加依赖项：此处有oraocci12.lib和
+      oraocci12d.lib两个文件，其中oraocci12.lib为release模式时使用，oraocci12d.lib为
+      debug模式时使用。<br>
+      <img src="../hustdbroot/oradir/ins1918d67fdex.png" alt=""
+        width="771" height="301"></p>
+    <p>点VS2015菜单:&nbsp; 生成&nbsp; ==&gt; 生成解决方案 或 重新生成解决方案</p>
+    <p>即可看到下面的结果: <br>
+      1&gt;------ 已启动全部重新生成: 项目: occiwin7proc, 配置: Debug x64 ------<br>
+      1&gt;&nbsp; stdafx.cpp<br>
+      1&gt;&nbsp; occiwin7proc.cpp<br>
+      1&gt;&nbsp; occiwin7proc.vcxproj -&gt;
+      D:\MSVCPROJECTS\occiwin7proc\x64\Debug\occiwin7proc.exe<br>
+      ========== 全部重新生成: 成功 1 个，失败 0 个，跳过 0 个 ==========<br>
+    </p>
+    <p>结果会在目录&nbsp; D:\MSVCPROJECTS\occiwin7proc\x64\Debug 生成: <br>
+      occiwin7proc.exe<br>
+    </p>
+    <p>点本地Windows调试器： &nbsp;&nbsp; <img
+        src="../hustdbroot/oradir/insde1918x.png" alt="" width="370"
+        height="37"><br>
+      可能会报: 无法启动程序, 因为计算机中丢失oraocci19d.dll, 这里则需要将这个dll文件拷到:<br>
+      D:\MSVCPROJECTS\occiwin7proc\x64\Debug<br>
+    </p>
+    <p><br>
+    </p>
+    <p>*********************<br>
+    </p>
+    <h1 class="title-article" id="articleContentId" style="box-sizing:
+      border-box; outline: 0px; margin: 0px; padding: 0px; font-weight:
+      600; font-family: &quot;PingFang SC&quot;, &quot;Microsoft
+      YaHei&quot;, SimHei, Arial, SimSun; font-size: 28px;
+      overflow-wrap: break-word; color: rgb(34, 34, 38); word-break:
+      break-all; font-style: normal; font-variant-ligatures:
+      common-ligatures; font-variant-caps: normal; letter-spacing:
+      normal; orphans: 2; text-align: start; text-indent: 0px;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">无法定位程序输入点GetOverlappedResultEx 于动态链接库 KERNEL32.dll 上</h1>
+    <p><span style="color: rgb(77, 77, 77); font-family: -apple-system,
+        &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+        &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+        &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px;
+        font-style: normal; font-variant-ligatures: no-common-ligatures;
+        font-variant-caps: normal; font-weight: 400; letter-spacing:
+        normal; orphans: 2; text-align: start; text-indent: 0px;
+        text-transform: none; white-space: normal; widows: 2;
+        word-spacing: 0px; -webkit-text-stroke-width: 0px;
+        background-color: rgb(255, 255, 255); text-decoration-thickness:
+        initial; text-decoration-style: initial; text-decoration-color:
+        initial; display: inline !important; float: none;">找到微软的官方文档, </span><br>
+    </p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); line-height: 26px; overflow: auto hidden;
+      overflow-wrap: break-word; font-family: -apple-system, &quot;SF UI
+      Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans
+      GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro
+      Hei&quot;, sans-serif; font-style: normal; font-variant-ligatures:
+      no-common-ligatures; font-variant-caps: normal; letter-spacing:
+      normal; orphans: 2; text-align: start; text-indent: 0px;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">看到说明：KERNEL32.dll 的支持的最低桌面客户端是Windows 8，服务器是Windows
+      Server 2012 。</p>
+    <h1 style="box-sizing: border-box; outline: 0px; margin: 24px 0px
+      8px; padding: 0px; font-weight: 600; font-family: &quot;PingFang
+      SC&quot;, &quot;Microsoft YaHei&quot;, SimHei, Arial, SimSun;
+      font-size: 22px; color: rgb(79, 79, 79); line-height: 32px;
+      overflow-wrap: break-word; font-style: normal;
+      font-variant-ligatures: no-common-ligatures; font-variant-caps:
+      normal; letter-spacing: normal; orphans: 2; text-align: start;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><a name="t1" style="box-sizing: border-box; outline:
+        none; margin: 0px; padding: 0px; font-weight: normal;
+        text-decoration: none; cursor: pointer; background-color:
+        transparent; color: rgb(78, 161, 219); overflow-wrap:
+        break-word;"></a>总结</h1>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); line-height: 26px; overflow: auto hidden;
+      overflow-wrap: break-word; font-family: -apple-system, &quot;SF UI
+      Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans
+      GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro
+      Hei&quot;, sans-serif; font-style: normal; font-variant-ligatures:
+      no-common-ligatures; font-variant-caps: normal; letter-spacing:
+      normal; orphans: 2; text-align: start; text-indent: 0px;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">instantclient_19其实对应的是Oracle19，说明一个问题在win7上不能安装oracle19,
+      在这里记录一下。<br>
+    </p>
+    <h2 style="box-sizing: border-box; font-family: &quot;open
+      sans&quot;, sans-serif; font-weight: 500; line-height: 32px;
+      color: rgb(51, 51, 51); margin-top: 20px; margin-bottom: 10px;
+      font-size: 30px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; letter-spacing: normal;
+      orphans: 2; text-align: start; text-indent: 0px; text-transform:
+      none; white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial; word-break: break-all;"><span
+        style="box-sizing: border-box;">Windows 7 64位 连接Oracle
+        11g:&nbsp; </span><br>
+    </h2>
+    <ul style="box-sizing: border-box; margin-top: 0px; margin-bottom:
+      10px; color: rgb(51, 51, 51); font-family: &quot;open sans&quot;,
+      sans-serif; font-size: 14px; font-style: normal;
+      font-variant-ligatures: normal; font-variant-caps: normal;
+      font-weight: 400; letter-spacing: normal; orphans: 2; text-align:
+      start; text-indent: 0px; text-transform: none; white-space:
+      normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width:
+      0px; background-color: rgb(255, 255, 255);
+      text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">
+      <li style="box-sizing: border-box;"><span style="box-sizing:
+          border-box;">32位instantclient-basic-nt</span></li>
+    </ul>
+    <p>instantclient_18_5: need msvcr120d.dll<br>
+    </p>
+    <h2 style="box-sizing: border-box; font-family: &quot;open
+      sans&quot;, sans-serif; font-weight: 500; line-height: 32px;
+      color: rgb(51, 51, 51); margin-top: 20px; margin-bottom: 10px;
+      font-size: 30px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; letter-spacing: normal;
+      orphans: 2; text-align: start; text-indent: 0px; text-transform:
+      none; white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial; word-break: break-all;"><span
+        style="box-sizing: border-box;"></span></h2>
+    <p><span style="color: rgb(77, 77, 77); font-family: -apple-system,
+        &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+        &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+        &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px;
+        font-style: normal; font-variant-ligatures: no-common-ligatures;
+        font-variant-caps: normal; font-weight: 400; letter-spacing:
+        normal; orphans: 2; text-align: start; text-indent: 0px;
+        text-transform: none; white-space: normal; widows: 2;
+        word-spacing: 0px; -webkit-text-stroke-width: 0px;
+        background-color: rgb(255, 255, 255); text-decoration-thickness:
+        initial; text-decoration-style: initial; text-decoration-color:
+        initial; display: inline !important; float: none;"></span></p>
+    <p><br>
+    </p>
+    <p>另一个windows的例子:<br>
+    </p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">下面是一个最简单的访问过程，你可以把一些DML用
+      类封装起来便于操作。</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">#include "stdafx.h"<br>
+      #include<br>
+      #define WIN32COMMON</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">#include<br>
+      using namespace oracle::occi;<br>
+      using namespace std;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">int _tmain(int argc,
+      _TCHAR* argv[]) {</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">Environment
+      *env=Environment::createEnvironment();//创建一个环境，与文后面的
+      terminateEnvironment 对应</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">Connection *conn;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">Statement *stmt;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">string sql="select
+      ename,job,sal from manager";</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">cout&lt;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">try {<br>
+      conn = env-&gt;createConnection("admin","chao20080808");</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">stmt =
+      conn-&gt;createStatement();</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">ResultSet *rs =
+      stmt-&gt;executeQuery(sql);</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">cout&lt;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">while(rs-&gt;next()) {</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">string
+      l1=rs-&gt;getString(1);</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">string
+      l2=rs-&gt;getString(2);</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">int l3=rs-&gt;getInt(3);</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">cout&lt;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">break;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">}</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">stmt-&gt;closeResultSet(rs);</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">conn-&gt;terminateStatement(stmt);</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">} catch(SQLException e)
+      {</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">cout&lt;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">Environment::terminateEnvironment(env);</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">system("pause");</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">//return -1;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">}</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">env-&gt;terminateConnection(conn);//
+
+
+
+
+
+      关闭连接</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">Environment::terminateEnvironment(env);//
+
+
+
+
+
+      关闭环境</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">cout&lt;</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">system("pause");</p>
+    <p style="box-sizing: border-box; outline: 0px; margin: 0px 0px
+      16px; padding: 0px; font-weight: 400; font-size: 16px; color:
+      rgb(77, 77, 77); overflow: auto hidden; line-height: 24px
+      !important; overflow-wrap: break-word; font-family: -apple-system,
+      &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;,
+      &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;,
+      &quot;WenQuanYi Micro Hei&quot;, sans-serif, SimHei, SimSun;
+      font-style: normal; font-variant-ligatures: normal;
+      font-variant-caps: normal; letter-spacing: normal; orphans: 2;
+      text-align: start; text-indent: 0px; text-transform: none;
+      white-space: normal; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+      255); text-decoration-thickness: initial; text-decoration-style:
+      initial; text-decoration-color: initial;">}</p>
+    <p>********************************************<br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"> </p>
+    <h3> 3、用ORACLE提供的PROC方式。</h3>
+    <p><br>
+    </p>
+    以下代码是用PROC编写的，供参考： <br>
+    https://cloud.tencent.com/developer/article/2075201<br>
+    <br>
+    <p style="margin: 0px 0px 8px; padding: 0px; box-sizing: border-box; list-style: inherit; min-height: 24px; color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">录入代码</p>
+    <p style="margin: 0px 0px 8px; padding: 0px; box-sizing: border-box; list-style: inherit; min-height: 24px; color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">#include&lt;stdio.h&gt;
+#include&lt;string.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;sqlca.h&gt;</p>
+    <p style="margin: 0px 0px 8px; padding: 0px; box-sizing: border-box; list-style: inherit; min-height: 24px; color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">void main()
+{
+&nbsp; char username[10], password[10], server[10];
+&nbsp; char name[11], title[10];
+&nbsp; float salary;
+&nbsp; printf("input name:");
+&nbsp; gets(username);
+&nbsp; printf("input pass:");
+&nbsp; gets(password);
+&nbsp; printf("input server:");
+&nbsp; gets(server);
+&nbsp; EXEC SQL CONNECT :username IDENTIFIED BY :password USING :server;
+&nbsp; printf("input empoyee name:");
+&nbsp; gets(name);
+&nbsp; EXEC SQL SELECT sal, job INTO :salary, :title FROM emp WHERE UPPER(ename) = UPPER(:name);
+&nbsp; printf("title:%s, salary:%6.2f\n", title, salary);
+&nbsp; EXEC SQL COMMIT RELEASE;
+}<br></p>
+    <p style="margin: 0px 0px 8px; padding: 0px; box-sizing: border-box; list-style: inherit; min-height: 24px; color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><span style="color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">$ proc iname=connect.pc parse=full include=/usr/local/include/ include=/usr/include/ &nbsp; &nbsp;//CAN WORK ON 8GPU not 8CPU<br></span></p>
+    <p style="margin: 0px 0px 8px; padding: 0px; box-sizing: border-box; list-style: inherit; min-height: 24px; color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><span style="color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><br></span><span style="color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">]$ gcc -o connect connect.c -L/usr/lib/oracle/18.3/client64/lib -lclntsh -lecpg</span><br><span style="color: rgb(51, 51, 51); font-family: &quot;pingfang SC&quot;, &quot;helvetica neue&quot;, arial, &quot;hiragino sans gb&quot;, &quot;microsoft yahei ui&quot;, &quot;microsoft yahei&quot;, simsun, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span></p>
+    <br>
+    <br>
+    <h1>成功例子<br>
+    </h1>
+    <h1>CENTOS下嵌入式SQL数据库连接：CENTOS 7.9下用PROC编译（要注意Oracle 12版本，以及gcc版本）</h1>
+    环境配置好以后就可以编程练习，首先写一个proc 将要预编译的程序，命名为<a moz-do-not-send="true"
+      href="./lesson1/linproc.pc">linporc.pc</a><br>
+    用proc 预编译 login.pc<br>
+    <br>
+    oracle@suse:~/proctest&gt;
+    D:\app\Administrator\product\11.2.0\dbhome_1\BIN\proc.exe login.pc <br>
+    Pro*C/C++: Release 11.2.0.1. - Production on 星期二 5月 ::
+    <li class="L3" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; background: none; text-indent: 0px; color:
+      rgb(190, 190, 197); line-height: 20px; overflow-wrap: break-word;">&nbsp;</li>
+    &nbsp;oracle@suse:~/proctest&gt; ls&nbsp;&nbsp;&nbsp;&nbsp;
+    //看看有没有.pc文件？？？<br>
+    ###############################################<br>
+    #include &lt;stdio.h&gt;<br>
+    #include "sqlca.h"<br>
+    <br>
+    EXEC SQL BEGIN DECLARE SECTION;<br>
+    &nbsp;&nbsp; char user[] = "c##biodbuser";<br>
+    &nbsp;&nbsp; char pass[] = "biodb123";<br>
+    EXEC SQL END DECLARE SECTION;<br>
+    <br>
+    int main(void) {<br>
+    &nbsp;&nbsp; EXEC SQL CONNECT :user IDENTIFIED BY :pass using
+    :"222.20.94.229:1521/biohustdb";&nbsp;&nbsp; /**连接数据库**/<br>
+    <br>
+    //sqlcode，整型字段，用于保留最近执行的SQL语句的状态:&nbsp; <br>
+    //sqlca.sqlcode = 0&nbsp; 表示该SQL语句执行成功, 没有发生错误和异常。&nbsp; <br>
+    //sqlca.sqlcode&nbsp; &gt; 0&nbsp; 表示执行了该SQL语句,
+    但有一异常。&nbsp;&nbsp;&nbsp; <br>
+    // sqlca.sqlcode &lt; 0&nbsp; 表示由于DB、系统、网络或程序有错误, ORACLE
+    未执行该语句。如出现这类错误, 当前事务一般回退。<br>
+    &nbsp; if(sqlca.sqlcode == 0)<br>
+    &nbsp;&nbsp;&nbsp; printf("success!\n");<br>
+    &nbsp; else<br>
+    &nbsp;&nbsp;&nbsp; printf("error!\n");<br>
+    <br>
+    EXEC SQL COMMIT RELEASE;<br>
+    <br>
+    return 0;<br>
+    }<br>
+    <br>
+    <br>
+    预编译结果会得到一个: login.c&nbsp; 纯代码<br>
+    <br>
+    用gcc 编译 login.c<br>
+    oracle@suse:~/proctest&gt; gcc login.c -o login -I
+    $ORACLE_HOME/precomp/public -L $ORACLE_HOME/lib -l clntsh<br>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"> 其中: &nbsp; -I 指定头文件路径， -L&nbsp; 指定库路径，&nbsp; -l
+      指定链接动态库名称<br>
+      &nbsp;&nbsp;&nbsp; oracle@suse:~/proctest&gt; ls<br>
+      &nbsp;&nbsp;&nbsp; login&nbsp; login.c&nbsp; login.lis&nbsp;
+      login.pc</p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">在8CPU上：<br>
+      #scp catalyst@211.67.28.163:/home/catalyst/login
+      .&nbsp;&nbsp;&nbsp; //下载编译好的文件到8CPU<br>
+      (base) [catalyst@localhost opt]$ ./login&nbsp;&nbsp; (dowlnload to
+      8CPU, which running oracle 12c server now)<br>
+      success!<br>
+      <br>
+    </p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;">ON 8GPU compile sure ok but run ./login error（close 8CPU
+      firewalld也不行？？？？）!!!!! &nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp; ********************************************<br>
+    </p>
+    <h3> 练习题：<a moz-do-not-send="true" href="./lesson1/linproc2.pc">参
+        考源码</a> </h3>
+    <div id="content_views" class="htmledit_views">
+      <p>请根据下面要求进行练习, 自行建立表, <strong><strong>使用Pro*C编写程序, 完成对数据库的操作,
+            并按相应格式输出。</strong></strong><br>
+        S: 学生信息表,&nbsp;&nbsp;&nbsp;&nbsp; 模式描述: S
+        (sno,sname,dept,gender,age)&nbsp; <br>
+      </p>
+      <table width="100%" cellspacing="2" cellpadding="2" border="1">
+        <tbody>
+          <tr>
+            <td valign="top">sno</td>
+            <td valign="top">sname</td>
+            <td valign="top">dept</td>
+            <td valign="top">gender</td>
+            <td valign="top">age</td>
+          </tr>
+          <tr>
+            <td valign="top">1<br>
+            </td>
+            <td valign="top">sssd<br>
+            </td>
+            <td valign="top">xx<br>
+            </td>
+            <td valign="top">xx<br>
+            </td>
+            <td valign="top">xx<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">x<br>
+            </td>
+            <td valign="top">xx<br>
+            </td>
+            <td valign="top">xx<br>
+            </td>
+            <td valign="top">xxx<br>
+            </td>
+            <td valign="top">xx<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p><br>
+        C: 课程信息表, 模式描述: C (cno,cname,credit)</p>
+      <p><br>
+        SC: 学生课程信息表, 模式描述:&nbsp; SC(sno,cno,grade)<br>
+        sno: 学生学号，cno: 课程号<br>
+      </p>
+      <p>&nbsp;</p>
+      <p><br>
+      </p>
+    </div>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><strong> <strong><br>
+        </strong></strong></p>
+    <p style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><strong><strong>输出格式如下所示<br>
+        </strong></strong></p>
+    <table width="100%" cellspacing="2" cellpadding="2" border="1">
+      <tbody>
+        <tr>
+          <td rowspan="1" colspan="4" valign="top" align="center">2022-2023
+
+
+
+
+
+            年第二学期华科大生命学院学生成绩单<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">序号<br>
+          </td>
+          <td valign="top">课程名称<br>
+          </td>
+          <td valign="top">成绩<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">1<br>
+          </td>
+          <td valign="top">生物<br>
+          </td>
+          <td valign="top">92.5<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">2<br>
+          </td>
+          <td valign="top">数据库xx<br>
+          </td>
+          <td valign="top">xx<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">3<br>
+          </td>
+          <td valign="top">基因xx<br>
+          </td>
+          <td valign="top">xx<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">x<br>
+          </td>
+          <td valign="top">xx<br>
+          </td>
+          <td valign="top">xx<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">x<br>
+          </td>
+          <td valign="top">平均成绩<br>
+          </td>
+          <td valign="top">xx<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h1 style="box-sizing: border-box; margin: 0px 0px 20px; padding:
+      0px; text-indent: 2em; line-height: 2em; color: rgb(78, 78, 78);
+      font-family: &quot;Microsoft YaHei&quot;, Verdana, sans-serif;
+      font-size: 15px; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-transform: none; white-space: normal; widows: 2;
+      word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      background-color: rgb(255, 255, 255); text-decoration-thickness:
+      initial; text-decoration-style: initial; text-decoration-color:
+      initial;"><br>
+    </h1>
+    <h2><br>
+    </h2>
+    <h2>在windows下用VS2015/eclipse进行处理(windows下用MingW不能成功编译?????命令行也不
+      行????)</h2>
+    <p>文件: <a href="./lesson1/ConsoleApplication4orapcVS2015OK.cpp">ConsoleApplication4orapcVS2015OK.cpp</a>&nbsp;&nbsp;
+
+
+
+
+
+      <a href="./lesson1/ConsoleApplication4orapcVS2015wtsok.cpp">ConsoleApplication4orapcVS2015wtsok.cpp</a><br>
+    </p>
+    <p>用VS2015新建oracle工程<br>
+      &nbsp;1、新建项目 oracle 项目，命名为oracle 用之前生成的 oracle.cpp
+      文件替换工程里的&nbsp;oracle.cpp。&nbsp; <br>
+      2、配置头文件和库 <br>
+      (1)配置头文件目录&nbsp; 项目——属性——C/C++——附加包含目录，添加&nbsp;
+      自己的目录\product\11.2.0\dbhome_1\precomp\public;%
+      (AdditionalIncludeDirectories)&nbsp; (2)配置库文件目录&nbsp;
+      项目——属性——链接器——附加库目录，添加&nbsp; <br>
+      自己的目录D:\app\wtscrystal\product\12.1.0\dbhome_1\precomp\LIB;%
+      (AdditionalLibraryDirectories) <br>
+    </p>
+    <p><img src="../hustdbroot/oradir/addmyoralibdidr.png" alt=""
+        width="833" height="395"><br>
+      &nbsp;(3)添加库名称&nbsp; 项目——属性——链接器——输入——附加依赖项，添加:&nbsp; orasql12.lib<br>
+    </p>
+    <div align="center"><img
+        src="../hustdbroot/oradir/addmyoralibname.png" alt=""
+        width="662" height="357"></div>
+    如果出错: 无法解析外部命令 void sqlcxt......字眼, 则:<br>
+    找到 extern void sqlcxt(void **, unsigned int *, struct sqlexd *,
+    const struct sqlcxp *);&nbsp; <br>
+    修改为&nbsp;extern "C"&nbsp;void sqlcxt(void **, unsigned int *, struct
+    sqlexd *, const struct sqlcxp *);
+    <li class="L4" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; text-indent: 0px; color: rgb(190, 190, 197);
+      line-height: 20px; overflow-wrap: break-word;">Copyright (c) , ,
+      Oracle and/or its affiliates. All rights reserved.</li>
+    <li class="L5" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; background: none; text-indent: 0px; color:
+      rgb(190, 190, 197); line-height: 20px; overflow-wrap: break-word;">&nbsp;</li>
+    <li class="L6" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; text-indent: 0px; color: rgb(190, 190, 197);
+      line-height: 20px; overflow-wrap: break-word;">系统默认选项值取自于:
+      /suseDba/oracle/product/11.1./precomp/admin/pcscfg.cfg（/opt/gcc850
+      /lib /gcc/x86_64-pc-linux-gnu/8.5.0/include， 重要：否则报错：找不到stddef.h）</li>
+    <li class="L6" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; text-indent: 0px; color: rgb(190, 190, 197);
+      line-height: 20px; overflow-wrap: break-word;"><br>
+    </li>
+    <li class="L6" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; text-indent: 0px; color: rgb(190, 190, 197);
+      line-height: 20px; overflow-wrap: break-word;"><br>
+    </li>
+    <li class="L6" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; text-indent: 0px; color: rgb(190, 190, 197);
+      line-height: 20px; overflow-wrap: break-word;"><br>
+    </li>
+    <li class="L6" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; text-indent: 0px; color: rgb(190, 190, 197);
+      line-height: 20px; overflow-wrap: break-word;"><br>
+    </li>
+    <li class="L6" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; text-indent: 0px; color: rgb(190, 190, 197);
+      line-height: 20px; overflow-wrap: break-word;"><br>
+    </li>
+    <li class="L6" style="box-sizing: border-box; list-style: decimal;
+      margin: 0px; padding: 0px 0px 0px 12px; font-family: &quot;courier
+      new&quot;, monospace; text-indent: 0px; color: rgb(190, 190, 197);
+      line-height: 20px; overflow-wrap: break-word;"><br>
+    </li>
+    动态SQL：<br>
+    下面的部分为动态SQL测试代码(可以在VS2015上成功运行)<br>
+    <pre>//This file was tested by wts on CENTOS 7.9, eclipse 202309, oracle 19.3: can Insert one item into the table!!
+//DELETE FROM "C##DRUGDBUSER".DRUGCOURSEUSER WHERE STD_ID=90 ;
+//也可以在windows 7 + VS2015下成功运行:
+//proc code=cpp test.pc test.cpp
+//然后在VS2015中配置并编译
+
+#include "stdafx.h" //for vs2015 must copy to first line in CPP file
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "sqlca.h" // this is copied from /opt/app/oracle/product/19.3.000/db_home/precomp/public
+
+//EXEC SQL INCLUDE sqlca;
+// 拓展 sqlgls 函数作用域
+//用Eclipse 202309C++编译此文件，不加"extern "C""会报错
+//如报错：无法解析的外部符号
+extern "C" unsigned int sqlgls(char * , size_t *, size_t * );
+EXEC SQL BEGIN DECLARE SECTION;
+char *dynamicstmt;
+char *serversid = "c##drugdbuser/wtsgyh1972@drugdb";
+// 宿主变量，c与sql的一种数据类型的桥梁 ,,,,, ,
+int STD_ID;
+char STD_NAME[100];
+char STD_NUM[50];
+char STD_MAJOR[50];
+char STD_PASSWORD[200];
+int STD_RECORDS;
+char ISVIP[200];
+// loc 的指示变量，唯一的作用就是用来处理null值
+short isvip_ind;
+EXEC SQL END DECLARE SECTION;
+
+void sqlerr() {
+// 临时变量
+char stm[120];
+size_t sqlfc, stmlen=120;
+unsigned int ret = 0;
+// 让下一次出现错误时不再跳转到函数中，而是继续下一步（CONTINUE）
+// 防止处理函数中有执行错误再次调用处理函数而导致的递归
+EXEC SQL WHENEVER SQLERROR CONTINUE;
+// Here 获取错误的sql语句
+ret = sqlgls(stm, &amp;stmlen, &amp;sqlfc);
+// c语言使用printf可以用 %.*s 的方式来打印两个衔接的变量
+printf("%.*s\n", stmlen, stm);
+// sqlca.sqlerrm.sqlerrml 为错误编号长度
+// sqlca.sqlerrm.sqlerrmc 为错误内容
+printf("%.*s\n", sqlca.sqlerrm.sqlerrml, sqlca.sqlerrm.sqlerrmc);
+// 执行回滚并释放连接
+EXEC SQL ROLLBACK WORK RELEASE;
+exit(1);
+}
+int main(int argc, char* argv[]) {
+int ret = 0;
+// 开启错误处理机制，指定错误处理函数为 sqlerr
+EXEC SQL WHENEVER SQLERROR DO sqlerr();
+// 连接 oracle 服务器
+EXEC SQL CONNECT :serversid;
+if (sqlca.sqlcode != 0) {
+ret = sqlca.sqlcode;
+printf("connect oracle error… code = %d\n", ret);
+return ret;
+}
+// 向已知表中插入一条
+//CENTOS 7.9 eclipse
+//STD_ID = 90;
+//strcpy(STD_NAME, "dengjia");//U202011069
+//strcpy(STD_NUM, "U202111069");
+//strcpy(STD_MAJOR, "bioengineering");
+//strcpy(STD_PASSWORD, "U202311069");
+//strcpy(ISVIP, "VIP");
+
+//note for vc2015: strcpy_s(xxx,yyy)
+STD_ID = 90;
+strcpy_s(STD_NAME, "dengjia");
+strcpy_s(STD_NUM, "U202311069");
+strcpy_s(STD_MAJOR, "bioengineering");
+strcpy_s(STD_PASSWORD, "U202311069");
+STD_RECORDS = 1000;
+strcpy_s(ISVIP, "VIP");
+// 如果希望将 ISVIP 插入时置为 null，那么就把指示变量 isvip_ind 设置为 -1
+isvip_ind = -1;
+// 插入数据时，注意指示变量的用法 STD_ID,STD_NAME,STD_NUM,STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP
+//EXEC SQL insert into DRUGCOURSEUSER(deptno, dname, loc) values(:deptno, :dname, :ISVIP:isvip_ind);
+EXEC SQL insert into DRUGCOURSEUSER(STD_ID,STD_NAME,STD_NUM,STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP) values(:STD_ID, :STD_NAME, :STD_NUM, :STD_MAJOR, :STD_PASSWORD, :STD_RECORDS, :ISVIP:isvip_ind);
+if (sqlca.sqlcode != 0) {
+ret = sqlca.sqlcode;
+printf("insert into error… code = %d\n", ret);
+return ret;
+}
+
+//just use dynamic SQL
+//1. 使用主变量组装: dynamicstmt
+dynamicstmt = "UPDATE DRUGCOURSEUSER SET STD_ID=STD_ID + 1"; //这里主变量dynamicstmt是动态的
+EXEC SQL EXECUTE IMMEDIATE :dynamicstmt;
+//2.动态参数: 需要用到虚拟宿主变量V
+dynamicstmt = "UPDATE DRUGCOURSEUSER SET STD_RECORDS=STD_RECORDS + 2 WHERE STD_ID = :V "; //主变量dynamicstmt是动态的且包含动态参数: V
+//准备dynamicstmt中的SQL语句语句名为mydynstmt<br>EXEC SQL PREPARE mydynstmt FROM :dynamicstmt;
+//执行mydynstmt语句修改学生20200002的值<br>STD_ID=20200002<br>EXEC SQL EXECUTE mydynstmt USING :STD_ID;<br>//</stdlib.h></string.h></stdio.h><stdio.h><string.h><stdlib.h>STD_ID: 实输入宿主变量，它代替前面动态SQL语句中的</stdlib.h></string.h></stdio.h><stdio.h><string.h><stdlib.h>dynamicstmt中的V；<br>//USING子句中的实宿主变量要与在被分析的动态的SQL语句中的虚拟宿主变量在类型，次序上相对应，个数相匹配
+
+EXEC SQL commit release;
+return 0;
+}<br><br><br><br><br><br><br></stdlib.h></string.h></stdio.h><stdio.h><string.h><stdlib.h><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><strong style="margin: 0px; padding: 0px;">动态SQL1:</strong></p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><span style="margin: 0px; padding: 0px; color: rgb(0, 0, 0);">&nbsp;一定<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">不能是查询(SELECT)语句</span>,并且<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">没有任何的虚拟输入宿主变量</span>. &nbsp;</span></p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">用法:拼一句动态SQL语句,并用<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">EXECUTE IMMEDIATE</span>执行,如:&nbsp;<br style="margin: 0px; padding: 0px;">&nbsp;<br style="margin: 0px; padding: 0px;">EXEC SQL EXECUTE IMMEDIATE CREATE TABLE test (test_col VARCHAR2(4));&nbsp;<br style="margin: 0px; padding: 0px;">EXEC SQL EXECUTE IMMEDIATE INSERT INTO TABLE test ('AAAA');<br style="margin: 0px; padding: 0px;">EXEC SQL EXECUTE IMMEDIATE DELETE test WHERE test_col='AAAA';</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><strong style="margin: 0px; padding: 0px;">动态SQL2：</strong></p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">不能是查询(SELECT)语句</span>,并且输入的宿主变量数目是知道的,可能包含虚拟输入宿主变量；<br style="margin: 0px; padding: 0px;">用法:拼一句动态SQL语句,用PREPARE,EXECUTE语句执行.&nbsp;</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">用prepare语句来分析和命名该动态SQL语句；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">用Execute语句来 执行它；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">(1)prepare语句</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">prepare语句来分析和命名一个动态SQL语句，EXEC SQL PREPARE [statement_name][block_name]</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">FROM [:host_string][string_literal];</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">statement_name:标识被分析的动态<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">SQL语句</span>，供编译程序使用的标识符，而不是宿主变量；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">block_name：标识被分析的动态的<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">PL/SQL块</span>，也是标识符；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">:host_string:是一个宿主标量，它包含动态<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">SQL语句</span>或<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">PL/SQL块</span>的文本；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">string_literal:文本串，表示动态<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">SQL语句</span>或者<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">PL/SQL块</span>的文本；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">strcpy(sql_stmt, "DELETE FROM test WHERE test_col = :V");&nbsp;&nbsp;<br style="margin: 0px; padding: 0px;">EXEC SQL PREPARE stmt FROM :sql_stmt; 其中stmt标识被分析的SQL语句，V表示一个虚拟的输入宿主变量。</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">(2)execute语句</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><em id="__mceDel" style="margin: 0px; padding: 0px;"><em id="__mceDel" style="margin: 0px; padding: 0px;">EXEC SQL EXECUTE stmt USING :emp_number; &nbsp;</em></em></p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><em style="margin: 0px; padding: 0px;"><em style="margin: 0px; padding: 0px;">emp_number:</em></em>一个实输入宿主变量，它代替前面所述的动态SQL语句中的stmt中的V；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">USING子句中的实宿主变量要与在被分析的动态的SQL语句中的虚拟宿主变量在类型，次序上相对应，个数相匹配；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><strong style="margin: 0px; padding: 0px;">动态方法3：</strong></p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">SQL语句<span style="margin: 0px; padding: 0px; color: rgb(255, 0, 0);">只适用select 语句</span>，并且紧跟在关键字selecta后面的列名或者表达式和虚拟输入的变量的个数或者类型在预编译时都已知；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">动态SQL语句的执行处理过程如下：</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">1构造一个动态SQL语句；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">2.用prepare语句来分析和命名该动态SQL语句；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">3.用光标语句来执行它；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">在方法3中要用到如下语句；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">(1)prepare</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">(2)declare：</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">EXEC SQL DECLARE cursor_name CURSOR FOR [statement_name[block_name]</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">&nbsp;statement_name和block_name：用于标识与光标相联系的SQL语句货真PL/SQL块的名字；改名字要在前面的DECLARE STATEMENT语句中说明；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">(3)open</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">EXEC SQL OPEN cursor [USING :host_varible[INDICATOR] :indicator_varible][,...] ]:</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">:host__name:实际的宿主变量；</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">(4)FETCH</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">EXEC SQL FETCH cursor INTO :host_varible;</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">(5)CLOSE</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">(6)DECLARE STATEMENT</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">实例：</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">#include&lt;stdio.h&gt;<br style="margin: 0px; padding: 0px;">#include&lt;string.h&gt;</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">EXEC SQL INCLUDE SQLCA;<br style="margin: 0px; padding: 0px;">EXEC SQL INCLUDE ORACA;<br style="margin: 0px; padding: 0px;">EXEC ORACLE OPTION(ORACA=YES);<br style="margin: 0px; padding: 0px;">EXEC SQL BEGIN DECLARE SECTION;<br style="margin: 0px; padding: 0px;">char username[50]="newsale1/newsale1@NEWSALE";<br style="margin: 0px; padding: 0px;">char passwd[20]="";<br style="margin: 0px; padding: 0px;">char sqlstmt[80];<br style="margin: 0px; padding: 0px;">int emp_number;<br style="margin: 0px; padding: 0px;">char emp_name[10];<br style="margin: 0px; padding: 0px;">float salary;<br style="margin: 0px; padding: 0px;">char job[30];<br style="margin: 0px; padding: 0px;">int dept_number;<br style="margin: 0px; padding: 0px;">EXEC SQL END DECLARE SECTION;</p><p style="margin: 10px auto; padding: 0px; text-indent: 0px; color: rgb(0, 0, 0); font-family: &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">main(){<br style="margin: 0px; padding: 0px;">int name_len=0;<br style="margin: 0px; padding: 0px;">int job_len=0;<br style="margin: 0px; padding: 0px;">EXEC SQL WHENEVER SQLERROR GOTO sqlerror;<br style="margin: 0px; padding: 0px;">oraca.orastxtf=ORASTFERR;<br style="margin: 0px; padding: 0px;">EXEC SQL CONNECT :username;<br style="margin: 0px; padding: 0px;">printf("Connect to oracle!");<br style="margin: 0px; padding: 0px;">strcpy(sqlstmt,"SELECT EMPNO,ENAME,JOB,SAL FROM EMP WHERE DEPTNO=:V1");<br style="margin: 0px; padding: 0px;">printf("\n Number Employee Name Job salary\n");<br style="margin: 0px; padding: 0px;">EXEC SQL PREPARE S FROM :sqlstmt;<br style="margin: 0px; padding: 0px;">EXEC SQL DECLARE C CURSOR FOR S;<br style="margin: 0px; padding: 0px;">printf("\nEnter dept number");<br style="margin: 0px; padding: 0px;">scanf("%d",&amp;dept_number);<br style="margin: 0px; padding: 0px;">EXEC SQL OPEN C USING :dept_number;<br style="margin: 0px; padding: 0px;">EXEC SQL WHENEVER NOT FOUND GOTO notfound;<br style="margin: 0px; padding: 0px;">while(1){<br style="margin: 0px; padding: 0px;">EXEC SQL FETCH C INTO :emp_number,:emp_name,:job,:salary;<br style="margin: 0px; padding: 0px;">name_len=strlen(emp_name);<br style="margin: 0px; padding: 0px;">job_len=strlen(job);<br style="margin: 0px; padding: 0px;">emp_name[name_len]='\0';<br style="margin: 0px; padding: 0px;">job[job_len]='\0';<br style="margin: 0px; padding: 0px;">printf("\n%d%s%t%f",:emp_number,:emp_name,:job,:salary);<br style="margin: 0px; padding: 0px;">}<br style="margin: 0px; padding: 0px;">notfound:<br style="margin: 0px; padding: 0px;">printf("\0Query reutrned %d row %s.\n\n",sqlca.sqlerrd[2]);<br style="margin: 0px; padding: 0px;">EXEC SQL CLOSE C;<br style="margin: 0px; padding: 0px;">EXEC SQL COMMIT RELEASE;<br style="margin: 0px; padding: 0px;">printf("good ");<br style="margin: 0px; padding: 0px;">exit(0);<br style="margin: 0px; padding: 0px;"><br style="margin: 0px; padding: 0px;">sqlerror:<br style="margin: 0px; padding: 0px;">printf(sqlca.sqlerrm.sqlerrml,sqlca.sqlerrm.sqlerrmc);<br style="margin: 0px; padding: 0px;">printf(oraca.orasfnm.orasfnml,oraca.orasfnm.orasfnmc);<br style="margin: 0px; padding: 0px;">EXEC SQL WHENEVER SQLERROR CONTINUE;<br style="margin: 0px; padding: 0px;">EXEC SQL CLOSE C;<br style="margin: 0px; padding: 0px;">EXEC SQL ROLLBACK RELEASE;<br style="margin: 0px; padding: 0px;">exit(1);<br style="margin: 0px; padding: 0px;">}</p>&nbsp;<br><br><a href="lesson2/testwin7vs2015OK.pc">WIN7 VS2015 OK</a><br><br></stdlib.h></string.h></stdio.h><br><stdio.h><string.h><stdlib.h><br><h1 class="title-article" id="articleContentId"><meta http-equiv="content-type" content="text/html; charset=UTF-8"><br>go连接Oracle数据库<br>使用golang连接Oracle数据库（gorm）<br></h1></stdlib.h></string.h></stdio.h></pre>
+    <pre><stdio.h><string.h><stdlib.h>GOLANG： <br></stdlib.h></string.h></stdio.h></pre>
+    <stdio.h><string.h><stdlib.h><br>
+          package main<br>
+          <br>
+          import (<br>
+          "fmt"<br>
+          "github.com/cengsin/oracle"<br>
+          "gorm.io/gorm"<br>
+          "gorm.io/gorm/logger"<br>
+          "log"<br>
+          "os"<br>
+          "time"<br>
+          )<br>
+          <br>
+          type Area struct {<br>
+          ID int `gorm:"column:ID"`<br>
+          Name string `gorm:"column:NAME"`<br>
+          }<br>
+          <br>
+          func (Area) TableName() string {<br>
+          return "T_AREA"<br>
+          }<br>
+          func main() {<br>
+          log.Println("initial database connect……")<br>
+          db, err :=
+          gorm.Open(oracle.Open("wateruser/Sa123456@127.0.0.1:1521/ORCL"),
+          &amp;gorm.Config{<br>
+          Logger: logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
+          logger.Config{<br>
+          SlowThreshold: 2 * time.Millisecond,<br>
+          LogLevel: logger.Warn, //打印级别<br>
+          Colorful: true,<br>
+          }),<br>
+          //SkipDefaultTransaction: true,<br>
+          })<br>
+          <br>
+          if err != nil {<br>
+          log.Fatalln(err)<br>
+          }<br>
+          <br>
+          area := make([]Area, 0, 1)<br>
+          res := db.Find(&amp;area)<br>
+          if res.Error != nil {<br>
+          fmt.Println(res.Error)<br>
+          }<br>
+          fmt.Println(area)<br>
+          }<br>
+          <br>
+          <br>
+        </stdlib.h></string.h></stdio.h><br>
+  </body>
+</html>

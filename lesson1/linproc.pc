@@ -1,0 +1,28 @@
+//This code successfully compiled on 8GPU and run on 8CPU
+///opt/app/oracle/product/19.3.000/db_home/bin/proc code=cpp parse=none iname=test77.pc oname=testora.cpp
+//then compile in eclipse 202309, OK
+#include <stdio.h>
+#include "sqlca.h"
+
+//main vars:
+EXEC SQL BEGIN DECLARE SECTION;
+   char user[] = "c##drugdbuser";
+   char pass[] = "wtsgyh1972";
+EXEC SQL END DECLARE SECTION;
+
+int main(void) {
+   EXEC SQL CONNECT :user IDENTIFIED BY :pass using :"222.20.94.229:1521/drugdb";
+
+  //if above SQL success then sqlca.sqlcode =0
+  //if no values then sqlca.sqlcode = 100
+  //if exception ocurrs then sqlca.sqlcode < 0
+  if(sqlca.sqlcode == 0)
+    printf("success!\n");
+  else
+    printf("error!\n");
+
+EXEC SQL COMMIT RELEASE;
+
+return 0;
+}
+

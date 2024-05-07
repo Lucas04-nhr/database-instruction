@@ -1,0 +1,882 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=GBK">
+  </head>
+  <body>
+    <div align="center">
+      <h1>MySql教程</h1>
+      <h1> </h1>
+    </div>
+    <h3> 1. LAMP WAMP 和 MySQL</h3>
+    <br>
+    <h3> 2. gorm介绍</h3>
+    //GORM 是 Go 语言的一个对象关系映射（ORM）库，它提供了一种简单、简洁的方式来与数据库交互，通过让开发人员使用 Go
+    结构体来代替直接编写 SQL 查询。<br>
+    //GORM 支持多个数据库后端，例如 MySQL、PostgreSQL、SQLite 和 SQL
+    Server，并提供自动表创建、模式迁移以及数据库表之间的关联等功能。<br>
+    //使用 GORM，开发人员可以将模型定义为 Go 结构体，并使用 Create、Save、Update 和 Delete
+    等方法来与数据库交互。GORM 还提供了查询构建器接口，允许开发人员使用流畅的语法编写复杂的查询<br>
+    <br>
+    <br>
+    <h3> 3.MySQL安装 (Linux下可以同时存在MySQL 8.0.35 and phpStudy 8.0.16 in
+      different directories)<br>
+    </h3>
+    <h3>3.1 Linux下载及安装phpStudy: <br>
+    </h3>
+    &gt;<code><span class="xp_panel_slider_con"><code><font>yum</font>
+          install -y wget &amp;&amp; wget -O install.sh <font>https://notdocker.xp.cn/install.sh</font>
+          &amp;&amp; sh install.sh<br>
+          <br>
+        </code></span></code>================安装完成==================<br>
+    请用浏览器访问面板:<br>
+    外网:http://222.20.94.229:9080/69A8E3<br>
+    内网:http://222.20.94.229:9080/69A8E3<br>
+    系统初始账号:admin<br>
+    系统初始密码:lohBP1GAsk (origin)<br>
+    官网:https://www.xp.cn<br>
+    如果使用的是云服务器，请至安全组开放9080端口<br>
+    如果使用ftp，请开放21以及30000-30050端口<br>
+    [root@localhost opt]# which phpstudy<br>
+    /usr/bin/phpstudy&nbsp;&nbsp; ///usr/local/phpstudy/system/module<br>
+    <br>
+    Linux下管理界面：&nbsp;&nbsp; <br>
+    http://222.20.94.229:9080/69A8E3&nbsp;&nbsp;
+    (安装完后会自动启动服务，直接用浏览器打开即可)&nbsp;&nbsp; <br>
+    user: admin&nbsp; /&nbsp; wtsgyh1972@(ok new phpStudy linux
+    centos7.9 kernel 6.6)<br>
+    接着就进入管理页面了（第一次进入之后会提示安装套件，一些基本套件已经安装，就差Mysql数据库了，点击一键安装）<br>
+    <br>
+    opt]# rpm -qa | grep mysql<br>
+    <br>
+    <h3> 3.2 Linux下载rpm报并安装mysql</h3>
+    # wget
+    https://repo.mysql.com/mysql80-community-release-el7.rpm&nbsp; (or
+    download from: https://repo.mysql.com/)<br>
+    # yum -y install /home/catalyst/下载/mysql80-community-release-el7.rpm<br>
+    安装并启动mysql服务器<br>
+    $yum -y install mysql-community-server<br>
+    安装&nbsp; 3 软件包 (+4 依赖软件包)<br>
+    升级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 4
+    依赖软件包)<br>
+    <br>
+    总计：91 M<br>
+    总下载量：89 M<br>
+    <h3> 启动mysql 8.0.xx(于之前的mysql稍有不同！！！)</h3>
+    $systemctl start mysqld.service&nbsp; (sure for mysql 8.0.35 in
+    CENTOS 7.9wts)<br>
+    $systemctl enable mysqld.service<br>
+    $systemctl daemon-reload<br>
+    <br>
+    <h3> 查看运行状态</h3>
+    $systemctl status mysqld.service<br>
+    <br>
+    修改mysql默认密码<br>
+    提示：在mysql5.7以后，密码不能设置过于简单的，否则会出现ERROR：Your password does not satisfy
+    the current policy requirements，解决方法就是调整MySQL密码验证规则，修改 policy 和
+    length 的值<br>
+    <br>
+    首先查看mysql登录密码<br>
+    第一次安装mysql时会自动生成一个临时密码存在mysqld.log文件中，<br>
+    使用yum安装，直接查看/var/log/mysqld.log. 如用源码包安装 就去解压包里面找mysqld.log文件.<br>
+    这里是以我安装为例<br>
+    <br>
+    vim /var/log/mysqld.log<br>
+    <br>
+    2023-12-16T08:04:51.002183Z 0 [System] [MY-013169] [Server]
+    /usr/sbin/mysqld (mysqld 8.0.35) initializing of server in progress
+    as process 16938<br>
+    2023-12-16T08:04:51.375489Z 1 [System] [MY-013576] [InnoDB] InnoDB
+    initialization has started.<br>
+    2023-12-16T08:05:05.806213Z 1 [System] [MY-013577] [InnoDB] InnoDB
+    initialization has ended. A temporary password is generated for
+    root@localhost: ZXFshn+:o1*E<br>
+    2023-12-16T08:05:10.820396Z 6 [Note] [MY-010454] [Server] A
+    temporary password is generated for root@localhost: ZXFshn+:o1*E<br>
+    2023-12-16T08:05:24.210766Z 0 [System] [MY-010116] [Server]
+    /usr/sbin/mysqld (mysqld 8.0.35) starting as process 17030<br>
+    2023-12-16T08:05:24.228692Z 1 [System] [MY-013576] [InnoDB] InnoDB
+    initialization has started.<br>
+    2023-12-16T08:05:24.906939Z 1 [System] [MY-013577] [InnoDB] InnoDB
+    initialization has ended.<br>
+    2023-12-16T08:05:25.367150Z 0 [Warning] [MY-010068] [Server] CA
+    certificate ca.pem is self signed.<br>
+    2023-12-16T08:05:25.367245Z 0 [System] [MY-013602] [Server] Channel
+    mysql_main configured to support TLS. Encrypted connections are now
+    supported for this channel.<br>
+    2023-12-16T08:05:25.414325Z 0 [System] [MY-011323] [Server] X Plugin
+    ready for connections. Bind-address: '::' port: 33060, socket:
+    /var/run/mysqld/mysqlx.sock<br>
+    2023-12-16T08:05:25.414695Z 0 [System] [MY-010931] [Server]
+    /usr/sbin/mysqld: ready for connections. Version: '8.0.35'&nbsp;
+    socket: '/var/lib/mysql/mysql.sock'&nbsp; port: 3306&nbsp; MySQL
+    Community Server - GPL.<br>
+    <br>
+    <br>
+    A temporary password is generated for root@localhost: ZXFshn+:o1*E<br>
+    <br>
+    登录<br>
+    xxxx的地方填写 mysql密码，但这里输入密码时明文的（不推荐）<br>
+    <code class="highlighter-hljs hljs language-css">
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      <pre class="highlighter-hljs" highlighted="true" has-selection="true"><code class="highlighter-hljs hljs language-css">$mysql -uroot -<span class="hljs-selector-tag">p</span></code><br><meta http-equiv="content-type" content="text/html; charset=GBK">然后输入密码即可！！！wtssure<br><br>如果忘记了密码，在CENTOS:<br>编辑/etc/my.cnf文件，在末尾出增加 skip-grant-tables<br><code class="highlighter-hljs hljs language-css"><pre class="highlighter-hljs" highlighted="true" has-selection="true">datadir=/var/lib/mysql<br>socket=/var/lib/mysql/mysql.sock<br><br>log-error=/var/log/mysqld.log<br>pid-file=/var/run/mysqld/mysqld.pid<br>skip-grant-tables<br>***************************************************<br></pre></code></pre>
+    </code># mysql -uroot<br>
+    mysql&gt; use mysql;<br>
+    Reading table information for completion of table and column names<br>
+    You can turn off this feature to get a quicker startup with -A<br>
+    <br>
+    Database changed<br>
+    mysql&gt; update user set authentication_string='' where
+    User='root';&nbsp;&nbsp;&nbsp; <code class="language-sql"
+      id="code_id_0"><span class="token punctuation"></span></code>
+    <meta http-equiv="content-type" content="text/html; charset=GBK">
+    <br>
+    Query OK, 1 row affected (0.00 sec)<br>
+    Rows matched: 1&nbsp; Changed: 1&nbsp; Warnings: 0<br>
+    <br>
+    mysql&gt; flush privileges;&nbsp;&nbsp;&nbsp; //Query OK, 0 rows
+    affected (0.00 sec)<br>
+    mysql&gt; quit<br>
+    <br>
+    <p>将 /etc/my.cnf 中 的 skip-grant-tables 去掉；</p>
+    <p>再次重启mysql服务()<br>
+      systemctl restart mysqld (sure in CENTOS 7.9wts)
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </p>
+    <p>再次登录mysql，登录密码为空，然后修改root密码<br>
+      mysql&gt;mysql -uroot<br>
+      mysql&gt; ALTER USER 'root'@'localhost' IDENTIFIED BY
+      'WTSgyh1972!';&nbsp; &nbsp;&nbsp; //just for another added: biodb:
+      WTSgyh_1972<br>
+      mysql&gt; use mysql;&nbsp; //如果第一次用要先改密码，再：&gt;use mysql<br>
+      Query OK, 0 rows affected (0.02 sec)<br>
+      mysql&gt;flush privileges;&nbsp;&nbsp; //刷新权限 <br>
+    </p>
+    <h3><span class="hl hl-1">关闭mysql</span> 8.0服务</h3>
+    <h4>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h4>
+    <h4>mysqld_safe命令</h4>
+    <p>mysqladmin命令是推荐的<span class="hl hl-1">关闭mysql</span>服务的命令
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      <br>
+      # mysqladmin -uroot -p -S /var/lib/mysql/mysql.sock shutdown<br>
+    </p>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      MySQL的启动和关闭命令相比Oracle而言，显得有点多了<br>
+      其实记住，生产环境启动服务使用 mysqld_safe，关闭服务使用 mysqladmin就可以了</p>
+    <p><br>
+    </p>
+    <h3>Windows:</h3>
+    <p> 可以直接用phpStudy来启动httpd和MySQL(如果MySQL不能从phpStudy启动则:&nbsp; &nbsp;
+      <br>
+      cd
+      /d/APPsoftwares/phpstudypro810164bitGreen/Extensions/MySQL8.0.12/bin&nbsp;
+
+      (git bash shell&nbsp;&nbsp; user: root&nbsp;&nbsp;&nbsp; passwd:
+      root&nbsp; &lt;=== phyStudy GUI)<br>
+      mysqld.exe --console;&nbsp;&nbsp;&nbsp; 就可以启动mysql server)</p>
+    <p>$ ./mysqld.exe --console<br>
+      2024-01-11T13:23:25.521522Z 0 [System] [MY-010116] [Server]
+      D:\APPsoftwares\phpstudypro810164bitGreen\Extensions\MySQL8.0.12\bin\mysqld.exe
+
+      (mysqld 8.0.12) starting as process 8492<br>
+      &nbsp;100 200<br>
+      &nbsp;100 200<br>
+      2024-01-11T13:24:00.947804Z 0 [System] [MY-010229] [Server]
+      Starting crash recovery...<br>
+      2024-01-11T13:24:00.947804Z 0 [System] [MY-010232] [Server] Crash
+      recovery finished.<br>
+      2024-01-11T13:24:03.067925Z 0 [System] [MY-010931] [Server]
+      D:\APPsoftwares\phpstudypro810164bitGreen\Extensions\MySQL8.0.12\bin\mysqld.exe:
+
+      ready for connections. Version: '8.0.12'&nbsp; socket: ''&nbsp;
+      port: 3306&nbsp; MySQL Community Server - GPL.<br>
+      <br>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </p>
+    <meta http-equiv="content-type" content="text/html; charset=GBK">
+    现在linux: phpStudy mysql 8.0.16 can start from phpstudy web!!!<br>
+    记得：CENTOS 7启动： phpStudy<br>
+    &gt;phpstudy -start&nbsp;&nbsp;&nbsp; 然后看到下面的界面，一定要点： 一键安装！！！！<br>
+    <div align="center"><img moz-do-not-send="true"
+        src="phplinuinstallmodules.png" alt="" width="765" height="445">
+      [root@localhost bin]# ./mysql -uroot<br>
+    </div>
+    ERROR 2002 (HY000): Can't connect to local MySQL server through
+    socket '/tmp/mysql.sock' (2)&nbsp;&nbsp;&nbsp; &lt;&lt;&lt;&lt;not
+    started by phpstudy GUI WEB!!!!<br>
+    NOW Start from PHPstudy GUI web html page:&nbsp; ====&gt; <br>
+    cd /usr/local/phpstudy/soft/mysql/mysql-8.0.16/bin<br>
+    # ./mysql -uroot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //no
+    password!!!!!!?????????????&nbsp; still modyfi: my.cnf: <br>
+    add lastline: skip-grant-tables<br>
+    restart: mysqld from phpstudy GUI web!!!! now ok!!! then mod the
+    root password: <br>
+    &gt;use mysql;<br>
+    &gt;update user set authentication_string='' where User='root'; <br>
+    &gt;flush privileges; <br>
+    将 /etc/my.cnf 中 的 skip-grant-tables 去掉；<br>
+    mysql&gt; use mysql;<br>
+    Reading table information for completion of table and column names<br>
+    You can turn off this feature to get a quicker startup with -A<br>
+    <br>
+    Database changed<br>
+    mysql&gt; ALTER USER 'root'@'localhost' IDENTIFIED BY 'WTSgyh1972!';<br>
+    Query OK, 0 rows affected (0.01 sec)<br>
+    <br>
+    mysql&gt; flush privileges; <br>
+    Query OK, 0 rows affected (0.01 sec)<br>
+    !!!!!!!!!!!!!!wts sure for phpStudy mysql 8.0.16 of CENTOS
+    7.9!!!!!!!!!!!!!!!!!!!!!KERNEL 6.6 UPDATED!!!!<br>
+    mysql&gt; show databases;<br>
+    +--------------------+<br>
+    |
+    Database&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    |<br>
+    +--------------------+<br>
+    | information_schema |<br>
+    |
+    mysql&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+    |<br>
+    | performance_schema |<br>
+    |
+    sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+    |<br>
+    |
+    www&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+    |&nbsp;&nbsp; &lt;&lt;&lt;&lt;&lt; added by phpstudy!!!<br>
+    +--------------------+<br>
+    5 rows in set (0.01 sec)<br>
+    <br>
+    <br>
+    <br>
+    <code><span class="xp_panel_slider_con"><code>
+          <meta http-equiv="content-type" content="text/html;
+            charset=GBK">
+        </code></span></code>
+    <div align="center"><img src="phpstudygui.png" alt="" width="643"
+        height="511"><br>
+      <br>
+      <div align="left">Web界面管理mysql：<br>
+      </div>
+    </div>
+    windows:
+    http://localhost/phpMyAdmin4.8.5/index.php:&nbsp;&nbsp;&nbsp;
+    root/WTSgyh1972!&nbsp; &nbsp; // login<br>
+    CENTOS: phpStudy,&nbsp;&nbsp;
+    http://127.0.0.1:9080/69A8E3#/user/login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+    admin/wtsgyh1972@<br>
+    <div align="center"><img src="phpadminwebgui.png" alt="" width="465"
+        height="459"><br>
+    </div>
+    <br>
+    <br>
+    使用MYSQL：<br>
+    windows phpstudy mysql 8.0.12<br>
+    &gt;mysql.exe -uroot -p<br>
+    password: root&nbsp; (phpStudy)<br>
+    mysql&gt; select @@version;&nbsp;&nbsp;&nbsp; //看看版本号<br>
+    +-----------+<br>
+    | @@version |<br>
+    +-----------+<br>
+    | 8.0.35&nbsp;&nbsp;&nbsp; |<br>
+    +-----------+<br>
+    1 row in set (0.00 sec)<br>
+    <br>
+    mysql&gt; show databases;<br>
+    +--------------------+<br>
+    |
+    Database&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    |<br>
+    +--------------------+<br>
+    | information_schema |<br>
+    |
+    mysql&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    |<br>
+    | performance_schema |<br>
+    |
+    sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    |<br>
+    +--------------------+<br>
+    4 rows in set (0.01 sec)<br>
+    <br>
+    <br>
+    mysql&gt; create database chatgpt;&nbsp;&nbsp; <br>
+    &nbsp;//现在就可以在phpStudy GUI界面上看到了!!!!WTS<br>
+    &nbsp;//同时新增目录:
+    D:\APPsoftwares\phpstudypro810164bitGreen\Extensions\MySQL8.0.12\data<br>
+    Query OK, 1 row affected (0.00 sec)<br>
+    <br>
+    mysql&gt; use chatgpt;<br>
+    Database changed<br>
+    mysql&gt; show tables;<br>
+    Empty set (0.00 sec)<br>
+    <br>
+    MySQL创建表的代码<br>
+    <br>
+    <code class="hljs">
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      <pre><code class="language-sql"><pre class="chat-code-pre"><code class="hljs"><span class="hljs-keyword">创建MySQL的表:<br>语法:CREATE</span> <span class="hljs-keyword">TABLE</span> table_name (id <span class="hljs-type">INT</span> AUTO_INCREMENT <span class="hljs-keyword">PRIMARY</span> KEY, name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,  age <span class="hljs-type">INT</span>,  email <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">UNIQUE</span> );<br>如:<br>mysql&gt;use chatgpt;<br></code><code class="hljs"><code class="hljs"><pre><code class="language-sql"><pre class="chat-code-pre"><code class="hljs">mysql&gt;</code></pre></code></pre></code>CREATE TABLE users (id bigint AUTO_INCREMENT PRIMARY KEY, Username VARCHAR(50) NOT NULL,  Password VARCHAR(50) NOT NULL, Balance bigint, `Usage` BIGINT, Isblock int);<br>/////////////CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50) NOT NULL,  age INT,  email VARCHAR(100) UNIQUE,</code><code class="hljs"><meta http-equiv="content-type" content="text/html; charset=GBK"> </code><code class="hljs"><meta http-equiv="content-type" content="text/html; charset=GBK"> created_at VARCHAR(100) NOT NULL);<br><br></code><meta http-equiv="content-type" content="text/html; charset=GBK"><br><code class="hljs"></code></pre></code></pre>
+    </code>mysql&gt;CREATE TABLE yl_enrol(id bigint AUTO_INCREMENT
+    primary KEY, name varchar(10) NOT NULL UNIQUE COMMENT '姓名', qq&nbsp;
+    bigint NOT NULL COMMENT'QQ',<br>
+    //job varchar(10) not null&nbsp; COMMENT '职位',<br>
+    //enroll_time varchar(30) NOT NULL COMMENT '入学时间',<br>
+    //school varchar(20) NOT NULL COMMENT '毕业院校',<br>
+    //number text NOT NULL COMMENT'线上学号',<br>
+    //diary_link text NOT NULL COMMENT'日报链接',<br>
+    //flag text NOT NULL COMMENT'立愿',<br>
+    //brother varchar(10) NOT NULL COMMENT'辅导师兄',<br>
+    //location varchar(20) NOT NULL COMMENT'来源'<br>
+    //)ENGINE=INNODB charset utf8;<br>
+    //忽略两个字段，添加即可<br>
+    //ALTER TABLE yl_enrol ADD(create_at bigint NOT NULL COMMENT'创建时间',<br>
+    //update_at bigint NOT NULL COMMENT'更新时间'<br>
+    //);<br>
+    <br>
+    注意： MySQL创建表时列名为：Usage可能会报错，但是可以用： `Usage` BIGINT,<br>
+    mysql&gt;CREATE TABLE `point_info` (`id` BIGINT(19) NOT NULL COMMENT
+    '自增ID', `product_key` VARCHAR(50) NOT NULL COMMENT '产品标识' COLLATE
+    'utf8mb4_general_ci',<br>
+    `device_name` VARCHAR(50) NOT NULL COMMENT '设备名称' COLLATE
+    'utf8mb4_general_ci', `point_id` VARCHAR(50) NOT NULL COMMENT '测点ID'
+    COLLATE 'utf8mb4_general_ci', PRIMARY KEY (`id`) USING BTREE<br>
+    )<br>
+    COMMENT='测点信息'<br>
+    COLLATE='utf8mb4_general_ci'<br>
+    ENGINE=InnoDB;<br>
+    <br>
+    命令行查寻MySQL数据表中的数据: <br>
+    mysql&gt; use chatgpt;<br>
+    <meta http-equiv="content-type" content="text/html; charset=GBK">
+    mysql&gt; SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1;<br>
+    ERROR 2006 (HY000): MySQL server has gone away<br>
+    No connection. Trying to reconnect...<br>
+    Connection id:&nbsp;&nbsp;&nbsp; 2<br>
+    Current database: chatgpt<br>
+    <br>
+    +----+----------------+----------------------+---------------------+<br>
+    | ID |
+    Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+    Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+    |
+    CreatedAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    |<br>
+    +----+----------------+----------------------+---------------------+<br>
+    |&nbsp; 1 | ffffffffffffff | bbbbbbbbbbbbbbbbbbbb | 2023-12-18
+    00:00:00 |<br>
+    +----+----------------+----------------------+---------------------+<br>
+    1 row in set (0.19 sec)<br>
+    <br>
+    <br>
+    <br>
+    use sqldeveloper connect mysql: 不能建表！！！<br>
+    $ wget
+https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.19.zip<br>
+    unzip: to mysql-connector-java-8.0.19.jar<br>
+    open: sqldeveloper:<br>
+    <br>
+    将MySQL JDBC驱动程序添加到Oracle SQL Developer：<br>
+    &nbsp;&nbsp;&nbsp; 单击“Tools”菜单，然后单击“Preferences”。<br>
+    &nbsp;&nbsp;&nbsp; 在“Preferences”窗口中，展开“Database”选项卡并选择“Third Party
+    JDBC Drivers”。<br>
+    &nbsp;&nbsp;&nbsp; 单击“Add Entry”来添加MySQL JDBC驱动程序。<br>
+    &nbsp;&nbsp;&nbsp; 浏览到您下载并解压缩的:&nbsp;
+    /opt/xtal/mysql-connector-java-8.0.19.jar<br>
+    &nbsp;&nbsp;&nbsp; 单击“Open”以添加驱动程序。<br>
+    <div align="center"><img moz-do-not-send="true"
+        src="setmysqldevelop.png" alt="" width="793" height="523"><br>
+      现在就有了MySQL选项了。<br>
+    </div>
+    连接MySQL数据库<br>
+    &nbsp;&nbsp;&nbsp; 单击“File”菜单，然后单击“New Connections”。<br>
+    &nbsp;&nbsp;&nbsp; 在“New / Select Database
+    Connection”对话框中，选择“MySQL”。<br>
+    &nbsp;&nbsp;&nbsp; 输入您的MySQL数据库连接信息，例如：<br>
+    <div align="center"><img moz-do-not-send="true"
+        src="connmysqlfromdevelop.png" alt="" width="783" height="514"><br>
+    </div>
+    &nbsp;&nbsp;&nbsp; Connection Name: mysql80<br>
+    &nbsp;&nbsp;&nbsp; Username: root<br>
+    &nbsp;&nbsp;&nbsp; Password: WTSgyh1972!<br>
+    &nbsp;&nbsp;&nbsp; Hostname: localhost<br>
+    &nbsp;&nbsp;&nbsp; Port: 3306<br>
+    &nbsp;&nbsp;&nbsp; SID: chatGPT<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; 单击“测试”以检查连接是否正常。<br>
+    &nbsp;&nbsp;&nbsp; 如果一切正常，单击“连接”<br>
+    <div align="center"><img moz-do-not-send="true"
+        src="sucmysqllogin.png" alt="" width="715" height="543"><br>
+    </div>
+    <br>
+    <br>
+    <br>
+    使用phpStudy进行MySQL的导出(备份)和导入(还原)<br>
+    <br>
+    可以直接用:
+    http://localhost/phpMyAdmin4.8.5/import.php&nbsp;&nbsp;&nbsp;&nbsp;
+    网页版管理界面<br>
+    1. 导出:<br>
+    选择一个数据库, 然后点击导出即可得到一个xxxx.sql文件(其中就有要备份的数据)<br>
+    <div align="center">&nbsp;<img src="phpamysqloutbak.png" alt=""
+        width="762" height="280"><br>
+    </div>
+    <br>
+    <br>
+    点击导出按钮后:<br>
+    <div align="center"><img src="outbakmysql.png" alt="" width="711"
+        height="373"><br>
+      <br>
+      <br>
+      <br>
+      <div align="left">导入mysql数据数据:&nbsp; 同样使用phpMyAdmin 网页界面:<br>
+        比如要导入备份tp6: <br>
+        <br>
+        1. 选建数据库: tp6， 然后点击这个tp6，再点击导入就行了.<br>
+      </div>
+      <br>
+    </div>
+    <br>
+    <div align="center"><br>
+    </div>
+    3. mysql import csv 文件：<br>
+    可能会报错:&nbsp;&nbsp; MYSQL写入数据并创建文件出现ERROR 1290 (HY000): The MySQL
+    server is running with the --secure-file-priv option so it cannot
+    execute this statement<br>
+    mysql&gt; show global variables like
+    '%secure_file_priv%';&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    //找到有secure_file_priv权限的目录<br>
+    ERROR 2013 (HY000): Lost connection to MySQL server during query<br>
+    +------------------+-----------------------+<br>
+    | Variable_name&nbsp;&nbsp;&nbsp; |
+    Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<br>
+    +------------------+-----------------------+<br>
+    | secure_file_priv&nbsp;&nbsp; | /var/lib/mysql-files/&nbsp; |<br>
+    +------------------+-----------------------+<br>
+    1 row in set (0.01 sec)<br>
+    <br>
+    windows:<br>
+    修改： my.ini:&nbsp; 加上一行:&nbsp;&nbsp; secure-file-priv=''
+    &nbsp;&nbsp;&nbsp;&nbsp; //记得要这样!!!!!!&nbsp; 两个单引号!!!!<br>
+    ******************<br>
+    [mysqld]<br>
+    port=3306<br>
+    default_authentication_plugin=mysql_native_password<br>
+basedir=D:/APPsoftwares/phpstudypro810164bitGreen/Extensions/MySQL8.0.12/<br>
+datadir=D:/APPsoftwares/phpstudypro810164bitGreen/Extensions/MySQL8.0.12/data/<br>
+    <b><font color="#ff0000">secure-file-priv=''</font></b><br>
+    character-set-server=utf8<br>
+    **********************************************************<br>
+    然后将csv文件放到：
+D:\APPsoftwares\phpstudypro810164bitGreen\Extensions\MySQL5.7.26\data\chatgpt<br>
+    重启: <br>
+    mysql&gt;mysqld.exe --console<br>
+    mysql&gt;mysql.exe -uroot -p&nbsp;&nbsp; (随后输入密码: WTSgyh1972!)<br>
+    mysql&gt; show variables like '%secure%';<br>
+    +--------------------------+--------+<br>
+    |
+    Variable_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    &nbsp; &nbsp;&nbsp; | Value&nbsp; |<br>
+    +--------------------------+--------+<br>
+    | require_secure_transport | OFF&nbsp;&nbsp;&nbsp; |<br>
+    |
+    secure_auth&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    &nbsp; &nbsp; &nbsp; &nbsp; | ON&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+    | secure_file_priv&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp;&nbsp; | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    |&nbsp;&nbsp;&nbsp;&nbsp;
+    &lt;&lt;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+    这里是这个样子!!!!!<br>
+    +--------------------------+--------+<br>
+    3 rows in set, 1 warning (0.00 sec)<br>
+    mysql&gt; show global variables like '%secure_file_priv%';<br>
+    +------------------+--------+<br>
+    | Variable_name&nbsp;&nbsp;&nbsp; | Value&nbsp; |<br>
+    +------------------+--------+<br>
+    | secure_file_priv | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+    |&nbsp;&nbsp;
+    &lt;&lt;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+    这里是这个样子!!!!!<br>
+    +------------------+--------+<br>
+    1 row in set, 1 warning (0.00 sec)<br>
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    <h3> 批量导数据到MySQL表中</h3>
+    chatuser.csv文件内容如下所示: <br>
+    id,use,pp,bb,ss,is<br>
+    2020001,孙思宇,U202011069,8202202011069,1000, 100<br>
+    2020002,谢子琪,U202011571,8202202011571,1000, 100<br>
+    2020003,戴晨曦,U202013029,8202202013029,1000, 100<br>
+    2020004,谢广昊,U202013032,8202202013032,1000, 100<br>
+    ..................................<br>
+    1 .&nbsp; 命令行方式将要导入的CSV文件复制到该目录下<br>
+    执行语句：<br>
+    将CSV文件考到目录：<br>
+    mysql&gt; use chatgpt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /var/lib/mysql-files/chatuser.csv<br>
+    mysql&gt; LOAD DATA INFILE
+    '/var/lib/mysql-files/chatuser.csv'&nbsp;&nbsp; INTO TABLE
+    users&nbsp; FIELDS TERMINATED BY ','&nbsp; ENCLOSED BY '"'&nbsp;
+    LINES TERMINATED BY '\n'&nbsp; IGNORE 1 ROWS;<br>
+    //&nbsp; 文件路径"/",注意这没有LOCAL关键字的&nbsp;&nbsp; --
+    在数据库中创建的要插入的表的名称&nbsp; -- 以','为分隔符&nbsp; --
+    去掉字符串中包裹的符号'"'&nbsp;&nbsp; -- 以'\n'为行间分隔符<br>
+    Query OK, 68 rows affected (0.02 sec)<br>
+    Records: 68&nbsp; Deleted: 0&nbsp; Skipped: 0&nbsp; Warnings: 0<br>
+    <br>
+    or:<br>
+    mysql&gt; LOAD DATA INFILE 'chatuser.csv' INTO TABLE users FIELDS
+    TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1
+    ROWS;<br>
+    Query OK, 68 rows affected (0.03 sec)<br>
+    Records: 68&nbsp; Deleted: 0&nbsp; Skipped: 0&nbsp; Warnings: 0<br>
+    &nbsp;<br>
+    H:\goworkspaces\arvintian<br>
+    -- 忽略第一行，因为第一行往往是表头<br>
+    <br>
+    2. web方式导入批量数据:<br>
+    <div align="center"><img src="imcsvtomysql.png" alt="" width="844"
+        height="366"><br>
+    </div>
+    &nbsp; 成功导入:<br>
+    <div align="center">&nbsp;&nbsp; <img src="sucimcsvtomysql.png"
+        alt="" width="723" height="418"><br>
+    </div>
+    <br>
+    <br>
+    <h3> 4. 创建vue3godb（just for CENTOS 7.9 with phpStudy linux）
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h3>
+    4.1 boot linux(自动启动mysql 8.0.16)<br>
+    4.2 <br>
+    cd /usr/local/phpstudy/soft/mysql/mysql-8.0.16/bin<br>
+    bin]# ./mysql -uroot -p&nbsp;&nbsp;&nbsp;&nbsp; (ps: WTSgyh1972!)<br>
+    mysql&gt; create database vue3godb;<br>
+    插入数据：<br>
+    一条数据：
+    <meta http-equiv="content-type" content="text/html; charset=GBK">
+    <br>
+    mysql&gt; insert into list(id,
+    created_at,updated_at,deleted_at,name,state,phone,email,address)
+    value(1,20240112,20240112,20240115,'wts','wudan',
+    '15578934453','wudan@wat.com', 'wuhui 1027');<br>
+    Query OK, 1 row affected (0.01 sec)<br>
+    如果插入多条数据，可以：<br>
+    1. 写需要写多条sql；<br>
+    2.Values参数后多行插入<br>
+    mysql&gt; insert into list(id,
+    created_at,updated_at,deleted_at,name,state,phone,email,address)
+    values(3,20240112,20240112,20240115,'gyh','gyhsan',
+    '15578934454','gyhdan@wat.com', 'xuhui 9457'),
+    (4,20240112,20240112,20240115,'wzt','nandan',
+    '15578934456','wztai@huo.com', 'jaling 5980'),
+    (5,20240112,20240112,20240115,'watsi','koulong',
+    '15578934456','watisan@wat.com', 'chnongi 18459');<br>
+    Query OK, 3 rows affected (0.00 sec)<br>
+    Records: 3&nbsp; Duplicates: 0&nbsp; Warnings: 0<br>
+    <br>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+    </h2>
+    <br>
+    <br>
+    <br>
+    <h3>在MySQL中导入SQL文件，下面几种实现方法：</h3>
+    1. 使用MySQL命令行工具：可以使用以下命令将SQL文件导入到MySQL数据库中：<br>
+    <br>
+    mysql -u username -p database_name &lt; path/to/vue3godb.sql<br>
+    <br>
+    其中，username是数据库用户名，database_name是要导入到的数据库名称，path/to/sql_file.sql是SQL
+    文件的路径。在运行命令后，会提示输入数据库密码，输入密码后，就会将SQL文件中的内容导入数据库。<br>
+    2. 用MySQL的图形界面工具：可以使用MySQL自带的图形界面工具（如phpMyAdmin、MySQL
+    Workbench等）打开数据库连接，然后选择要导入SQL文件的数据库。接下来，可以使用工具提供的导入功能（导入选项卡或菜单）来选择并导入SQL
+    文件。<br>
+    <br>
+    3. <span style="background-color:#ffffff;">
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      <span style="color:#000000;"><span
+          style="background-color:#ffffff;">常用 source 命令<br>
+          mysql&gt; source
+          /run/media/catalyst/TOSHIBA/vue3gocruddemo/vue3goserv/resources/script/sql/vue3godb.sql&nbsp;
+          (for t_db_instance)<br>
+          结果会出现</span></span></span>下面的字样:&nbsp; <span
+      style="background-color:#ffffff;"><span style="color:#000000;"><span
+          style="background-color:#ffffff;"><br>
+          Query OK, 1 row affected (0.00 sec)<br>
+          对于windows下面则用</span></span></span>:<br>
+    <span style="background-color:#ffffff;"><span style="color:#000000;"><span
+          style="background-color:#ffffff;">mysql&gt;source
+          e:\xxxxx\vue3godb.sql(具体路径改为你实际的目录)<br>
+        </span></span></span><br>
+    4.
+    使用编程语言连接数据库：如果你在使用某个编程语言开发应用程序，可以使用相应的数据库连接库（如Python的mysql-connector-
+    python、Java的jdbc等）来连接到MySQL数据库，并执行SQL文件中的语句。具体实现方法取决于编程语言和所使用的库，一般可以
+    使用类似以下的伪代码<br>
+    <code class="hljs">
+      <meta http-equiv="content-type" content="text/html; charset=GBK">
+      <pre><code class="language-python"><pre class="chat-code-pre"><code class="hljs"><span class="hljs-keyword">import</span> mysql.connector<br><br><span class="hljs-comment"># 连接到数据库</span><br>cnx = mysql.connector.connect(user=<span class="hljs-string">'username'</span>, password=<span class="hljs-string">'password'</span>, host=<span class="hljs-string">'localhost'</span>, database=<span class="hljs-string">'database_name'</span>)<br>cursor = cnx.cursor()<br><br><span class="hljs-comment"># 读取SQL文件内容</span><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">'path/to/vue3godb.sql'</span>, <span class="hljs-string">'r'</span>) <span class="hljs-keyword">as</span> file:<br>    sql_script = file.read()<br><br><span class="hljs-comment"># 执行SQL语句</span><br>statements = sql_script.split(<span class="hljs-string">';'</span>)<br><span class="hljs-keyword">for</span> statement <span class="hljs-keyword">in</span> statements:<br>    cursor.execute(statement)<br><br><span class="hljs-comment"># 提交更改并关闭连接</span><br>cnx.commit()<br>cursor.close()<br>cnx.close()<br>***************************************<br></code></pre></code></pre>
+    </code><strong>5. mysql密码加密：&nbsp; 注：如无特殊原因，建议用更安全的新加密方式。<br>
+      MySQL8.0版本之前，MySQL使用的加密方式是“mysql_native_passowrd"，在MySQL8.0之后，加密的方
+      式改为“caching_sha2_password”，从字面意思理解，后者的加密方式应该更高效，以便提升客户端的连接速度。<br>
+      ;MySQL 8.0 在用户管理方面增加了角色管理，默认的密码加密方式也做了调整，由之前的 SHA1 改为了 SHA2。同时加上
+      MySQL 5.7 的禁用用户和用户过期的功能，MySQL 在用户管理方面的功能和安全性都较之前版本大大的增强了。<br>
+      查看相关资料说8.0以上版本去掉了select password()函数<br>
+      <br>
+      mysql&gt; show variables like 'default_authentication_plugin';<br>
+      +-------------------------------+-----------------------+<br>
+      |
+      Variable_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      |
+      Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      |<br>
+      +-------------------------------+-----------------------+<br>
+      | default_authentication_plugin | caching_sha2_password |<br>
+      +-------------------------------+-----------------------+<br>
+      1 row in set (0.01 sec)<br>
+      <br>
+      mysql&gt; select user,host,plugin from mysql.user;<br>
+      +------------------+-----------+-----------------------+<br>
+      |
+      user&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      | host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+      plugin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      |<br>
+      +------------------+-----------+-----------------------+<br>
+      | mysql.infoschema | localhost | caching_sha2_password |<br>
+      | mysql.session&nbsp;&nbsp;&nbsp; | localhost |
+      caching_sha2_password |<br>
+      | mysql.sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | localhost
+      | caching_sha2_password |<br>
+      |
+      root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      | localhost | caching_sha2_password |<br>
+      +------------------+-----------+-----------------------+<br>
+      4 rows in set (0.00 sec)<br>
+      <br>
+      <br>
+      如果需要保持之前的验证方式并保持之前版本的密码加密方式需要在配置文件 my.cnf 中修改以下配置项<br>
+      *******************************************<br>
+      [mysqld]<br>
+      default_authentication_plugin = mysql_native_password<br>
+      并重启服务后生效<br>
+      即：如果想：&nbsp; select password('admin');<br>
+    </strong>
+    <meta http-equiv="content-type" content="text/html; charset=GBK">
+    <br>
+    将 MySQL 8.0 中已有的 SHA2 密码修改为 SHA1 的模式。<br>
+    # 更新用户的密码加密方式为之前版本的方式<br>
+    mysql&gt; ALTER USER 'root'@'127.0.0.1' IDENTIFIED WITH
+    mysql_native_password BY 'password';<br>
+    # 刷新权限<br>
+    mysql&gt; FLUSH PRIVILEGES;<br>
+    <br>
+    <br>
+    mysql&gt; CREATE USER wtsgyh IDENTIFIED BY 'wtsgyh1972';　<br>
+    ERROR 1819 (HY000): Your password does not satisfy the current
+    policy requirements&nbsp;&nbsp;&nbsp; //密码太简单了，改复杂一点即可。<br>
+    <br>
+    mysql&gt; CREATE USER wtsgyh IDENTIFIED BY 'WWWwtsgyh1972!';<br>
+    Query OK, 0 rows affected (0.01 sec)<br>
+    <br>
+    mysql&gt; select user from mysql.user;<br>
+    +------------------+<br>
+    |
+    user&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    |<br>
+    +------------------+<br>
+    | wtsgyh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    |<br>
+    | mysql.infoschema |<br>
+    | mysql.session&nbsp;&nbsp;&nbsp; |<br>
+    | mysql.sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+    |
+    root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    |<br>
+    +------------------+<br>
+    5 rows in set (0.00 sec)<br>
+    <br>
+    mysql&gt; use mysql;<br>
+    Reading table information for completion of table and column names<br>
+    You can turn off this feature to get a quicker startup with -A<br>
+    <br>
+    Database changed<br>
+    查看加密的用户密码：<br>
+    mysql&gt; select host,user,authentication_string from user;<br>
++-----------+------------------+------------------------------------------------------------------------+<br>
+    | host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+    user&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    |
+    authentication_string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    |<br>
++-----------+------------------+------------------------------------------------------------------------+<br>
+    | %&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+    wtsgyh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+    $A$005$bVzR}e&amp;8sU,Mx`Q#oFzNU0E7oAh.za/61.TlX1fuEiuA4xdja/uDehkhZI7
+
+
+    |<br>
+    | localhost | mysql.infoschema |
+    $A$005$THISISACOMBINATIONOFINVALIDSALTANDPASSWORDTHATMUSTNEVERBRBEUSED
+    |<br>
+    | localhost | mysql.session&nbsp;&nbsp;&nbsp; |
+    $A$005$THISISACOMBINATIONOFINVALIDSALTANDPASSWORDTHATMUSTNEVERBRBEUSED
+    |<br>
+    | localhost | mysql.sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+    $A$005$THISISACOMBINATIONOFINVALIDSALTANDPASSWORDTHATMUSTNEVERBRBEUSED
+
+
+    |<br>
+    | localhost |
+    root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    | $A$005$X)!Ch9<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    }Q.Rl7iIQSdIOV6Gn5O02bUEK9brMS0JretNkOzIz/Af41nRnyly1 |<br>
++-----------+------------------+------------------------------------------------------------------------+<br>
+    5 rows in set (0.00 sec)<br>
+    <span class="enlighter-text"></span><br>
+    <span class="enlighter-text"></span>
+    <div class="enlighter-default enlighter-v-standard
+      enlighter-t-droide enlighter-hover enlighter-linenumbers ">
+      <div class="enlighter" style="">
+        <div class="">
+          <div><span class="enlighter-text"><br>
+              mysql&gt; UPDATE t_sys_account SET Password =
+              '$A$005$bVzR}e&amp;8sU,Mx`Q#oFzNU0E7oAh.za/61.TlX1fuEiuA4xdja/uDehkhZI7'
+              WHERE id = 1;<br>
+              ERROR 1406 (22001): Data too long for column 'password' at
+              row 1&nbsp;&nbsp;&nbsp;&nbsp;
+              &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;表中的某个字段长度不
+              够！！！<br>
+              <br>
+              修改表某个字段的数据类型<br>
+              mysql&gt;alter table vue3godb.t_sys_account modify
+              password varchar(100);<br>
+              mysql&gt; UPDATE t_sys_account SET Password =
+              '$A$005$bVzR}e&amp;8sU,Mx`Q#oFzNU0E7oAh.za/61.TlX1fuEiuA4xdja/uDehkhZI7'
+              WHERE id = 1;<br>
+              Query OK, 1 row affected (0.00 sec)<br>
+              Rows matched: 1&nbsp; Changed: 1&nbsp; Warnings: 0<br>
+              <br>
+            </span></div>
+        </div>
+      </div>
+    </div>
+    <br>
+  </body>
+</html>

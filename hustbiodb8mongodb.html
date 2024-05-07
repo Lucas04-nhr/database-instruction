@@ -1,0 +1,2458 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html pageencoding="UTF-8" lang="zh-CN">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div align="center">
+      <h2 align="left"> 本科教学-数据库技术及应用(CENTOS环境)</h2>
+      <h1>上机练习八&nbsp; NoSQL数据库MongoDB</h1>
+      <h1>基本操作及高级语言编程访问</h1>
+      <h1> </h1>
+      <p align="left">一 上机内容: <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        1. MONGODB及图形管理界面简介; GO语言简介及基本语法<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        2. MONGODB及图形界面基本操作<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        3. 使用GO语言进行简单的数据库访问以及基于GO的web前后端数据库技术<br>
+        二 上机目的: 了解非关系数据MongoDBnosql，非关系数据库的基本思想.<br>
+        三 利用VSCODE进行调试GO语言及数据库访问.<br>
+      </p>
+      <h1> </h1>
+    </div>
+    准备工作: 本次上机将使用GO语言(即golang)访问mongodb数据库<br>
+    <br>
+    请参照: <a href="hustbiodb8mongodbbasic.html">MongoDB基础部分</a><br>
+    <h2 align="left">上机操作部分 GO语言及其应用基础</h2>
+    <h3>启动MONGODB服务器:</h3>
+    <pre><pre>#./mongod.exe -version   //<span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">验证MongoDB的版本<br></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">[root@localhost bin]# ./mongod -version</span><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span></pre></pre>
+    <table width="492" height="259" align="center" cellspacing="2"
+      cellpadding="2" border="1">
+      <tbody>
+        <tr>
+          <td valign="top">
+            <div align="left">CENTOS 7.9的版本信息:<br>
+              db version v4.4.18<br>
+              Build Info: {<br>
+              &nbsp;&nbsp;&nbsp; "version": "4.4.18",<br>
+              &nbsp;&nbsp;&nbsp; "gitVersion":
+              "8ed32b5c2c68ebe7f8ae2ebe8d23f36037a17dea",<br>
+              &nbsp;&nbsp;&nbsp; "openSSLVersion": "OpenSSL 1.0.1e-fips
+              11 Feb 2013",<br>
+              <div> &nbsp;&nbsp;&nbsp; "modules": [],<br>
+              </div>
+              &nbsp;&nbsp;&nbsp; "allocator": "tcmalloc",<br>
+              &nbsp;&nbsp;&nbsp; "environment": {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "distmod":
+              "rhel70",<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "distarch":
+              "x86_64",<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "target_arch":
+              "x86_64 "<br>
+              &nbsp;&nbsp;&nbsp; }<br>
+              }</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pre><pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><br></span></pre></pre>
+    <div align="center"><span style="color: rgb(102, 102, 102);
+        font-family: &quot;PingFang SC&quot;, &quot;Microsoft
+        Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans
+        GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;,
+        &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px;
+        font-style: normal; font-variant-ligatures: normal;
+        font-variant-caps: normal; font-weight: 400; letter-spacing:
+        normal; orphans: 2; text-align: center; text-indent: 0px;
+        text-transform: none; white-space: normal; widows: 2;
+        word-spacing: 0px; -webkit-text-stroke-width: 0px;
+        background-color: rgb(255, 255, 255); text-decoration-thickness:
+        initial; text-decoration-style: initial; text-decoration-color:
+        initial; display: inline !important; float: none;"></span><span
+        style="color: rgb(102, 102, 102); font-family: &quot;PingFang
+        SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe
+        UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft
+        Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif;
+        font-size: 16px; font-style: normal; font-variant-ligatures:
+        normal; font-variant-caps: normal; font-weight: 400;
+        letter-spacing: normal; orphans: 2; text-align: center;
+        text-indent: 0px; text-transform: none; white-space: normal;
+        widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+        background-color: rgb(255, 255, 255); text-decoration-thickness:
+        initial; text-decoration-style: initial; text-decoration-color:
+        initial; display: inline !important; float: none;"></span></div>
+    <pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span># ./mongod -f ../etc/mongoDB.conf&nbsp; //启动服务端server, 注意mongoDB.conf的书写格式(本次上机课附件网页部分)<br>$ netstat -lnpt | grep mongo &nbsp; &nbsp;  //检查进程和端口<br>(Not all processes could be identified, non-owned process info will not be shown, you would have to be root to see it all.)<br>tcp        0      0 0.0.0.0:27017           0.0.0.0:*               LISTEN      2960/./bin/mongod  &nbsp; &nbsp; &nbsp;//看看是不是启动了？？？？
+<br></pre>
+    // 关闭MongoDB 方式一：<br>
+    &nbsp; ./mongod -f ../etc/mongoDB.conf --shutdown&nbsp;
+    &nbsp;//直接用启动命令后面加一个--shutdown即可<br>
+    $ netstat -lnpt | grep mongo &nbsp; &nbsp;//检查mongoServer是否还工作？？？
+    即mongod是否还在？？？<br>
+    <pre>// 关闭MongoDB 方式二：</pre>
+    $ ./bin/mongo &nbsp; //启动mongoDB命令行界面Shell &gt; use admin<br>
+    switched to db admin<br>
+    &gt;db &nbsp; &nbsp;//查看当前数据库<br>
+    &gt; db.shutdownServer()<br>
+    &nbsp;server should be down...<br>
+    <pre>$ netstat -lnpt | grep mongo &nbsp; &nbsp;//再次检查mongoServer是否还工作？？？ 即mongod是否还在？？？</pre>
+    <pre><pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span><br></pre></pre>
+    <h2>启动mongoDB命令行界面Shell</h2>
+    <pre><pre>#/opt/mongodbrhel7/bin/mongo<br>$ ./mongo --port=27017<br></pre></pre>
+    <table width="1442" height="590" align="center" cellspacing="2"
+      cellpadding="2" border="1">
+      <tbody>
+        <tr>
+          <td valign="top">
+            <pre><pre>CENTOS 7.9运行mongo后的结果:<br>MongoDB shell version v4.4.18<br>connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb<br>Implicit session: session { "id" : UUID("42e947a6-d80e-4816-b176-85df2644593d") }<br>MongoDB server version: 4.4.18<br>---<br>The server generated these startup warnings when booting: <br>        2023-04-08T21:52:41.178-04:00: You are running this process as the root user, which is not recommended &nbsp; <br>        2023-04-08T21:52:41.179-04:00: You are running on a NUMA machine. We suggest launching mongod like this to avoid performance problems: numactl --interleave=all mongod [other options]<br>        2023-04-08T21:52:41.179-04:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'<br>        2023-04-08T21:52:41.179-04:00: /sys/kernel/mm/transparent_hugepage/defrag is 'always'. We suggest setting it to 'never'<br>        2023-04-08T21:52:41.179-04:00: Soft rlimits too low<br>        2023-04-08T21:52:41.179-04:00:         currentValue: 1024<br>        2023-04-08T21:52:41.179-04:00:         recommendedMinimum: 64000<br>---<br>---<br>        Enable MongoDB's free cloud-based monitoring service, which will then receive and display<br>        metrics about your deployment (disk utilization, CPU, operation statistics, etc).<br><br>        The monitoring data will be available on a MongoDB website with a unique URL accessible to you<br>        and anyone you share the URL with. MongoDB may use this information to make product<br>        improvements and to suggest MongoDB products and deployment options to you.<br><br>        To enable free monitoring, run the following command: db.enableFreeMonitoring()<br>        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()<br>---<br>&gt; </pre></pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>高效NoSQL数据库利器：Mongodb完整教程<br>
+    </h2>
+    mongo shell 常用命令练习:<br>
+    <br>
+    <div align="center">
+      <table width="566" height="736" cellspacing="2" cellpadding="2"
+        border="1">
+        <tbody>
+          <tr>
+            <td valign="top">命令</td>
+            <td valign="top">说明</td>
+          </tr>
+          <tr>
+            <td valign="top">db.version()</td>
+            <td valign="top">查看数据库版本</td>
+          </tr>
+          <tr>
+            <td valign="top">show dbs|show databases</td>
+            <td valign="top">显示数据库列表</td>
+          </tr>
+          <tr>
+            <td valign="top">use monbiodb</td>
+            <td valign="top">切换数据库，如不存在创建数据库monbiodb</td>
+          </tr>
+          <tr>
+            <td valign="top">db.dropDatabase()&nbsp; <br>
+            </td>
+            <td valign="top">删除数据库: 要先用:<br>
+              &gt;use monbiodb<br>
+              再:<br>
+              &gt;db.dropDatabase()&nbsp;&nbsp; 即可删除monbiodb</td>
+          </tr>
+          <tr>
+            <td valign="top">show collections|show tables <br>
+            </td>
+            <td valign="top">显示当前数据库的集合列表</td>
+          </tr>
+          <tr>
+            <td valign="top">db.biodbcol.stats() <br>
+            </td>
+            <td valign="top">查看集合biodbcol详情</td>
+          </tr>
+          <tr>
+            <td valign="top">db.biodbcol.drop() <br>
+            </td>
+            <td valign="top">删除集合biodbcol</td>
+          </tr>
+          <tr>
+            <td valign="top">show users</td>
+            <td valign="top">显示当前数据库的用户列表</td>
+          </tr>
+          <tr>
+            <td valign="top">show roles <br>
+            </td>
+            <td valign="top">显示当前数据库的角色列表</td>
+          </tr>
+          <tr>
+            <td valign="top">show profile</td>
+            <td valign="top">显示最近发生的操作</td>
+          </tr>
+          <tr>
+            <td valign="top">load(“xxx.js”)</td>
+            <td valign="top">执行一个JavaScript脚本文件</td>
+          </tr>
+          <tr>
+            <td valign="top">db.biodbcol.help() <br>
+            </td>
+            <td valign="top">显示集合的帮助信息</td>
+          </tr>
+          <tr>
+            <td valign="top">db.help() <br>
+            </td>
+            <td valign="top">查询当前数据库支持的方法</td>
+          </tr>
+          <tr>
+            <td valign="top">help</td>
+            <td valign="top">查看mongodb支持哪些命令</td>
+          </tr>
+          <tr>
+            <td valign="top">exit</td>
+            <td valign="top">quit()退出当前shell</td>
+          </tr>
+        </tbody>
+      </table>
+      &nbsp; <br>
+    </div>
+    <h2>MongoDB警告信息处理：</h2>
+    <p>1.启动用户警告： 2023-04-08T21:52:41.178-04:00: You are running this
+      process as the root user, which is not recommended<br>
+      表示：启动server尽量不要用root用户，用普通用户启动更安全。<br>
+      更改方法：<br>
+      创建mongodb专用的普通用户，将MongoDB的部署目录赋权给普通用户，用普通用户启动即可<br>
+      更改所有权： chown -R catalyst /opt/mongodbrhel7）<br>
+      查看日志文件：其中有：/opt/mongodbrhel7/data/WiredTiger.turtle: handle-open:
+      open: Permission denied， 删除即可。<br>
+      2.大内存页警告<br>
+      2023-04-08T21:52:41.179-04:00:
+      /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We
+      suggest setting it to 'never'<br>
+      2023-04-08T21:52:41.179-04:00:
+      /sys/kernel/mm/transparent_hugepage/defrag is 'always'. We suggest
+      setting it to 'never'<br>
+      是由于大内存设置了always，MongoDB建议使用never<br>
+      ]$ vi
+      /sys/kernel/mm/transparent_hugepage/enabled&nbsp;&nbsp;&nbsp;
+      //打开看看内容：&nbsp; [always] madvise never<br>
+      $ vi
+      /sys/kernel/mm/transparent_hugepage/defrag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      //打开看看内容：&nbsp; [always] madvise never<br>
+    </p>
+    <h4>临时关闭大内存页</h4>
+    <p># echo "never" &gt;
+      /sys/kernel/mm/transparent_hugepage/enabled&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      # vi /sys/kernel/mm/transparent_hugepage/enabled &nbsp; &nbsp;
+      //打开看看内容： always madvise [never]&nbsp;&nbsp;&nbsp; 怎么样？<br>
+      # echo "never" &gt; /sys/kernel/mm/transparent_hugepage/defrag<br>
+      # vi /sys/kernel/mm/transparent_hugepage/defrag<br>
+      注：另有脚本可永久关闭大内存页，看看官方文档：https://docs.mongodb.com/manual/tutorial
+      /transparent-huge-pages/<br>
+    </p>
+    <p>3.优化limit警告<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      2023-04-08T23:00:17.645-04:00: Soft rlimits too low<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      2023-04-08T23:00:17.645-04:00:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      currentValue: 1024<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      2023-04-08T23:00:17.645-04:00:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      recommendedMinimum: 64000<br>
+      提示的是limt设置的打开文件数太低<br>
+    </p>
+    <p># cat &gt;&gt; /etc/profile&lt;&lt;EOF&nbsp;&nbsp;&nbsp;&nbsp;
+      //需要root用户权限<br>
+      &gt; ulimit -f unlimited&nbsp;&nbsp;&nbsp; //此行及以下为输入行<br>
+      &gt; ulimit -u unlimited<br>
+      &gt; ulimit -v unlimited<br>
+      &gt; ulimit -n 64000<br>
+      &gt; ulimit -m unlimited<br>
+      &gt; ulimit -u 64000<br>
+      &gt; EOF<br>
+    </p>
+    <p># vi /etc/profile&nbsp;&nbsp;&nbsp;&nbsp; //看看有没有将上面的几行加进去？？？<br>
+      # source /etc/profile<br>
+    </p>
+    <pre><pre><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">MongoDB shell中执行命令来创建数据库、插入数据、编辑数据、发布管理命令和删除数据。<br></span><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>显示数据库： </strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong><br>&gt; show dbs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //show database names&nbsp;&nbsp; </strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>检查现有的数据库</strong></span>
+<span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>admin&nbsp;&nbsp; 0.000GB<br>config&nbsp; 0.000GB<br>local&nbsp;&nbsp; 0.000GB<br><br><br>创建你的数据库: </strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong><br><br>与SQL不同，MongoDB没有数据库创建命令。直接输入<code>use</code> 关键词即可切换到指定数据库。如果该数据库不存在，将创建新数据库，</strong></span><pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>如果该数据库已存在</strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>将链接到现有数据库。<br></strong></span><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>要启动名为 “</strong></span>hustbiodb<span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>”的数据库，请键入:<br>&gt;use hustbiodb&nbsp;&nbsp;&nbsp;&nbsp; =&gt; switched to db hustbiodb<br>&gt; show dbs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //</strong></span>看看huststd有没有？？？？ &nbsp;<br>创建的数据库没有显示？这是因为我们还没有将数值保存到数据库中<br><br>&gt; db &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>//</strong></span>看看huststd有没有？？？？ &nbsp;<br>键入&nbsp;<code>db</code> 可确认刚创建的数据库<strong>: &nbsp; </strong><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>hustbiodb<br></strong></span>也就查看当前数据库 <span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong></strong></span><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong></strong></span></pre><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>&gt;db.createCollection（表名称）：&nbsp; 创建表</strong></span><br><br>&gt;db.getCollection('表名称") 使用哪张表<br><br><span style="color: rgb(102, 102, 102); font-family: &quot;PingFang SC&quot;, &quot;Microsoft Yahei&quot;, Avenir, &quot;Segoe UI&quot;, &quot;Hiragino Sans GB&quot;, STHeiti, &quot;Microsoft Sans Serif&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><strong>&gt;db.getMongo() 查看连接数据库的地址<br>&gt; db.getMongo()<br>connection to 127.0.0.1:27017<br><br><br>删除操作：<br>&gt;db.表名.drop()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 删除表<br>&gt;db.dropDatabase（）：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 删除数据库<br><br></strong></span>https://www.wbolt.com/mongodb-create-database.html<br><br></pre></pre>
+    <h3 id="managing-your-mongodb-database" class="has-anchor-hash
+      wb-sc-2 j-wbsc-title" data-index="10">管理你的MongoDB数据库</h3>
+    <p>有效管理MongoDB数据库的巧妙方法： 可通过MongoDB-compass或通过集合来实现。</p>
+    <p>相比与关系型数据库定义明确的表，有指定的数据类型和列，但NoSQL有集合而不是表。<br>
+      这些集合没有任何结构，而且文档可以变化-----可有不同的数据类型和字段，而不需要在同一个集合中匹配另一个文档的格式。<br>
+    </p>
+    <p>创建一个名为 "Hustbiocol"的集合，并向其中添加一个文档。<br>
+    </p>
+    <div class="enlighter" style="">
+      <div class="">
+        <div><span class="enlighter-text"></span><span
+            class="enlighter-text"></span><span class="enlighter-m3"></span><span
+            class="enlighter-g1"></span><span class="enlighter-text"></span><span
+            class="enlighter-g1"></span><span class="enlighter-text"></span><span
+            class="enlighter-s0"></span><span class="enlighter-text"></span><span
+            class="enlighter-s0"></span><span class="enlighter-text"></span><span
+            class="enlighter-s0"></span><span class="enlighter-text"></span><span
+            class="enlighter-s0"></span><span class="enlighter-text"></span><span
+            class="enlighter-g1"></span><span class="enlighter-g1">输入以下行</span>：<br>
+          &gt;use Hustbiocol<br>
+          <span class="enlighter-g1">&gt;
+            db.Hustbiocol.insert(&nbsp;&nbsp;&nbsp; //</span><span
+            class="enlighter-g1">db “指的是当前连接的数据库。</span><span
+            class="enlighter-g1"><span class="enlighter-g1">Hustbiocol</span>是
+            数据库中新创建的集合。<br>
+            ... {<br>
+            ... "Huststdname":"Huster",<br>
+            ... "L</span>ife<span class="enlighter-g1">Dep":"Bioinfos"<br>
+            ... }<br>
+            ... )&nbsp;&nbsp;&nbsp; //记得这里的：</span> ）&nbsp;&nbsp; 结束！！！<br>
+          <span class="enlighter-g1">WriteResult({ "nInserted" : 1
+            })&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //</span><span
+            class="enlighter-g1">返回 <code>WriteResult({ "nInserted" : 1
+              })</code> &nbsp; 表示</span><span class="enlighter-g1"><span
+              class="enlighter-g1">插入成功</span> <br>
+            <br>
+            &gt; show dbs<br>
+            admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000GB<br>
+            config&nbsp;&nbsp;&nbsp;&nbsp; 0.000GB<br>
+            local&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000GB<br>
+            mongotest&nbsp; 0.000GB<br>
+          </span><span class="enlighter-g1">Hustbiocol&nbsp;
+            0.000GB&nbsp;&nbsp;&nbsp;&nbsp; //</span>看到这里没有？？？？
+          这个就是新建的数据库,其中还有个集合： Hustbiocol<br>
+          <br>
+          这里没有设主键，MongoDB会自动创建一个名为”_id “的主键字段，并为其设置一个默认值<br>
+          <span class="enlighter-g1"><br>
+          </span>检查JSON格式的集合：<span class="enlighter-text"></span><span
+            class="enlighter-text"><span class="enlighter-g1"></span><br>
+            &gt; db.Hustbiocol.find().forEach(printjson)<br>
+            {<br>
+            &nbsp;&nbsp;&nbsp; "_id" :
+            ObjectId("643279f7a32075d91a34014c"),&nbsp;&nbsp;&nbsp;&nbsp;
+            //</span><span class="enlighter-text">主键<br>
+            &nbsp;&nbsp;&nbsp; "Huststdname" : "Huster",<br>
+            &nbsp;&nbsp;&nbsp; "LifeDep" : "Bioinfos"<br>
+            }<br>
+            上面的内容是不是刚才输入的？？？？？？<br>
+            <br>
+            自定义主键：<br>
+            &gt; db.Hustbiocol.insert(<br>
+            ... {<br>
+            ... "_id" : 1,<br>
+            ... "Huststdname":"watis",<br>
+            ... "LifeDep":"Biosci"<br>
+            ... }<br>
+            ... )<br>
+            WriteResult({ "nInserted" : 1 })<br>
+            &gt;
+            db.Hustbiocol.find().forEach(printjson)&nbsp;&nbsp;&nbsp;
+            //再看看如何？？？？<br>
+          </span><span class="enlighter-g1"></span></div>
+      </div>
+    </div>
+    <pre><pre>这次的结果是不是集合中多了一个：主键， _id “值被设置为 “1”，而不是被自动分配一个值<br><br>启动数据库管理GUI： 数据可视化、性能分析，以及对数据、数据库和集合的CRUD（创建、读取、更新、删除）访问<pre><pre>$ mongodb-compass <br></pre></pre></pre></pre>
+    <div align="center"><img
+        src="../hustdbroot/mondbdir/bootmoncompass.png" alt=""
+        width="360" height="321"><br>
+    </div>
+    <pre><pre><br>启动mongodb-compass可能会报错：<br>1. FATAL:electron_main_delegate.cc(299)] Running as root without --no-sandbox is not supported： 不能用root运行mongodb-compass<br>2. FATAL:setuid_sandbox_host.cc(157)] The SUID sandbox helper binary was found, but is not configured correctly. <br>Rather than run without sandboxing I'm aborting now. <br>You need to make sure that /usr/lib/mongodb-compass/chrome-sandbox is owned by root and has mode 4755.<br>表示： 需要<br># chmod 4755 /usr/lib/mongodb-compass/chrome-sandbox &nbsp; （需要root权限）
+<br>点击start:<br></pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="../hustdbroot/mondbdir/mondbcompgui.png" alt=""
+        width="1073" height="393"></div>
+    <pre><pre><br>点击Connect:<br></pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="../hustdbroot/mondbdir/allmondb.png" alt="" width="1118"
+        height="465"></div>
+    <pre><pre><br><br><br>GUI创建一个MongoDB数据库<br>1. 在GUI中点击带圈的加号，即可弹出：Create Database的窗口：<br>输入：<br>数据库的名称：biomondb<br>第一个集合名：biodbcol</pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="../hustdbroot/mondbdir/comcrdb.png" alt="" width="929"
+        height="526"></div>
+    <pre><pre><br></pre></pre>
+    <pre><pre><code></code></pre></pre>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h1>
+    <pre><pre><br><pre>结果如下：点击 Create Database, 即可创建一个新的数据库biomondb以及集合biodbcol（表）<br></pre></pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="mondbdir/creatmondbcolname.png" alt="" width="608"
+        height="399"></div>
+    <pre><pre><pre><br>给数据库中插入更多文件：</pre>点击数据库名称: biomondb<br>点击集合的名称： biodbcol<br>即可看到GUI有侧有多个标签： Documents, Aggregations, Schema, Explain Plan, Indexes, Validation<br><strong>Documents</strong>标签。<br></pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="../hustdbroot/mondbdir/dbcoldoc.png" alt="" width="986"
+        height="446"></div>
+    <pre><pre><br><br><br><br>然后，你可以点击<strong>Add Data</strong>按钮，将一个或多个文档插入你的集合中。<br></pre></pre>
+    <div class="enlighter" style=""><span class="enlighter-text"></span>
+      <div class="">
+        <div>
+          <h3>
+            <h2>命令行方式插入一个文档：<br>
+            </h2>
+          </h3>
+          <h3 data-first-child="" data-pid="9zKBBiTx">
+            <meta http-equiv="content-type" content="text/html;
+              charset=UTF-8">
+            mongodb insert
+            操作可以分为四种，分别是：insert、save、insertOne、insertMany。</h3>
+          <h3> </h3>
+          <h3> MongoDB插入操作练习：</h3>
+          <p data-pid="jxjFUVh0">
+            <meta http-equiv="content-type" content="text/html;
+              charset=UTF-8">
+          </p>
+          <div id="arc-body">
+            <meta http-equiv="content-type" content="text/html;
+              charset=UTF-8">
+            向集合里插入记录时，无须事先对数据存储结构进行定义。如果待插入的集合不存在，则插入操作会默认创建集合。<br>
+            <div id="arc-body">
+              <meta http-equiv="content-type" content="text/html;
+                charset=UTF-8">
+              插入操作以单个集合为目标，MongoDB 中的所有写入操作都是单个文档级别的原子操作。</div>
+          </div>
+          <p data-pid="jxjFUVh0">将数据插入到MongoDB的过程中，如果没有指定 _id，那么MongoDB
+            会自动的为其生成一个；插入成功以后，将会返回一个 document，其中包含了当前成功插入的 document 的
+            _id。</p>
+          <h3>进入mongo DB的命令行模式</h3>
+          $ ./mongo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+          MongoDB shell version v4.4.18<br>
+          connecting to:
+mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb<br>
+          Implicit session: session { "id" :
+          UUID("bae09ec6-8d1f-4671-8765-967098b5f53e") }<br>
+          MongoDB server version: 4.4.18<br>
+          &gt;&nbsp;&nbsp;&nbsp; //结果会出现提示符！！！！在这里输入命令就可以了<br>
+          <br>
+          <h3>Insert操作：将单个或多个文档插入到集合中</h3>
+          <pre class="info-box"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></pre>
+          <div id="arc-body">
+            <meta http-equiv="content-type" content="text/html;
+              charset=UTF-8">
+            向集合中插入数据的语法</div>
+          <pre class="info-box"><pre class="info-box"><b>db.collection.insert(
+&lt;document or array of documents&gt;, &nbsp; &nbsp; //</b>参数表示可设置插入一条或多条文档<b>
+{
+    writeConcern: &lt;document&gt;,    //可选字段，</b>表示自定义写出错的级别，是一种出错捕捉机制<b>
+    ordered: &lt;boolean&gt;    &nbsp; &nbsp; &nbsp; &nbsp;//可选字段，</b>默认为 true，在数组中执行文档的有序插入，并且如果其中一个文档发生错误，MongoDB 将返回而不处理数组中的其余文档<b>；</b><br><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 若</b>为 false: 执行无序插入，若其中一个文档发生错误，则忽略错误，继续处理数组中的其余文档<br></pre></pre>
+          <b>&nbsp;}
+          </b>
+          <pre class="info-box"><pre class="info-box"><b>)<br>如： db.testcol.insert(</b><b>{ item : "card", qty : 15 },ordered:true</b><b>)<br>其中： </b><b>testcol</b> 为集合名，insert() 为插入文档命令，三者之间用连接。<br>&gt; db.test.insert( { item : "card", qty : 15 })<br>WriteResult({ "nInserted" : 1 })<br>&gt; db.test.find()<br>{ "_id" : ObjectId("65611536b297cbce61b6ece4"), "item" : "card", "qty" : 15 }<br>看看是不是新加了: &nbsp;_id, Objectld 值与执行操作时的机器和时间有关，因此，用户执行这段命令后的返回值与示例中的值是不同的<br><pre class="info-box"><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre class="info-box">&gt; db.test.insert({_id:10,item:"box",qty:20})<br>WriteResult({ "nInserted" : 1 })<br>&gt; db.test.find()<br>{ "_id" : ObjectId("65611536b297cbce61b6ece4"), "item" : "card", "qty" : 15 }<br>{ "_id" : 10, "item" : "box", "qty" : 20 } &nbsp; &nbsp;//可以看到新插入文档的 id 值为设置的 id 值</pre></pre></pre></pre>
+          <pre class="info-box"><pre class="info-box"><br></pre></pre>
+          <div id="arc-body">
+            <meta http-equiv="content-type" content="text/html;
+              charset=UTF-8">
+            插入的多个文档无须具有相同的字段。例如，下面代码中的第一个文档包含一个 _id 字段和一个 type
+            字段，第二个和第三个文档不包含 _id 字段。因此，在插入过程中，MongoDB 将会为第二个和第三个文档创建默认
+            _id 字段<br>
+            &gt; db.test.insert(<br>
+            ...&nbsp;&nbsp;&nbsp;&nbsp; [<br>
+            ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { _id:
+            11, item: "pencil", qty: 50, type: "no.2" },<br>
+            ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { item:
+            "pen", qty: 20 },<br>
+            ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { item:
+            "eraser", qty: 25 }<br>
+            ...&nbsp;&nbsp;&nbsp;&nbsp; ]<br>
+            ... )<br>
+            BulkWriteResult({<br>
+            &nbsp;&nbsp;&nbsp; "writeErrors" : [ ],<br>
+            &nbsp;&nbsp;&nbsp; "writeConcernErrors" : [ ],<br>
+            &nbsp;&nbsp;&nbsp; "nInserted" : 3,<br>
+            &nbsp;&nbsp;&nbsp; "nUpserted" : 0,<br>
+            &nbsp;&nbsp;&nbsp; "nMatched" : 0,<br>
+            &nbsp;&nbsp;&nbsp; "nModified" : 0,<br>
+            &nbsp;&nbsp;&nbsp; "nRemoved" : 0,<br>
+            &nbsp;&nbsp;&nbsp; "upserted" : [ ]<br>
+            })<br>
+            &gt; db.test.find()<br>
+            { "_id" : ObjectId("65611536b297cbce61b6ece4"), "item" :
+            "card", "qty" : 15 }<br>
+            { "_id" : 10, "item" : "box", "qty" : 20 }<br>
+            { "_id" : 11, "item" : "pencil", "qty" : 50, "type" : "no.2"
+            }<br>
+            { "_id" : ObjectId("656116c4b297cbce61b6ece5"), "item" :
+            "pen", "qty" : 20 }&nbsp;&nbsp;&nbsp; //可以看到系统自动为这两个文档创建了字段<br>
+            { "_id" : ObjectId("656116c4b297cbce61b6ece6"), "item" :
+            "eraser", "qty" : 25 }<br>
+            <br>
+            <div id="arc-body">
+              <meta http-equiv="content-type" content="text/html;
+                charset=UTF-8">
+              用变量方式插入文档<br>
+              <pre class="info-box"><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre class="info-box">&gt; document= ({ name: "c语言", price: 40 })    //document 为变量名.
+&gt; db.test.insert(document)<br><br></pre></pre>
+              <div id="arc-body">
+                <meta http-equiv="content-type" content="text/html;
+                  charset=UTF-8">
+                有序地插入多条文档的代码<br>
+                <pre class="info-box"><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre class="info-box">db.test.insert([
+        {_id:10, item:"pen", price:"20" }, &nbsp; &nbsp; &nbsp; &nbsp;//这个_id有相同的情况，这个步插入，而且后面的也不插入。
+        {_id:12, item:"redpen", price: "30" },
+        {_id:11, item:"bluepen", price: "40" }
+    ],
+    {ordered:true}
+)<br><br></pre></pre>
+                <div id="arc-body">
+                  <meta http-equiv="content-type" content="text/html;
+                    charset=UTF-8">
+                  在设置 ordered:true 时，插入的数据是有序的，如果存在某条待插入文档和集合的某文档 _id
+                  相同的情况，_id 相同的文档与后续文档都将不再插入。<br>
+                  在设置 ordered:false 时，除了出错记录（包括 _id 重复）外其他的记录继续插入。<br>
+                  看看：<br>
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+          &gt;db.col.insert({"STD_ID": "2020001","STD_NAME": "孙宇",
+          "STD_NUM": "U202011069", "STD_MAJOR":
+          "生实202001","STD_PASSWORD": "U202011069", "STD_RECORDS": 1000,
+          "ISVIP": "NO" })<br>
+          WriteResult({ "nInserted" : 1 })&nbsp;&nbsp;&nbsp; //&nbsp;
+          表示插入了一条记录，&nbsp; 注意，看看插入到哪里了？<br>
+          &gt; db.getCollectionNames()&nbsp;&nbsp;&nbsp;&nbsp;
+          查看当前数据库有哪些表<br>
+          [ "biodbcol" ]<br>
+          <br>
+          用compass看看上面那条记录插入到哪里了？&nbsp;&nbsp;&nbsp;&nbsp;
+          //如果没有选数据库，会用缺省的<br>
+          删除集合col：<br>
+          <div align="center"><img moz-do-not-send="true"
+              src="mondbdir/clickcoltodel.png" alt="" width="360"
+              height="224">&nbsp; ======&gt;&gt;&gt;&gt;&gt;&gt;
+            &nbsp;&nbsp; <img moz-do-not-send="true"
+              src="mondbdir/delcolerr.png" alt="" width="802"
+              height="444"><br>
+            <br>
+            按照提示，输入集合名： col,&nbsp; 点： Drop Collection, 即可删除不要的集合。<br>
+            <div align="left">&gt; db&nbsp;&nbsp;&nbsp;&nbsp;
+              //看看当前用的是哪个数据库？？？？<br>
+            </div>
+          </div>
+          test<br>
+          &gt; use biomondb<br>
+          switched to db biomondb<br>
+          &gt; db<br>
+          biomondb<br>
+          <br>
+          &gt; db.biodbcol.insert({"STD_ID": "2020001","STD_NAME": "孙宇",
+          "STD_NUM": "U202011069", "STD_MAJOR":
+          "生实202001","STD_PASSWORDWORD": "U202011069", "STD_RECORDS":
+          1000, "ISVIP": "NO" })<br>
+          WriteResult({ "nInserted" : 1 })&nbsp;&nbsp;&nbsp; //&nbsp;
+          表示插入了一条记录，&nbsp; 注意，看看插入到哪里了？<br>
+          //注意: db.biodbcol.insert(.......)&nbsp;&nbsp;&nbsp;
+          如果没有biodbcol这个集合，就会创建一个！！！！！！！<br>
+          <br>
+          <span class="enlighter-text">将记录写成如下所示:<br>
+            {<br>
+            &nbsp; "_id": {<br>
+            &nbsp;&nbsp;&nbsp; "$oid": "6557e486be0f83648f26cf29"<br>
+            &nbsp; },<br>
+            &nbsp; "</span><span class="enlighter-text">STD_ID":
+            "2020001",<br>
+            &nbsp; "</span><span class="enlighter-text">STD_NAME":
+            "孙思宇",<br>
+            &nbsp; "</span><span class="enlighter-text">STD_NUM":
+            "U202011069",<br>
+            &nbsp; "</span><span class="enlighter-text">STD_MAJOR":
+            "生实202001",<br>
+            &nbsp; "</span><span class="enlighter-text">STD_PASSWORDWORD":
+
+
+
+
+
+
+
+
+            "U202011069",<br>
+            &nbsp; "</span><span class="enlighter-text">STD_RECORDS":
+            1000,<br>
+            &nbsp; "</span><span class="enlighter-text">ISVIP": "NO"<br>
+            }<br>
+          </span></div>
+      </div>
+    </div>
+    <pre><pre>最后，单击 “<strong>Insert</strong>“，将文件添加到你的集合中。<br></pre></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="mondbdir/insertonetomondb.png" alt="" width="905"
+        height="530"></div>
+    <pre><pre><br><br><br>这就是插入一个记录后的样子：看看DOCUMENTS 是不是为1？<br><br><span style="color: rgb(151, 6, 6); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 234, 229); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">如果有重复会报错: <br>&nbsp;E11000 duplicate key error collection: biomondb.biodb index: _id_ dup key: { _id: ObjectId('6557e486be0f83648f26cf29') }<br></span><br></pre>修改相应项再点insert: <br>Inserting Document&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果出现这个表示可以了.<br><br><br>&gt; db.biodbcol.insert({"STD_ID": "2020001","STD_NAME": "孙哥"})&nbsp;&nbsp;&nbsp;&nbsp; //不完全的记录插入<br>WriteResult({ "nInserted" : 1 })<br><br>打开compass看看是不是也插入一条？？？ 确实是插入了一条！！！！<br></pre>
+    <div align="center"><img moz-do-not-send="true"
+        src="mondbdir/insertincomprec.png" alt="" width="501"
+        height="417"></div>
+    <pre><pre><span style="color: rgb(151, 6, 6); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 234, 229); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><span style="color: rgb(8, 60, 144); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(225, 247, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><br></span></span>&gt; db.getCollection("biodbcol").insert({"STD_ID": "2024002","STD_NAME": "侯孙哥"})<br>WriteResult({ "nInserted" : 1 })<span style="color: rgb(151, 6, 6); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 234, 229); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><span style="color: rgb(8, 60, 144); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(225, 247, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><br><br></span></span><br></pre></pre>
+    <div id="arc-body">
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      insertOne() 插入一条文档<br>
+      <pre class="info-box"><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre class="info-box">db.test.iusertone( { item: "card", qty: 15 } );<br><br></pre></pre>
+      <div id="arc-body">
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+        insertMany() 插入多条文档<br>
+        <pre class="info-box"><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre class="info-box">db.test.insertMany([
+    { item: "card", qty: 15 },
+    { item: "envelope", qty: 20 },
+    { item: "stamps", qty:30 }
+]);</pre></pre>
+      </div>
+    </div>
+    <pre><pre><span style="color: rgb(151, 6, 6); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 234, 229); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><span style="color: rgb(8, 60, 144); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(225, 247, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span></span><span style="color: rgb(151, 6, 6); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 234, 229); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"><span style="color: rgb(8, 60, 144); font-family: &quot;Euclid Circular A&quot;, Akzidenz, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(225, 247, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span></span></pre></pre>
+    <h3>插入多条文档，即批量导入数据, linux nedd:
+      https://www.mongodb.com/try/download/database-tools, 记得要选适当的版本哟！！</h3>
+    <p>linux下需要用到mongodb database tools：</p>
+    <p>下载：<br>
+      $wget
+      https://fastdl.mongodb.org/tools/db/mongodb-database-tools-rhel70-x86_64-100.6.1.tgz&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+      (mongodb-database-tools-rhel72-s390x-100.9.3.tgz&nbsp; 不能用？？？？)<br>
+      解压后即可使用。<br>
+    </p>
+    <h3>使用方式:Windows下用git bash, Linux下用Bash就可以了:</h3>
+    <pre><pre>//cd /e/mongodbwinx8664enterprise4223/bin/<br>使用 csv 导入数据的命令方法: 将表.csv 文件导入到 test库，sName集合中，<br>导入时必须指定列名称: --fields "STD_ID,STD_NAME,STD_NUM,STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP" (如果 csv 文件第一行是列名称，会怎么样? 试试? )<br>导入数据分几种情况:<br>1.原始表(集合)是空的:  不需要用 -drop<br>./mongoimport.exe -d biomondb -c biodbcol --type csv --fields "STD_ID, STD_NAME, STD_NUM, STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP" D:\\APPsoftwares\\myeclipse2021518\\workspaces\\drugdesignpractise\\drugusers.csv<br><pre>./mongoimport -d biomondb -c biodbcol --type csv --fields "STD_ID, STD_NAME, STD_NUM, STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP" /home/catalyst/Workspaces/MyEclipse/drugdesignpractise/drugusers.csv<br><pre><pre>./mongoimport.exe -d biomondb -c biodbcol --type csv -h 222.20.94.229 -u biodbuser -p biodb123 --fields "STD_ID, STD_NAME, STD_NUM, STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP" /home/catalyst/Workspaces/MyEclipse/drugdesignpractise/drugusers.csv</pre></pre><br>2.想重新导入全新的数据: 需要用 -drop先清除原来的数据(这个可能会重新生成一个新的数据库rop，并不是你想要的那个导入过程!!!!!)<br>./mongoimport.exe -d biomondb -c biodb --type csv --fields "STD_ID, STD_NAME, STD_NUM, STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP" D:\\APPsoftwares\\myeclipse2021518\\workspaces\\drugdesignpractise\\drugusers.csv -drop<br><br>3.要导入的csc中有表头即列名在一起导入时需要去除: 需要加 --headerline<br>其实: --headerline 参数会自动指定使用csv文件第一行内的字段名，作为文档的字段名称<br><pre>./mongoimport.exe -d biomondb -c biodb --type csv --fields "STD_ID, STD_NAME, STD_NUM, STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP" D:\\APPsoftwares\\myeclipse2021518\\workspaces\\drugdesignpractise\\drugusers.csv -drop <pre>--headerline<br><br>4. 如果需要指定每列数据的性质:  --columnsHaveTypes<br>./mongoimport.exe -d biomondb -c biodb --type csv --columnsHaveTypes --fields "STD_ID.int32(), STD_NAME.string(), STD_NUM.string(), STD_MAJOR.string(), STD_PASSWORD.string(),STD_RECORDS.int32(),ISVIP.string()" D:\\APPsoftwares\\myeclipse2021518\\workspaces\\drugdesignpractise\\drugusers.csv<br><br><br><br>5.如果CSV中有中文字可能导入时会出现乱码:  可通过下在面的方式导出CSV,格式为UTF-8 无BOM，再导入到mongoDB就可以了.<br></pre></pre></pre></pre></pre>
+    <div align="center"><img src="mondbdir/csvoutfromexcelindex.png"
+        alt="" width="919" height="494"></div>
+    <pre><pre>&nbsp;对于Linux需要用gedit另存为： UTF-8就可以了！！<br><br>6.  也可以直接用 MongoDB Compass导入, 图形化界面, 直观:  但是有可能导入时会不正常, 比如两列完全一样时.<br></pre></pre>
+    <div align="center"><img src="mondbdir/compassguiimpscbv.png" alt=""
+        width="891" height="385"></div>
+    <h3>怎么解决?</h3>
+    <pre><pre>可以在CSV第一行加上表头即列名就可以了:<br>比如这里的例子:                      <br>STD_ID,STD_NAME,STD_NUM,STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP &nbsp; &nbsp; &nbsp; &nbsp;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; 加上这一行就可以了<br>2020001,孙思宇,U202011069,生实202001,U202011069,1000, NO<br>2020002,谢子琪,U202011571,生实202001,U202011571,1000, NO<br>2020003,戴晨曦,U202013029,生实202001,U202013029,1000, NO<br><br>看看效果:<br></pre></pre>
+    <div align="center"><img src="mondbdir/impwithheadindex.png" alt=""
+        width="904" height="481"><br>
+      增加列名后在Compass中图形化导入的效果<br>
+      <div align="left"><br>
+        现在看看是不是所有列都没有问题了?<br>
+        <br>
+        还可以直接在图形界面为各列设置数据类型.<br>
+        <br>
+        <br>
+        看看导入后的样子:<br>
+        <div align="center"><img src="mondbdir/changedbyzindex.png"
+            alt="" width="723" height="454"></div>
+        <br>
+      </div>
+      <br>
+    </div>
+    <div align="center"><br>
+    </div>
+    <pre><pre><br></pre></pre>
+    <h3>检索查寻mongoDB中的集合(表)</h3>
+    <pre><pre>在Filter文本域中输入: {" Name":'孙思宇'}<br></pre></pre>
+    <div align="center"><img src="mondbdir/guimongofind.png" alt=""
+        moz-do-not-send="true" width="857" height="503"></div>
+    <pre><pre><br><br><br></pre></pre>
+    <div id="content_views" class="htmledit_views">
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <p>排序</p>
+      <p>&nbsp;&gt;db.biodbcol.find().sort({STD_NUM:1})&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+        //1 表示升序； &nbsp;&nbsp; -1 表示 降序</p>
+    </div>
+    <pre><pre>查找指定列需要的数据<br>&gt;db.biodbcol.find({},{key:1})  显示或隐藏某字段的数据 0 隐藏 1 显示<br><br>模糊查询<br>&gt;db.biodbcol.find({STD_NAME:/孙/}) &nbsp; &nbsp;//查找含有某数据的所有数据<br>&gt; db.biodbcol.find({STD_NAME:/孙/})<br>{ "_id" : ObjectId("655832f87352d35774acbeb"), "STD_ID" : 2020001, "STD_NAME" : "孙思宇", "STD_NUM" : "U202011069", "STD_MAJOR" : "生实202001", "STD_PASSWORDWORD" : "U202011069", "STD_RECORDS" : 1000, "ISVIP" : " NO" }<br>{ "_id" : ObjectId("65583bd293a2afce3ac9af0a"), "STD_ID" : "2020001", "STD_NAME" : "孙宇", "STD_NUM" : "U202011069", "STD_MAJOR" : "生实202001", "STD_PASSWORDWORD" : "U202011069", "STD_RECORDS" : 1000, "ISVIP" : "NO" }<br>{ "_id" : ObjectId("6558658c93a2afce3ac9af0b"), "STD_ID" : "2020001", "STD_NAME" : "孙哥宇" }<br>{ "_id" : ObjectId("6558689d93a2afce3ac9af0c"), "STD_ID" : "2020001", "STD_NAME" : "公孙哥" }<br><br>&gt;db.biodbcol.find({STD_NAME:/^孙/}) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 查找以某数据开头的数据<br>&gt;db.biodbcol.find({STD_NAME:/宇$/}) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 查找以某数据结尾的数<br>&gt; db.biodbcol.find({STD_NAME:/宇$/})<br>{ "_id" : ObjectId("655832f87352d35774ac4beb"), "STD_ID" : 2020001, "STD_NAME" : "孙思宇", "STD_NUM" : "U202011069", "STD_MAJOR" : "生实202001", "STD_PASSWORD" : "U202011069", "STD_RECORDS" : 1000, "ISVIP" : " NO" }<br>{ "_id" : ObjectId("655832f87352d35774ac4c03"), "STD_ID" : 2020025, "STD_NAME" : "阮佳宇", "STD_NUM" : "U202013227", "STD_MAJOR" : "生药202001", "STD_PASSWORD" : "U202013227", "STD_RECORDS" : 1000, "ISVIP" : " NO" }<br>{ "_id" : ObjectId("655832f87352d35774ac4c11"), "STD_ID" : 2020039, "STD_NAME" : "唐骁宇", "STD_NUM" : "U202013179", "STD_MAJOR" : "生科202001", "STD_PASSWORD" : "U202013179", "STD_RECORDS" : 1000, "ISVIP" : " NO" }<br>{ "_id" : ObjectId("65583bd293a2afce3ac9af0a"), "STD_ID" : "2020001", "STD_NAME" : "孙宇", "STD_NUM" : "U202011069", "STD_MAJOR" : "生实202001", "STD_PASSWORD" : "U202011069", "STD_RECORDS" : 1000, "ISVIP" : "NO" }<br>{ "_id" : ObjectId("6558658c93a2afce3ac9af0b"), "STD_ID" : "2020001", "STD_NAME" : "孙个哥哥宇" }<br><br></pre></pre>
+    <div id="content_views" class="htmledit_views">
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <p>查找总共多少条数据</p>
+      <p>&gt; db.biodbcol.find().count()<br>
+        72<br>
+      </p>
+      <p>添加一列 <br>
+        <font size="+1">&gt;</font>db.biodbcol.update({}, { $set: {
+        "ISON": "int32"} }, { multi: true })<br>
+        //db.biodbcol代表要修改的表，$set操作符用于设置新的列名和值。{multi: true}表示对所有文档进行更新。<br>
+      </p>
+    </div>
+    <pre><pre>删除一列<br>&gt;db.biodbcol.update({}, {$unset: {"ISON": "" } }, false, true)<br><br>&gt; db.biodbcol.update({}, { $set: { "ISON": 32} }, { multi: true }) &nbsp; //给biodbcol表增加一个名为ISON的列，并设置所有文档的age列值为32<br>WriteResult({ "nMatched" : 73, "nUpserted" : 0, "nModified" : 73 })<br><br>验证结果<br>&gt; db.biodbcol.find()<br>可以看到新的ISON列已经成功添加到了表中，并且所有文档的ISON列值为32<br><br><br></pre></pre>
+    <h2>使用GO来访问mongodb:</h2>
+    <h1> </h1>
+    <h3>CENTOS79安装GO以及三款GO语言小插件</h3>
+    <p>vi ​$HOME/.bash_profile​<br>
+      export GOROOT=/opt/myoptgo<br>
+      export PATH=$PATH:$GOROOT/bin<br>
+      source ~/.bash_profile<br>
+    </p>
+    <p>$ go version<br>
+      go version go1.20.2 linux/amd64<br>
+    </p>
+    配置环境变量<br>
+    ​​GOROOT: 指向GOLANG开发包的安装路径如:&nbsp; /opt/myoptgo​​&nbsp;&nbsp;&nbsp;
+    (在这个目录里就是GO的那些软件了)<br>
+    <br>
+    GOPATH​: 这个变量可以直接指向GO项目的src目录, 后期下载的库为放在这里便于调用。 ​​GOPATH​​ 会有一个默认目录,
+    比如linux下为/home/catalyst/go。<br>
+    <br>
+    由于 go1.11 之后使用 go mod 来管理依赖包，不再强制我们必须把代码写在 ​​GOPATH/src​​
+    目录下，所以使用默认即可，无需修改<br>
+    <br>
+    配置 ​​GOPROXY​<br>
+    $ go env -w GO111MODULE=on<br>
+    $ go env -w GOPROXY=https://goproxy.cn,direct<br>
+    <pre><pre><code><pre><br></pre></code></pre></pre>
+    <p>将要安装Go模块下的tools三个小插件，顺带把debug功能开启。<br>
+      gocode是代码自动补全程序；<br>
+      guru代码导航程序；<br>
+      godef代码跳转程序（ctrl+鼠标左击，查看定义的代码）；<br>
+      gdb64支持debug的程序。</p>
+    <h4>1、先来安装gocode</h4>
+    <p>打开CMD命令行，进入GO安装目录的src文件夹下，运行以下命令<br>
+    </p>
+    <code>$ cd /run/media/catalyst/MDDATA/goworkspaces/wtsgo/src/gomongo</code><code><br>
+      $ cd /opt/myoptgo/go/src/&nbsp; (again!!)<br>
+      #go get -u github.com/nsf/gocod</code><code></code>e<code>
+      &nbsp;&nbsp; #get gocode now <br>
+      ]$ /opt/myoptgo/go/bin/go get -u github.com/nsf/gocode<br>
+      go: downloading golang.org/x/net
+      v0.4.1-0.20230214201333-88ed8ca3307d<br>
+      go: downloading golang.org/x/crypto
+      v0.3.1-0.20221117191849-2c476679df9a<br>
+      go: downloading golang.org/x/crypto v0.7.0<br>
+      go: downloading golang.org/x/net v0.8.0<br>
+      go: downloading golang.org/x/sys v0.3.0<br>
+      go: downloading golang.org/x/text v0.5.0<br>
+      go: downloading golang.org/x/sys v0.7.0<br>
+      go: downloading golang.org/x/text v0.8.0<br>
+      go: added github.com/nsf/gocode v0.0.0-20230322162601-b672b49f3818<br>
+      go: upgraded golang.org/x/crypto
+      v0.3.1-0.20221117191849-2c476679df9a =&gt; v0.7.0<br>
+      go: upgraded golang.org/x/net v0.4.1-0.20230214201333-88ed8ca3307d
+      =&gt; v0.8.0<br>
+      go: upgraded golang.org/x/sys v0.3.0 =&gt; v0.7.0<br>
+      go: upgraded golang.org/x/text v0.5.0 =&gt; v0.8.0</code><code>
+      <pre><code>#go build github.com/nsf/gocode &nbsp; &nbsp;==&gt;&gt; &nbsp;/run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/main/gocode<br><br></code></pre>
+    </code>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      将gocode拷贝到Go安装目录的bin文件下<br>
+      $ mv gocode /opt/myoptgo/bin/<br>
+    </p>
+    <h4>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h4>
+    <h4>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h4>
+    <h4>2、安装guru</h4>
+    <p>$ /opt/myoptgo/go/bin/go get -u golang.org/x/tools/cmd/guru<br>
+      go: downloading golang.org/x/mod v0.10.0<br>
+      go: upgraded golang.org/x/mod v0.9.0 =&gt; v0.10.0<br>
+      go: upgraded golang.org/x/sys v0.6.0 =&gt; v0.7.0<br>
+      <br>
+    </p>
+    <p>$ /opt/myoptgo/go/bin/go build golang.org/x/tools/cmd/guru<br>
+      $ mv guru /opt/myoptgo/bin/<br>
+    </p>
+    <h4> </h4>
+    <h4>3、安装godef</h4>
+    <p>$ /opt/myoptgo/go/bin/go get github.com/rogpeppe/godef<br>
+      $ /opt/myoptgo/go/bin/go build github.com/rogpeppe/godef<br>
+    </p>
+    <p>OK: NOW HAVE
+      /run/media/catalyst/MDDATA/goworkspaces/wtsgo/src/gomongo/godef<br>
+      mv godef /opt/myoptgo/bin/</p>
+    <code>
+      <pre><br><br>$ /opt/myoptgo/bin/go build gomongo.go &nbsp;=&gt;<br><br></pre>
+    </code>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      /opt/myoptgo/go/pkg/tool/linux_amd64/compile: here have this
+      file!!!!!!!&nbsp;&nbsp; go: no such tool "compile"<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h2>
+    <h2>关于 <code>go get</code> 和 <code>go.mod</code></h2>
+    <p><code>go mod tidy</code> 删除掉无用的模块</p>
+    <code>
+      <pre><br><br>run in myeclipse:<br>有报错Resouce doesnt have a corresponding Go package<br><br>需要新建main路径<br><br><br><br>GO 框架:<br>https://github.com/zeromicro/go-zero<br><br>go get -u github.com/zeromicro/go-zero<br><br><br></pre>
+    </code>
+    <h3>运行VSCODE进行数据库访问:</h3>
+    <code>
+      <pre>$ ./code --no-sandbox  //CENTOS 7.9 OK!!!!!!!!!!!!!!!!<br></pre>
+    </code>
+    <div align="center"><img moz-do-not-send="true"
+        src="../hustdbroot/mondbdir/gitcn7.png" alt="" width="456"
+        height="119"><br>
+      提示：安装git版本<br>
+      <h2>
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+      </h2>
+      <h2><code class="lang-bash hljs">
+          <ul>
+            <li><br>
+            </li>
+          </ul>
+        </code></h2>
+      <div class="post-content" itemprop="articleBody">
+        <pre class="loaded"><code class="lang-bash hljs"><div class="code-line" align="left"><div align="center"><span class="hljs-comment">安装GIT2.X版本<br></span><div align="left"><span class="hljs-comment">首先安装IUS源</span><br><span class="hljs-comment"></span></div><span class="hljs-comment"></span></div><span class="hljs-comment"># 官方网站 https://ius.io/setup</span>
+yum install https://repo.ius.io/ius-release-el7.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm<br>Running transaction<br>  正在安装    : ius-release-2-1.el7.ius.noarch                                                                                    1/1 <br>  验证中      : ius-release-2-1.el7.ius.noarch                                                                                    1/1 <br><br>已安装:<br>  ius-release.noarch 0:2-1.el7.ius  <br>#yum makecache &nbsp; //<code class="lang-bash hljs"><span class="hljs-comment"> 更新yum缓存<br>#yum search git<br>git.x86_64 : Fast Version Control System<br>git236.x86_64 : Fast Version Control System<br># yum remove git &nbsp; //</span></code>must remove first !!!!!<br><code class="lang-bash hljs"><span class="hljs-comment"></span></code>#yum install git236 &nbsp; <code class="lang-bash hljs"><span class="hljs-comment">// 安装git2.3.6</span></code></div></code><code class="lang-bash hljs"></code><code class="lang-bash hljs"><div class="code-line" align="left">#git --version &nbsp;//<code class="lang-bash hljs"><span class="hljs-comment"> 查看git版本</span></code>
+</div></code><code class="lang-bash hljs"></code></pre>
+      </div>
+      <br>
+      <br>
+      <div align="left">点击VSCode主界面左侧的Extension按钮, 结果会打开如下的界面： 输入GO，
+        即可安装GO Extension: <br>
+        <div align="center"><img moz-do-not-send="true"
+            src="../hustdbroot/mondbdir/insgovsc.png" alt="" width="758"
+            height="570"><br>
+          安装GO支持：Go for Visual Studio Code<br>
+          <br>
+          <div align="left"><br>
+            <h2>GOLANG连接MongoDB练习</h2>
+            <h3>1. GALANG独立访问MongoDB数据库</h3>
+            <p>编写GOLANG源代码：main.go&nbsp;&nbsp; // 可以用VSCode<br>
+              $/opt/myoptgo/bin/go build mgodb.go&nbsp;&nbsp;
+              //可能需要下载驱动： /opt/myoptgo/bin/go get
+              go.mongodb.org/mongo-driver/mongo<br>
+              $ /opt/myoptgo/go/bin/go build main.go<br>
+            </p>
+            <h3> 2.在MongoDB中执行JavaScript文件</h3>
+            <meta http-equiv="content-type" content="text/html;
+              charset=UTF-8">
+            MongoDB是一个开源的NoSQL数据库，它支持使用JavaScript进行数据操作和管理。通过执行
+            JavaScript文件，我们可以方便地批量处理和操作数据库中的数据。<code class="
+              language-javascript"><span class="token comment"><span
+                  class="com"><br>
+                </span></span></code>编写文件：<code class="
+              language-javascript"><span class="token comment"><span
+                  class="com">biomondb.js</span></span><span class="pln">
+              </span></code><code class=" language-javascript">
+              <pre class=" line-numbers prettyprint language-javascript"><code class="  language-javascript"><span class="token comment"><span class="com">**********************************************************************<br>// 连接到MongoDB数据库</span></span><span class="pln">
+</span><span class="token keyword"><span class="kwd">var</span></span><span class="pln"> conn </span><span class="token operator"><span class="pun">=</span></span><span class="pln"> </span><span class="token keyword"><span class="kwd">new</span></span><span class="pln"> </span><span class="token class-name"><span class="typ">Mongo</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="token string"><span class="str">"localhost:27017"</span></span><span class="token punctuation"><span class="pun">)</span></span><span class="token punctuation"><span class="pun">;</span></span><span class="pln">
+
+</span><span class="token comment"><span class="com">// 选择要操作的数据库</span></span><span class="pln">
+</span><span class="token keyword"><span class="kwd">var</span></span><span class="pln"> db </span><span class="token operator"><span class="pun">=</span></span><span class="pln"> conn</span><span class="token punctuation"><span class="pun">.</span></span><span class="token function"><span class="pln">getDB</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="token string"><span class="str">"biomondb"</span></span><span class="token punctuation"><span class="pun">)</span></span><span class="token punctuation"><span class="pun">;</span></span><span class="pln">
+
+</span><span class="token comment"><span class="com">// 插入一条新的文档</span></span><span class="pln">
+db</span><span class="token punctuation"><span class="pun">.</span></span><span class="pln">biodbcol</span><span class="token punctuation"><span class="pun">.</span></span><span class="token function"><span class="pln">insertOne</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="token punctuation"><span class="pun">{</span></span><span class="pln"> </span></code>"STD_ID" : 2020025, "STD_NAME" : "阮佳宇", "STD_NUM" : "U202013227", "STD_MAJOR" : "生药202001", "STD_PASSWORD" : "U202013227", "STD_RECORDS" : 1000, "ISVIP" : " NO"<code class="  language-javascript"><span class="pln"></span><span class="pln"> </span><span class="token punctuation"><span class="pun">}</span></span><span class="token punctuation"><span class="pun">)</span></span><span class="token punctuation"><span class="pun">;</span></span><span class="pln">
+
+</span><span class="token comment"><span class="com">// 打印插入的文档</span></span><span class="pln">
+</span><span class="token keyword"><span class="kwd">var</span></span><span class="pln"> stddoc </span><span class="token operator"><span class="pun">=</span></span><span class="pln"> db</span><span class="token punctuation"><span class="pun">.</span></span>biodbcol<span class="token punctuation"><span class="pun">.</span></span><span class="token function"><span class="pln">findOne</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="token punctuation"><span class="pun">{</span></span><span class="pln"> "STD_NAME" : "阮佳宇"</span><span class="pln"> </span><span class="token punctuation"><span class="pun">}</span></span><span class="token punctuation"><span class="pun">)</span></span><span class="token punctuation"><span class="pun">;</span></span><span class="pln">
+</span><span class="token function"><span class="pln">printjson</span></span><span class="token punctuation"><span class="pun">(std</span></span><span class="pln">doc</span><span class="token punctuation"><span class="pun">)</span></span><span class="token punctuation"><span class="pun">;</span></span></code></pre>
+            </code>************************************************************************<br>
+            <br>
+            <h3>执行JavaScript文件: 使用mongo命令行工具</h3>
+            <p>$ ./mongo biomondb.js&nbsp;&nbsp;&nbsp;&nbsp; //直接在命令行操作<br>
+              MongoDB shell version v4.4.18<br>
+              connecting to:
+mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb<br>
+              Implicit session: session { "id" :
+              UUID("2042f671-29eb-4887-9e32-280586a831b8") }<br>
+              MongoDB server version: 4.4.18<br>
+              {<br>
+              &nbsp;&nbsp;&nbsp; "_id" :
+              ObjectId("655cba15d4948555b08b5257"),<br>
+              &nbsp;&nbsp;&nbsp; "STD_ID" : 2020025,<br>
+              &nbsp;&nbsp;&nbsp; "STD_NAME" : "阮佳宇",<br>
+              &nbsp;&nbsp;&nbsp; "STD_NUM" : "U202013227",<br>
+              &nbsp;&nbsp;&nbsp; "STD_MAJOR" : "生药202001",<br>
+              &nbsp;&nbsp;&nbsp; "STD_PASSWORD" : "U202013227",<br>
+              &nbsp;&nbsp;&nbsp; "STD_RECORDS" : 1000,<br>
+              &nbsp;&nbsp;&nbsp; "ISVIP" : " NO"<br>
+              }</p>
+            <p>或进入mongo命令终端：<br>
+              $ ./mongo<br>
+              &gt; use biomondb<br>
+              switched to db biomondb</p>
+            <p>&gt; load("biomondb.js")<br>
+              {<br>
+              &nbsp;&nbsp;&nbsp; "_id" :
+              ObjectId("655cbcf99c307cd6482bfbae"),<br>
+              &nbsp;&nbsp;&nbsp; "STD_ID" : 2020025,<br>
+              &nbsp;&nbsp;&nbsp; "STD_NAME" : "阮佳宇",<br>
+              &nbsp;&nbsp;&nbsp; "STD_NUM" : "U202013227",<br>
+              &nbsp;&nbsp;&nbsp; "STD_MAJOR" : "生药202001",<br>
+              &nbsp;&nbsp;&nbsp; "STD_PASSWORD" : "U202013227",<br>
+              &nbsp;&nbsp;&nbsp; "STD_RECORDS" : 1000,<br>
+              &nbsp;&nbsp;&nbsp; "ISVIP" : " NO"<br>
+              }<br>
+              true<br>
+              <br>
+            </p>
+            <p><br>
+              用MongoDB compass打开数据库看看，有没有插入新的记录？<br>
+              命令行查看插入结果：<br>
+              $ ./mongo<br>
+              &gt; use biomondb<br>
+              switched to db biomondb<br>
+              &gt; db.biodbcol.find()<br>
+              { "_id" : ObjectId("655cba7c7aa340760a9733b7"), "STD_ID" :
+              2020025, "STD_NAME" : "阮佳宇", "STD_NUM" : "U202013227",
+              "STD_MAJOR" : "生药202001", "STD_PASSWORD" : "U202013227",
+              "STD_RECORDS" : 1000, "ISVIP" : " NO" }<br>
+            </p>
+            <br>
+            多个JavaScript文件的执行<br>
+            有多个JavaScript文件需要执行，我们可以在一个脚本文件中调用它们<br>
+            <br>
+            创建一个名为main.js的脚本文件，其中包含对其他JavaScript文件的调用<br>
+            编写主文件：<code class=" language-javascript"><span class="token
+                comment"><span class="com">biomonmain.js</span></span><span
+                class="pln"> </span></code><code class="
+              language-javascript">
+              <pre class=" line-numbers prettyprint language-javascript"><code class="  language-javascript"><span class="pln">*******************************
+</span><span class="token function"><span class="pln">load</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="token string"><span class="str">"bioinfo01.js"</span></span><span class="token punctuation"><span class="pun">)</span></span><span class="token punctuation"><span class="pun">; </span></span><span class="pln">
+</span><span class="token function"><span class="pln">load</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="token string"><span class="str">"bioinfo02.js"</span></span><span class="token punctuation"><span class="pun">)</span></span><span class="token punctuation"><span class="pun">;</span></span><span class="pln">
+</span><span class="token function"><span class="pln">load</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="token string"><span class="str">"bioinfo03.js"</span></span><span class="token punctuation"><span class="pun">)</span></span><span class="token punctuation"><span class="pun">;<br>************************************<br></span></span></code>请仿照上面的例子编写：bioinfo01.js， bioinfo01.js，bioinfo01.js， 在执行：biomonmain.js<br>$mongo biomonmain.js<br><br></pre>
+            </code>
+            <div id="ftwp-postcontent">
+              <meta http-equiv="content-type" content="text/html;
+                charset=UTF-8">
+              <p>通过执行JavaScript文件，可以方便地向MongoDB中批量处理和操作数据。通过创建包含我们想要执行的
+                JavaScript代码的文件，并使用mongo命令行工具来执行这些文件。无论是插入数据、更新数据还是查询数
+                据，JavaScript文件可以帮助我们更高效地管理MongoDB数据库。</p>
+              <p>思考练习：如何创建JavaScript文件、执行单个JavaScript文件和执行多个JavaScript文
+                件，使得可以直接在WEB中操作MongoDB。</p>
+            </div>
+            <code class=" language-javascript">
+              <pre class=" line-numbers prettyprint language-javascript"><br><code class="  language-javascript"><span class="token punctuation"><span class="pun"></span></span></code></pre>
+            </code><br>
+            <h3>3. GALANG访问MongoDB数据库:web版</h3>
+            用VSCode打开一个GO目录：(即目录prac8gomondb2)<br>
+            <br>
+            会提示:&nbsp; Do you trust the authors of the files in this
+            folder? 回答是肯定的。<br>
+          </div>
+          <br>
+        </div>
+        <br>
+      </div>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/mondbdir/trustitdir.png" alt="" width="555"
+        height="357"><br>
+      <br>
+      <div align="center">换个地方打开含有GO代码的目录或workspace：会激活go for vscode
+        extension插件提示这个<br>
+      </div>
+      <div align="left">在 <a
+          href="https://github.com/golang/vscode-go/wiki/ui"
+          target="_blank" rel="noreferrer noopener nofollow">Go status
+          工具栏</a> 会显示在窗口左下角, 并显示GO的版本.<br>
+        <br>
+        VSCode的GO extension与<code>go</code>, <code>gopls</code>, <code>dlv
+
+
+
+
+
+
+
+
+          以及其他的工具有关</code>. 如果这些工具有丢失则会出现 ⚠️ <code>Analysis Tools
+          Missing</code> 警告. <br>
+        点击这个警告即可下载依赖.<br>
+        <div align="center"><img moz-do-not-send="true"
+            src="../hustdbroot/mondbdir/dlvins.png" alt="" width="703"
+            height="256"><br>
+        </div>
+      </div>
+    </div>
+    <code>
+      <pre><code></code></pre>
+    </code><code></code><code></code><code></code><code></code><code></code><code></code>
+    <pre><br>运行:<br>Starting: /home/catalyst/go/bin/dlv dap --listen=127.0.0.1:29830 --log-dest=3 from /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb<br>DAP server listening at: 127.0.0.1:29830<br>Build Error: go build -o /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb/__debug_bin -gcflags all=-N -l .<br>go: go.mod file not found in current directory or any parent directory; see 'go help modules' (exit status 1)<br><br>新建一个空文件： go.mod<br>再次RUN：会提示要运行：<br>$ go mod edit -module=example.com/mod &nbsp;//直接给go.mod中加入一行： module example.com/mod<br>再次RUN： OK？？？？！！！！！<br>Starting: /home/catalyst/go/bin/dlv dap --listen=127.0.0.1:33840 --log-dest=3 from /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb<br>DAP server listening at: 127.0.0.1:33840<br><br>在浏览器中输入：http://localhost:8090/hello： &nbsp;看看？？？？ <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; http://localhost:8090/world<br></pre>
+    <h3>4. GALANG访问MongoDB数据库:web版</h3>
+    <p>prac8gomondb3<br>
+    </p>
+    <h1>请求处理: 1&nbsp; url参数处理(get) url.go</h1>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </p>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h1>
+    <p>package main<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "net/http"<br>
+      )<br>
+      <br>
+      func helloHandler(writer http.ResponseWriter, request
+      *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; method := request.Method<br>
+      &nbsp;&nbsp;&nbsp; println(method)<br>
+      &nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; url := request.URL<br>
+      &nbsp;&nbsp;&nbsp; values := url.Query()<br>
+      &nbsp;&nbsp;&nbsp; userName := values.Get("userName")<br>
+      &nbsp;&nbsp;&nbsp; password := values.Get("password")<br>
+      &nbsp;&nbsp;&nbsp; println(userName, password)<br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/hello", helloHandler)<br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      }<br>
+    </p>
+    <p>运行VSCode：<br>
+      点VSCode的RUN菜单中的RUN Withou Debugging:<br>
+    </p>
+    <p>VSCode的DebugConsole窗口显示：<br>
+      Starting: /home/catalyst/go/bin/dlv dap --listen=127.0.0.1:11417
+      --log-dest=3 from
+      /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb<br>
+      DAP server listening at: 127.0.0.1:11417<br>
+    </p>
+    <p>切换到浏览器访问：
+      http://localhost:8090/hello?userName=张三&amp;password=1234 <br>
+    </p>
+    <p>结果会在VSCodeDebugConsole窗口打印：<br>
+      GET&nbsp;&nbsp; //<br>
+      张三 1234&nbsp;&nbsp; // user / passwd<br>
+    </p>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h1>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h2>
+    <p><br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h2>
+    <h2>form参数处理</h2>
+    <p><br>
+      package main<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "html/template"<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "net/http"<br>
+      )<br>
+      <br>
+      func loginHandler(writer http.ResponseWriter, request
+      *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; // 获取请求方式<br>
+      &nbsp;&nbsp;&nbsp; method := request.Method<br>
+      &nbsp;&nbsp;&nbsp; println("请求方式", method)<br>
+      &nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; // 如果此处读取了body数据则ParseForm()读取不到数据了<br>
+      &nbsp;&nbsp;&nbsp; // body := request.Body<br>
+      &nbsp;&nbsp;&nbsp; // length := request.ContentLength<br>
+      &nbsp;&nbsp;&nbsp; // println("length", length)<br>
+      &nbsp;&nbsp;&nbsp; // if length &gt; 0 {<br>
+      &nbsp;&nbsp;&nbsp; // &nbsp;&nbsp;&nbsp; p := make([]byte, length)<br>
+      &nbsp;&nbsp;&nbsp; // &nbsp;&nbsp;&nbsp; body.Read(p)<br>
+      &nbsp;&nbsp;&nbsp; // &nbsp;&nbsp;&nbsp; println(string(p)) //
+      打印：userName1=faffa&amp;password1=fafaf<br>
+      &nbsp;&nbsp;&nbsp; // }<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; if request.Method == "GET" {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+      如果时get请求则加载login.html，(该login.html与go文件同目录)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t, _ :=
+      template.ParseFiles("login.html")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.Execute(writer, nil)<br>
+      &nbsp;&nbsp;&nbsp; } else {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 解析post url 参数<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; url := request.URL<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; values := url.Query()<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; userName :=
+      values.Get("userName")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; password :=
+      values.Get("password")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; println(userName, password)<br>
+      &nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 解析表单参数<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; request.ParseForm()<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; userName1 :=
+      request.Form.Get("userName1")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; password1 :=
+      request.Form.Get("password1")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; println(userName1,
+      password1)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      <br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/login", loginHandler)<br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      }<br>
+      <br>
+    </p>
+    <p>写一个html文件放到同一个目录中（用于client显示）：<br>
+      &lt;html&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;request
+      处理&lt;/title&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;form
+      action="login?userName=张三&amp;password=123" method="post"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      用户名：&lt;input type="text" name="userName1"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      密码：&lt;input type="password" name="password1"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &lt;input type="submit" value="登录"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+      &lt;/html&gt;<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h2>
+    <h2>header参数处理</h2>
+    <p>package main<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "fmt"<br>
+      &nbsp;&nbsp;&nbsp; "html/template"<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "net/http"<br>
+      )<br>
+      <br>
+      func headerHandler(writer http.ResponseWriter, request
+      *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; h := request.Header<br>
+      &nbsp;&nbsp;&nbsp; fmt.Print(h)<br>
+      &nbsp;&nbsp;&nbsp; println()<br>
+      &nbsp;&nbsp;&nbsp; println("---------")<br>
+      &nbsp;&nbsp;&nbsp; println(h.Get("User-Agent"))<br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/header", headerHandler)<br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      }</p>
+    <p>Starting: /home/catalyst/go/bin/dlv dap --listen=127.0.0.1:23687
+      --log-dest=3 from
+      /run/media/catalyst/MDDATA/goworkspaces/wtsgop/src/heweb<br>
+      DAP server listening at: 127.0.0.1:23687<br>
+      map[Accept:[text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      Accept-Encoding:[gzip, deflate, br]
+      Accept-Language:[zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      Connection:[keep-alive] Sec-Fetch-Dest:[document]
+      Sec-Fetch-Mode:[navigate] Sec-Fetch-Site:[none]
+      Sec-Fetch-User:[?1] Upgrade-Insecure-Requests:[1]
+      User-Agent:[Mozilla/5.0 (X11; Linux x86_64; rv:102.0)
+      Gecko/20100101 Firefox/102.0]]<br>
+      <br>
+      ---------<br>
+      Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+      Firefox/102.0</p>
+    <p><br>
+    </p>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h1>
+    <h1>响应处理</h1>
+    <p>package main<br>
+    </p>
+    import (<br>
+    &nbsp;&nbsp;&nbsp; "fmt"<br>
+    &nbsp;&nbsp;&nbsp; "html/template"<br>
+    &nbsp;&nbsp;&nbsp; "log"<br>
+    &nbsp;&nbsp;&nbsp; "net/http"<br>
+    )<br>
+    <br>
+    func writerHandler(writer http.ResponseWriter, request
+    *http.Request) {<br>
+    &nbsp;&nbsp;&nbsp; htm := `&lt;html&gt;<br>
+    &nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;request
+    处理&lt;/title&gt;<br>
+    &nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+    &nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;form
+    action="login?userName=张三&amp;password=123" method="post"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    用户名：&lt;input type="text" name="userName1"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    密码：&lt;input type="password" name="password1"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &lt;input type="submit" value="登录"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>
+    &nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+    &lt;/html&gt;`<br>
+    &nbsp;&nbsp;&nbsp; // 响应报文头200成功<br>
+    &nbsp;&nbsp;&nbsp; writer.WriteHeader(200)<br>
+    &nbsp;&nbsp;&nbsp; // 响应报文体<br>
+    &nbsp;&nbsp;&nbsp; writer.Write([]byte(htm))<br>
+    }<br>
+    <br>
+    func main() {<br>
+    &nbsp;&nbsp;&nbsp; http.HandleFunc("/writer", writerHandler)<br>
+    &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090", nil)<br>
+    &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+    }<br>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h1>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h1>
+    <h1><br>
+    </h1>
+    <h1>5、GOLANG读取设置cookie</h1>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      cookie是存储在浏览器端的会话信息，可存储在内容或硬盘。不设置过期时间存储在内容，设置了过期时间则存储在硬盘</p>
+    <p><br>
+      // 读取cookie<br>
+      func getCookie(writer http.ResponseWriter, request *http.Request)
+      {<br>
+      &nbsp;&nbsp;&nbsp; cookie, err := request.Cookie("userName")<br>
+      &nbsp;&nbsp;&nbsp; if err != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; println(cookie.Value)<br>
+      }<br>
+      // 设置cookie<br>
+      func setCookie(writer http.ResponseWriter, request *http.Request)
+      {<br>
+      &nbsp;&nbsp;&nbsp; cookie := http.Cookie{Name: "userName", Value:
+      "Saddam"}<br>
+      &nbsp;&nbsp;&nbsp; http.SetCookie(writer, &amp;cookie)<br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/setCookie", setCookie)<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/getCookie", getCookie)<br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      }</p>
+    <p><br>
+    </p>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      浏览器访问http://localhost:8090/setCookie设置cookie，访问http:
+      //localhost:8090/getCookie获取cookie控制台打印：Saddam。</p>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      cookie其他属性:</p>
+    <p>type Cookie struct {<br>
+      &nbsp;&nbsp;&nbsp; Name&nbsp; string<br>
+      &nbsp;&nbsp;&nbsp; Value string<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; Path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      string&nbsp;&nbsp;&nbsp; // optional<br>
+      &nbsp;&nbsp;&nbsp; Domain&nbsp;&nbsp;&nbsp;&nbsp;
+      string&nbsp;&nbsp;&nbsp; // optional<br>
+      &nbsp;&nbsp;&nbsp; Expires&nbsp;&nbsp;&nbsp; time.Time // optional<br>
+      &nbsp;&nbsp;&nbsp; RawExpires string&nbsp;&nbsp;&nbsp; // for
+      reading cookies only<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; // MaxAge=0 means no 'Max-Age' attribute
+      specified.<br>
+      &nbsp;&nbsp;&nbsp; // MaxAge&lt;0 means delete cookie now,
+      equivalently 'Max-Age: 0'<br>
+      &nbsp;&nbsp;&nbsp; // MaxAge&gt;0 means Max-Age attribute present
+      and given in seconds<br>
+      &nbsp;&nbsp;&nbsp; MaxAge&nbsp;&nbsp; int<br>
+      &nbsp;&nbsp;&nbsp; Secure&nbsp;&nbsp; bool<br>
+      &nbsp;&nbsp;&nbsp; HttpOnly bool<br>
+      &nbsp;&nbsp;&nbsp; SameSite SameSite<br>
+      &nbsp;&nbsp;&nbsp; Raw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; string<br>
+      &nbsp;&nbsp;&nbsp; Unparsed []string // Raw text of unparsed
+      attribute-value pairs<br>
+      }<br>
+      <br>
+    </p>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h1>
+    <h1>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h1>
+    <h1>6、session实现</h1>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      相对cookie session是存储在服务的的会话信息。session拥有一个全局唯一的id和客户端关联。<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h2>
+    <h2>6.1 session id</h2>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      session id 使用sonyflake 生产，sonyflake的安装<br>
+      #go get github.com/sony/sonyflake<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h2>
+    <h2>6.2 session的存储</h2>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      session信息存储在redis，redis go客户端安装<br>
+      #go get github.com/gomodule/redigo/redis<br>
+    </p>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h2>
+    <h2>6.3 session过期</h2>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      session过期使用redis的数据过期实现</p>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h3>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h3>
+    <h2>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h2>
+    <h2>6.4、实现代码</h2>
+    <h3> </h3>
+    <h3>6.4.1 session 操作代码<br>
+    </h3>
+    <p>package session<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "reflect"<br>
+      &nbsp;&nbsp;&nbsp; "strconv"<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; "github.com/gomodule/redigo/redis"<br>
+      &nbsp;&nbsp;&nbsp; "github.com/sony/sonyflake"<br>
+      )<br>
+      <br>
+      var flake *sonyflake.Sonyflake<br>
+      var redisCon *redis.Conn<br>
+      <br>
+      func init() {<br>
+      &nbsp;&nbsp;&nbsp; flake =
+      sonyflake.NewSonyflake(sonyflake.Settings{})<br>
+      &nbsp;&nbsp;&nbsp; redisCon = connRedis()<br>
+      }<br>
+      <br>
+      func connRedis() *redis.Conn {<br>
+      &nbsp;&nbsp;&nbsp; c, err := redis.Dial("tcp", "127.0.0.1:6379")<br>
+      &nbsp;&nbsp;&nbsp; if err != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; panic(err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; return &amp;c<br>
+      }<br>
+      <br>
+      type RedisHttpSession struct {<br>
+      &nbsp;&nbsp;&nbsp; id&nbsp;&nbsp;&nbsp;&nbsp; string<br>
+      &nbsp;&nbsp;&nbsp; expire int<br>
+      }<br>
+      <br>
+      func NewSession(expire int) *RedisHttpSession {<br>
+      &nbsp;&nbsp;&nbsp; id, err := flake.NextID()<br>
+      &nbsp;&nbsp;&nbsp; if err != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; sesssion := &amp;RedisHttpSession{id:
+      strconv.FormatUint(id, 10), expire: expire}<br>
+      &nbsp;&nbsp;&nbsp; sesssion.Set("expire", expire)<br>
+      &nbsp;&nbsp;&nbsp; return sesssion<br>
+      }<br>
+      <br>
+      func Session(sessionId string) *RedisHttpSession {<br>
+      &nbsp;&nbsp;&nbsp; session := &amp;RedisHttpSession{id: sessionId}<br>
+      &nbsp;&nbsp;&nbsp; v := session.GetValue("expire")<br>
+      &nbsp;&nbsp;&nbsp; if v == nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return nil<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; if e, ok := v.([]uint8); ok {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Println("sessionid",
+      session.id, "HGET key expire", "value is", string(e))<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; expire, _ :=
+      strconv.Atoi(string(e))<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; session.expire = expire<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; return session<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) GetId() string {<br>
+      &nbsp;&nbsp;&nbsp; return session.id<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) Fresh() {<br>
+      &nbsp;&nbsp;&nbsp; (*redisCon).Do("EXPIRE", session.id,
+      session.expire)<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) GetValue(key string) interface{}
+      {<br>
+      &nbsp;&nbsp;&nbsp; reply, err := (*redisCon).Do("HGET",
+      session.id, key)<br>
+      &nbsp;&nbsp;&nbsp; if reply != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t := reflect.TypeOf(reply)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; v := reflect.ValueOf(reply)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Println("sessionid",
+      session.id, "HGET key", key, "reply.name", t.Name(), "reply.kind",
+      t.Kind().String(), "reply.value", v.String(), "and error", err)<br>
+      &nbsp;&nbsp;&nbsp; } else {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Println("sessionid",
+      session.id, "HGET key", key, "and reply", reply, "and error", err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; return reply<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) Delete(key string) {<br>
+      &nbsp;&nbsp;&nbsp; (*redisCon).Do("DEL", session.id, key)<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) Set(key string, value
+      interface{}) {<br>
+      &nbsp;&nbsp;&nbsp; reply, err := (*redisCon).Do("HSET",
+      session.id, key, value)<br>
+      &nbsp;&nbsp;&nbsp; log.Println("sessionid", session.id, "HSET
+      key", key, "and value", value, "and reply", reply, "and error",
+      err)<br>
+      }<br>
+      <br>
+      func (session *RedisHttpSession) Destroy() {<br>
+      &nbsp;&nbsp;&nbsp; (*redisCon).Do("DEL", session.id)<br>
+      }<br>
+      <br>
+    </p>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h3>
+    <h3>6.4.2 web服务</h3>
+    <p><br>
+      package main<br>
+      <br>
+      import (<br>
+      &nbsp;&nbsp;&nbsp; "log"<br>
+      &nbsp;&nbsp;&nbsp; "net/http"<br>
+      &nbsp;&nbsp;&nbsp; "strconv"<br>
+      &nbsp;&nbsp;&nbsp; "text/template"<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; "fa.com/wms/session"<br>
+      )<br>
+      <br>
+      func login(w http.ResponseWriter, r *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; if r.Method == "GET" {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t, _ :=
+      template.ParseFiles("../template/login.html")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.Execute(w, nil)<br>
+      &nbsp;&nbsp;&nbsp; } else {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; r.ParseForm()<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; userName :=
+      r.Form.Get("userName")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sess :=
+      session.NewSession(60)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sess.Set("userName",
+      userName)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sess.Set("count", 0)<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cookie := http.Cookie{Name:
+      "redigosessionid", Value: sess.GetId()}<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 设置cookie保存sessionid<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; http.SetCookie(w,
+      &amp;cookie)<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; http.Redirect(w, r,
+      "/myCount", http.StatusFound)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      <br>
+      }<br>
+      <br>
+      func myCount(w http.ResponseWriter, r *http.Request) {<br>
+      &nbsp;&nbsp;&nbsp; cookie, _ := r.Cookie("redigosessionid")<br>
+      &nbsp;&nbsp;&nbsp; sessionid := cookie.Value<br>
+      &nbsp;&nbsp;&nbsp; sess := session.Session(sessionid)<br>
+      &nbsp;&nbsp;&nbsp; // session 超时重新登录<br>
+      &nbsp;&nbsp;&nbsp; if sess == nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; http.Redirect(w, r,
+      "/login", http.StatusFound)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; count := sess.GetValue("count")<br>
+      &nbsp;&nbsp;&nbsp; userName := sess.GetValue("userName")<br>
+      &nbsp;&nbsp;&nbsp; sess.Fresh()<br>
+      &nbsp;&nbsp;&nbsp; var sessUserName string<br>
+      &nbsp;&nbsp;&nbsp; if um, ok := userName.([]uint8); ok {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sessUserName = string(um)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      &nbsp;&nbsp;&nbsp; // 断言数据类型<br>
+      &nbsp;&nbsp;&nbsp; if i, ok := count.([]uint8); ok {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sessCount, _ :=
+      strconv.Atoi(string(i))<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sessCount += 1<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sess.Set("count", sessCount)<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 加载html模板<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t, _ :=
+      template.ParseFiles("../template/count.html")<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 准备模板数据<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; data :=
+      map[string]interface{}{"userName": sessUserName, "count":
+      sessCount}<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // 渲染模板数据并相应页面<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; t.Execute(w, data)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      <br>
+      }<br>
+      <br>
+      func main() {<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/login", login)<br>
+      &nbsp;&nbsp;&nbsp; http.HandleFunc("/myCount", myCount)<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; err := http.ListenAndServe("localhost:8090",
+      nil)<br>
+      &nbsp;&nbsp;&nbsp; if err != nil {<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; log.Fatal(err)<br>
+      &nbsp;&nbsp;&nbsp; }<br>
+      }<br>
+    </p>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h3>
+    <h3>6.4.3 登录页面</h3>
+    <p><br>
+      &lt;html&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &lt;title&gt;登录&lt;/title&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;form
+      &gt;action="login" method="post"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      用户名：&lt;input type="text" name="userName"&gt;&lt;br&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      密码：&lt;input type="password" name="password"&gt;&lt;br&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &lt;input type&gt;="submit" value="登录"&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+      &lt;/html&gt;<br>
+      <br>
+    </p>
+    <h3>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </h3>
+    <h3>6.4.4 session数据展示页面</h3>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      go html 模板：{{.userName}} {{.count}} 模板数据占位符，分别为 userName count 占位</p>
+    <p><br>
+      &lt;html&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &lt;title&gt;count&lt;/title&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+      &nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      用户名{{.userName}} count{{.count}}<br>
+      &nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+      &lt;/html&gt;</p>
+    <p> </p>
+    ………………………………………………………………………………………… <code class="hljs
+      language-cobol">
+      <ol class="hljs-ln" style="width:1121px">
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">-- do <span class="hljs-keyword">not</span>
+              edit this <span class="hljs-keyword">file</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">-- BATCH JOB 实例表
+              包含与aJobInstance相关的所有信息</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">-- JOB ID由batch_job_seq分配</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">-- JOB 名称,与spring配置一致</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">-- JOB <span class="hljs-keyword">KEY</span>
+              对job参数的MD<span class="hljs-number">5</span>编码,正因为有这个字段的存在，
+              同一个job如果第一次运行成功，第二次再运行会抛出
+              JobInstanceAlreadyCompleteException异常。</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">CREATE <span class="hljs-keyword">TABLE</span>
+              BATCH_JOB_INSTANCE (</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_INSTANCE_ID BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> PRIMARY <span
+                class="hljs-keyword">KEY</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> VERSION BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_NAME VARCHAR(<span
+                class="hljs-number">100</span>) <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_<span class="hljs-keyword">KEY</span>
+              VARCHAR(<span class="hljs-number">32</span>) <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> constraint JOB_INST_UN unique
+              (JOB_NAME, JOB_<span class="hljs-keyword">KEY</span>)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">) ENGINE<span
+                class="hljs-operator">=</span>InnoDB;</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">--
+              该BATCH_JOB_EXECUTION表包含与该JobExecution对象相关的所有信息</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">CREATE <span class="hljs-keyword">TABLE</span>
+              BATCH_JOB_EXECUTION (</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_EXECUTION_ID BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> PRIMARY <span
+                class="hljs-keyword">KEY</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> VERSION BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_INSTANCE_ID BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> CREATE_<span class="hljs-keyword">TIME</span>
+              DATETIME <span class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">START</span>_<span
+                class="hljs-keyword">TIME</span> DATETIME <span
+                class="hljs-keyword">DEFAULT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">END</span>_<span
+                class="hljs-keyword">TIME</span> DATETIME <span
+                class="hljs-keyword">DEFAULT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">STATUS</span>
+              VARCHAR(<span class="hljs-number">10</span>) ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">EXIT</span>_<span
+                class="hljs-keyword">CODE</span> VARCHAR(<span
+                class="hljs-number">2500</span>) ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">EXIT</span>_MESSAGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              VARCHAR(<span class="hljs-number">2500</span>) ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">LAST</span>_UPDATED
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              DATETIME,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_<span class="hljs-keyword">CONFIGURATION</span>_<span
+                class="hljs-keyword">LOCATION</span> VARCHAR(<span
+                class="hljs-number">2500</span>) <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> constraint JOB_INST_EXEC_FK
+              foreign <span class="hljs-keyword">key</span>
+              (JOB_INSTANCE_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> references
+              BATCH_JOB_INSTANCE(JOB_INSTANCE_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">) ENGINE<span
+                class="hljs-operator">=</span>InnoDB;</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">-- 该表包含与该JobParameters对象相关的所有信息</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">CREATE <span class="hljs-keyword">TABLE</span>
+              BATCH_JOB_EXECUTION_PARAMS (</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_EXECUTION_ID BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">TYPE</span>_CD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              VARCHAR(<span class="hljs-number">6</span>) <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">KEY</span>_NAME
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              VARCHAR(<span class="hljs-number">100</span>) <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">STRING</span>_VAL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              VARCHAR(<span class="hljs-number">250</span>) ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">DATE</span>_VAL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              DATETIME <span class="hljs-keyword">DEFAULT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> LONG_VAL BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> DOUBLE_VAL DOUBLE PRECISION ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> IDENTIFYING CHAR(<span
+                class="hljs-number">1</span>) <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> constraint JOB_EXEC_PARAMS_FK
+              foreign <span class="hljs-keyword">key</span>
+              (JOB_EXECUTION_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> references
+              BATCH_JOB_EXECUTION(JOB_EXECUTION_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">) ENGINE<span
+                class="hljs-operator">=</span>InnoDB;</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">-- 该表包含与该StepExecution 对象相关的所有信息</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">CREATE <span class="hljs-keyword">TABLE</span>
+              BATCH_STEP_EXECUTION (</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> STEP_EXECUTION_ID BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> PRIMARY <span
+                class="hljs-keyword">KEY</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> VERSION BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> STEP_NAME VARCHAR(<span
+                class="hljs-number">100</span>) <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_EXECUTION_ID BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">START</span>_<span
+                class="hljs-keyword">TIME</span> DATETIME <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">END</span>_<span
+                class="hljs-keyword">TIME</span> DATETIME <span
+                class="hljs-keyword">DEFAULT</span> <span
+                class="hljs-keyword">NULL</span> ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">STATUS</span>
+              VARCHAR(<span class="hljs-number">10</span>) ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">COMMIT</span>_<span
+                class="hljs-keyword">COUNT</span> BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">READ</span>_<span
+                class="hljs-keyword">COUNT</span> BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> FILTER_<span class="hljs-keyword">COUNT</span>
+              BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">WRITE</span>_<span
+                class="hljs-keyword">COUNT</span> BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">READ</span>_SKIP_<span
+                class="hljs-keyword">COUNT</span> BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">WRITE</span>_SKIP_<span
+                class="hljs-keyword">COUNT</span> BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> PROCESS_SKIP_<span
+                class="hljs-keyword">COUNT</span> BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">ROLLBACK</span>_<span
+                class="hljs-keyword">COUNT</span> BIGINT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">EXIT</span>_<span
+                class="hljs-keyword">CODE</span> VARCHAR(<span
+                class="hljs-number">2500</span>) ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">EXIT</span>_MESSAGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              VARCHAR(<span class="hljs-number">2500</span>) ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> <span class="hljs-keyword">LAST</span>_UPDATED
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              DATETIME,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> constraint JOB_EXEC_STEP_FK
+              foreign <span class="hljs-keyword">key</span>
+              (JOB_EXECUTION_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> references
+              BATCH_JOB_EXECUTION(JOB_EXECUTION_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">) ENGINE<span
+                class="hljs-operator">=</span>InnoDB;</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">--
+              该BATCH_STEP_EXECUTION_CONTEXT表包含ExecutionContext与Step相关的所有信息</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">CREATE <span class="hljs-keyword">TABLE</span>
+              BATCH_STEP_EXECUTION_CONTEXT (</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> STEP_EXECUTION_ID BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> PRIMARY <span
+                class="hljs-keyword">KEY</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> SHORT_CONTEXT VARCHAR(<span
+                class="hljs-number">2500</span>) <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> SERIALIZED_CONTEXT TEXT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> constraint STEP_EXEC_CTX_FK
+              foreign <span class="hljs-keyword">key</span>
+              (STEP_EXECUTION_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> references
+              BATCH_STEP_EXECUTION(STEP_EXECUTION_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">) ENGINE<span
+                class="hljs-operator">=</span>InnoDB;</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">-- 该表包含ExecutionContext与Job相关的所有信息</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">CREATE <span class="hljs-keyword">TABLE</span>
+              BATCH_JOB_EXECUTION_CONTEXT (</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> JOB_EXECUTION_ID BIGINT <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span> PRIMARY <span
+                class="hljs-keyword">KEY</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> SHORT_CONTEXT VARCHAR(<span
+                class="hljs-number">2500</span>) <span
+                class="hljs-keyword">NOT</span> <span
+                class="hljs-keyword">NULL</span>,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> SERIALIZED_CONTEXT TEXT ,</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> constraint JOB_EXEC_CTX_FK
+              foreign <span class="hljs-keyword">key</span>
+              (JOB_EXECUTION_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> references
+              BATCH_JOB_EXECUTION(JOB_EXECUTION_ID)</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line">) ENGINE<span
+                class="hljs-operator">=</span>InnoDB;</div>
+          </div>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+        <li>
+          <div class="hljs-ln-code">
+            <div class="hljs-ln-line"> </div>
+          </div>
+          <br>
+        </li>
+      </ol>
+    </code><br>
+    <p></p>
+  </body>
+</html>

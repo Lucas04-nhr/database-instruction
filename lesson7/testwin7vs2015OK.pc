@@ -1,0 +1,104 @@
+//This file was tested by wts on CENTOS 7.9, eclipse 202309, oracle 19.3: can Insert one item into the table!!
+//DELETE FROM "C##DRUGDBUSER".DRUGCOURSEUSER WHERE STD_ID=90 ;
+
+#include "stdafx.h"  //for vs2015 must copy to first line in CPP file
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "sqlca.h"  // this is copied from /opt/app/oracle/product/19.3.000/db_home/precomp/public
+
+//EXEC SQL INCLUDE sqlca;
+// 拓展 sqlgls 函数作用域
+//用Eclipse 202309C++编译此文件，不加"extern "C""会报错
+//如报错：无法解析的外部符号
+extern "C" unsigned int sqlgls(char * , size_t *, size_t * );
+EXEC SQL BEGIN DECLARE SECTION;
+		char *dynamicstmt;
+    char *serversid = "c##drugdbuser/wtsgyh1972@drugdb";
+     // 宿主变量，c与sql的一种数据类型的桥梁   ,,,,, ,
+    int STD_ID;
+    char STD_NAME[100];
+    char STD_NUM[50];
+    char STD_MAJOR[50];
+    char STD_PASSWORD[200];
+    int STD_RECORDS;
+    char ISVIP[200];
+    // loc 的指示变量，唯一的作用就是用来处理null值
+    short isvip_ind;
+EXEC SQL END DECLARE SECTION;
+
+void sqlerr() {
+    // 临时变量
+   char stm[120];
+   size_t sqlfc, stmlen=120;
+   unsigned int ret = 0;
+    // 让下一次出现错误时不再跳转到函数中，而是继续下一步（CONTINUE）
+    // 防止处理函数中有执行错误再次调用处理函数而导致的递归
+    EXEC SQL WHENEVER SQLERROR CONTINUE;
+    // Here 获取错误的sql语句
+    ret = sqlgls(stm, &stmlen, &sqlfc);
+    // c语言使用printf可以用 %.*s 的方式来打印两个衔接的变量
+    printf("%.*s\n", stmlen, stm);
+    // sqlca.sqlerrm.sqlerrml 为错误编号长度
+    // sqlca.sqlerrm.sqlerrmc 为错误内容
+    printf("%.*s\n", sqlca.sqlerrm.sqlerrml, sqlca.sqlerrm.sqlerrmc);
+    // 执行回滚并释放连接
+    EXEC SQL ROLLBACK WORK RELEASE;
+    exit(1);
+}
+int main(int argc, char* argv[]) {
+    int ret = 0;
+    // 开启错误处理机制，指定错误处理函数为 sqlerr
+EXEC SQL WHENEVER SQLERROR DO sqlerr();
+// 连接 oracle 服务器
+EXEC SQL CONNECT :serversid;
+if (sqlca.sqlcode != 0) {
+    ret = sqlca.sqlcode;
+    printf("connect oracle error… code = %d\n", ret);
+    return ret;
+}
+	// 向已知表中插入一条
+	//CENTOS 7.9 eclipse
+	//STD_ID = 90;
+	//strcpy(STD_NAME, "dengjia");//U202011069 
+	//strcpy(STD_NUM, "U202111069");
+	//strcpy(STD_MAJOR, "bioengineering");
+	//strcpy(STD_PASSWORD, "U202311069");
+	//strcpy(ISVIP, "VIP");
+
+    //note for vc2015: strcpy_s(xxx,yyy)
+	STD_ID = 90;
+	strcpy_s(STD_NAME, "dengjia");
+	strcpy_s(STD_NUM, "U202311069");
+	strcpy_s(STD_MAJOR, "bioengineering");
+	strcpy_s(STD_PASSWORD, "U202311069");
+	STD_RECORDS = 1000;
+	strcpy_s(ISVIP, "VIP");
+// 如果希望将 ISVIP 插入时置为 null，那么就把指示变量 isvip_ind 设置为 -1
+isvip_ind = -1;
+// 插入数据时，注意指示变量的用法  STD_ID,STD_NAME,STD_NUM,STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP
+//EXEC SQL insert into DRUGCOURSEUSER(deptno, dname, loc) values(:deptno, :dname, :ISVIP:isvip_ind);
+EXEC SQL insert into DRUGCOURSEUSER(STD_ID,STD_NAME,STD_NUM,STD_MAJOR,STD_PASSWORD,STD_RECORDS,ISVIP) values(:STD_ID, :STD_NAME, :STD_NUM, :STD_MAJOR, :STD_PASSWORD, :STD_RECORDS, :ISVIP:isvip_ind);
+if (sqlca.sqlcode != 0) {
+    ret = sqlca.sqlcode;
+    printf("insert into error… code = %d\n", ret);
+    return ret;
+}
+
+//just use dynamic SQL
+dynamicstmt = "UPDATE DRUGCOURSEUSER SET STD_ID=STD_ID + 1";
+EXEC SQL EXECUTE IMMEDIATE :dynamicstmt;
+
+//2.动态参数 
+dynamicstmt = "UPDATE DRUGCOURSEUSER SET STD_RECORDS=STD_RECORDS + 2 WHERE  STD_ID = :V ";  //主变量dynamicstmt是动态的且包含动态参数: ?
+//准备dynamicstmt中的SQL语句语句名为mydynstmt
+EXEC SQL PREPARE  mydynstmt FROM :dynamicstmt;
+//执行mydynstmt语句修改学生20200002的值
+STD_ID=2020020;
+EXEC SQL EXECUTE mydynstmt USING :STD_ID;
+
+EXEC SQL commit release;
+
+
+return 0;
+}
