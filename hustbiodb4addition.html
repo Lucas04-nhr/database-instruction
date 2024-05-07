@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=GBK">
+  </head>
+  <body>
+    PL/SQL支持变量类型，跟列类型基本一致<br>
+    <div align="center">
+      <table width="100%" cellspacing="2" cellpadding="2" border="1">
+        <tbody>
+          <tr>
+            <td valign="top">PL/SQL 数据类型</td>
+            <td valign="top">SQL 数据类型</td>
+            <td valign="top">描述</td>
+          </tr>
+          <tr>
+            <td valign="top">BINARY_INTEGER</td>
+            <td valign="top">INTEGER <br>
+            </td>
+            <td valign="top">整型数字数据</td>
+          </tr>
+          <tr>
+            <td valign="top">BLOB <br>
+            </td>
+            <td valign="top">BLOB（4096）</td>
+            <td valign="top">二进制数据</td>
+          </tr>
+          <tr>
+            <td valign="top">BLOB (n)</td>
+            <td valign="top">BLOB (n) n = 1 到 2147483647</td>
+            <td valign="top">二进制大对象数据</td>
+          </tr>
+          <tr>
+            <td valign="top">BOOLEAN <br>
+            </td>
+            <td valign="top">BOOLEAN <br>
+            </td>
+            <td valign="top">逻辑布尔值（true 或 false）</td>
+          </tr>
+          <tr>
+            <td valign="top">CHAR</td>
+            <td valign="top">CHAR (n) 如果环境的字符串单元设置为 CODEUNITS32，那么 n =
+              63 否则，n = 255<br>
+            </td>
+            <td valign="top">长度为 n 的定长字符串数据</td>
+          </tr>
+          <tr>
+            <td valign="top">CHAR (n)</td>
+            <td valign="top">CHAR (n) n = 1 到 255&nbsp;&nbsp; <br>
+            </td>
+            <td valign="top">长度为 n 的定长字符串数据</td>
+          </tr>
+          <tr>
+            <td valign="top">CHAR (n CHAR) <br>
+            </td>
+            <td valign="top">CHAR (n CODEUNITS32 ) n = 1 到 63 <br>
+            </td>
+            <td valign="top">长度为 n 个 UTF-32 代码单元的定长字符串数据1</td>
+          </tr>
+          <tr>
+            <td valign="top"><br>
+            </td>
+            <td valign="top"><br>
+            </td>
+            <td valign="top"><br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top"><br>
+            </td>
+            <td valign="top"><br>
+            </td>
+            <td valign="top"><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      &nbsp;&nbsp;&nbsp;&nbsp; <br>
+    </div>
+    &nbsp;&nbsp; &nbsp; <br>
+    &nbsp; &nbsp;&nbsp;&nbsp; <br>
+    CHAR VARYING (n)&nbsp;&nbsp; &nbsp;VARCHAR (n)&nbsp;&nbsp;
+    &nbsp;最大长度为 n 的可变长度字符串数据<br>
+    CHAR VARYING (n CHAR)&nbsp;&nbsp; &nbsp;VARCHAR (n CODEUNITS32 ) n =
+    1 到 8 168&nbsp;&nbsp; &nbsp;最大长度为 n 个 UTF-32 代码单元的可变长度字符串数据 1<br>
+    CHARACTER&nbsp;&nbsp; &nbsp;CHARACTER (n) 如果环境的字符串单元设置为
+    CODEUNITS32，那么 n = 63 否则，n = 255&nbsp;&nbsp; &nbsp;长度为 n 的定长字符串数据<br>
+    CHARACTER (n)&nbsp;&nbsp; &nbsp;CHARACTER (n) n = 1 到
+    255&nbsp;&nbsp; &nbsp;长度为 n 的定长字符串数据<br>
+    CHARACTER (n CHAR)&nbsp;&nbsp; &nbsp;CHARACTER (n CODEUNITS32 ) n =
+    1 到 63&nbsp;&nbsp; &nbsp;长度为 n 个 UTF-32 代码单元的定长字符串数据1<br>
+    CHARACTER VARYING (n)&nbsp;&nbsp; &nbsp;VARCHAR (n) n = 1 到
+    32672&nbsp;&nbsp; &nbsp;最大长度为 n 的可变长度字符串数据<br>
+    CHARACTER VARYING (n CHAR)&nbsp;&nbsp; &nbsp;VARCHAR (n CODEUNITS32
+    ) n = 1 到 8 168&nbsp;&nbsp; &nbsp;最大长度为 n 个 UTF-32 代码单元的可变长度字符串数据 1<br>
+    CLOB&nbsp;&nbsp; &nbsp;CLOB (1M)&nbsp;&nbsp; &nbsp;字符大对象数据<br>
+    CLOB (n)&nbsp;&nbsp; &nbsp;CLOB (n) n = 1 到 2147483647&nbsp;&nbsp;
+    &nbsp;长度为 n 的字符大对象数据<br>
+    CLOB (n CHAR)&nbsp;&nbsp; &nbsp;CLOB (n CODEUNITS32 ) n = 1 到 536
+    870 911&nbsp;&nbsp; &nbsp;长度为 n 个 UTF-32 代码单元的字符大对象字符串数据1<br>
+    DATE&nbsp;&nbsp; &nbsp;DATE 2&nbsp;&nbsp; &nbsp;日期和时间数据（精度为秒）<br>
+    DEC&nbsp;&nbsp; &nbsp;DEC (9, 2)&nbsp;&nbsp; &nbsp;十进制数字数据<br>
+    DEC (p)&nbsp;&nbsp; &nbsp;DEC (p) p = 1 到 31&nbsp;&nbsp; &nbsp;精度为 p
+    的十进制数字数据<br>
+    DEC (p, s)&nbsp;&nbsp; &nbsp;DEC (p, s) p = 1 到 31；s = 1 到
+    31&nbsp;&nbsp; &nbsp;精度为 p 并且小数位数为 s 的十进制数字数据<br>
+    DECIMAL&nbsp;&nbsp; &nbsp;DECIMAL (9, 2)&nbsp;&nbsp; &nbsp;十进制数字数据<br>
+    DECIMAL (p)&nbsp;&nbsp; &nbsp;DECIMAL (p) p = 1 到 31&nbsp;&nbsp;
+    &nbsp;精度为 p 的十进制数字数据<br>
+    DECIMAL (p, s)&nbsp;&nbsp; &nbsp;DECIMAL (p, s) p = 1 到 31；s = 1 到
+    31&nbsp;&nbsp; &nbsp;精度为 p 并且小数位数为 s 的十进制数字数据<br>
+    DOUBLE&nbsp;&nbsp; &nbsp;DOUBLE&nbsp;&nbsp; &nbsp;双精度浮点数<br>
+    DOUBLE PRECISION&nbsp;&nbsp; &nbsp;DOUBLE PRECISION&nbsp;&nbsp;
+    &nbsp;双精度浮点数<br>
+    FLOAT&nbsp;&nbsp; &nbsp;FLOAT&nbsp;&nbsp; &nbsp;浮点数字数据<br>
+    FLOAT (n) n = 1 到 24&nbsp;&nbsp; &nbsp;REAL&nbsp;&nbsp; &nbsp;实数数字数据<br>
+    FLOAT (n) n = 25 到 53&nbsp;&nbsp; &nbsp;DOUBLE&nbsp;&nbsp;
+    &nbsp;双精度数字数据<br>
+    INT&nbsp;&nbsp; &nbsp;INT&nbsp;&nbsp; &nbsp;带符号 4 字节整型数字数据<br>
+    INTEGER&nbsp;&nbsp; &nbsp;INTEGER&nbsp;&nbsp; &nbsp;带符号 4 字节整型数字数据<br>
+    LONG&nbsp;&nbsp; &nbsp;CLOB (32760)&nbsp;&nbsp; &nbsp;字符大对象数据<br>
+    LONG RAW&nbsp;&nbsp; &nbsp;BLOB (32760)&nbsp;&nbsp; &nbsp;二进制大对象数据<br>
+    LONG VARCHAR&nbsp;&nbsp; &nbsp;CLOB (32760)&nbsp;&nbsp;
+    &nbsp;字符大对象数据<br>
+    NATURAL&nbsp;&nbsp; &nbsp;INTEGER&nbsp;&nbsp; &nbsp;带符号 4 字节整型数字数据<br>
+    NCHAR&nbsp;&nbsp; &nbsp;NCHAR (n) 3 如果 NCHAR_MAPPING 配置参数设置为
+    GRAPHIC_CU32 或 CHAR_CU32，那么 n = 63 n = 127，否则&nbsp;&nbsp; &nbsp;长度为
+    n 的固定长度本地语言字符串数据<br>
+    NCHAR (n) n = 1 到 2000&nbsp;&nbsp; &nbsp;NCHAR (n) 3&nbsp;&nbsp;
+    &nbsp;长度为 n 的固定长度本地语言字符串数据<br>
+    NCLOB 4&nbsp;&nbsp; &nbsp;NCLOB(1M) 3&nbsp;&nbsp; &nbsp;National
+    字符大对象数据<br>
+    NCLOB (n)&nbsp;&nbsp; &nbsp;NCLOB (n) 3&nbsp;&nbsp; &nbsp;最大长度为 n
+    的本地语言字符大对象数据<br>
+    NVARCHAR2&nbsp;&nbsp; &nbsp;NVARCHAR 3&nbsp;&nbsp; &nbsp;可变长度
+    National 字符串数据<br>
+    NVARCHAR2 (n)&nbsp;&nbsp; &nbsp;9NVARCHAR (n) 3&nbsp;&nbsp;
+    &nbsp;最大长度为 n 的可变长度本地语言字符串数据<br>
+    NUMBER&nbsp;&nbsp; &nbsp;NUMBER 5&nbsp;&nbsp; &nbsp;精确数字数据<br>
+    NUMBER (p)&nbsp;&nbsp; &nbsp;NUMBER (p) 5&nbsp;&nbsp; &nbsp;最大精度为 p
+    的精确数字数据<br>
+    NUMBER (p, s)&nbsp;&nbsp; &nbsp;NUMBER (p, s) 5 p = 1 到 31；s = 1 到
+    31&nbsp;&nbsp; &nbsp;最大精度为 p 并且小数位数为 s 的精确数字数据<br>
+    NUMERIC&nbsp;&nbsp; &nbsp;NUMERIC (9.2)&nbsp;&nbsp; &nbsp;精确数字数据<br>
+    NUMERIC (p)&nbsp;&nbsp; &nbsp;NUMERIC (p) p = 1 到 31&nbsp;&nbsp;
+    &nbsp;最大精度为 p 的精确数字数据<br>
+    NUMERIC (p, s)&nbsp;&nbsp; &nbsp;NUMERIC (p, s) p = 1 到 31; s = 0 到
+    31&nbsp;&nbsp; &nbsp;最大精度为 p 并且小数位数为 s 的精确数字数据<br>
+    PLS_INTEGER&nbsp;&nbsp; &nbsp;INTEGER&nbsp;&nbsp; &nbsp;整型数字数据<br>
+    RAW&nbsp;&nbsp; &nbsp;VARBINARY(32672)&nbsp;&nbsp;
+    &nbsp;可变长度二进制字符串数据<br>
+    RAW (n)&nbsp;&nbsp; &nbsp;VARBINARY(n) n = 1 到 32672&nbsp;&nbsp;
+    &nbsp;可变长度二进制字符串数据<br>
+    SMALLINT&nbsp;&nbsp; &nbsp;SMALLINT&nbsp;&nbsp; &nbsp;带符号 2 字节整型数据<br>
+    TIMESTAMP (0)&nbsp;&nbsp; &nbsp;TIMESTAMP (0)&nbsp;&nbsp;
+    &nbsp;包含时间戳记信息的日期数据<br>
+    TIMESTAMP (p)&nbsp;&nbsp; &nbsp;TIMESTAMP (p)&nbsp;&nbsp;
+    &nbsp;包含可选的小数秒和精度 p 的日期和时间数据<br>
+    VARCHAR&nbsp;&nbsp; &nbsp;VARCHAR (4096)&nbsp;&nbsp; &nbsp;最大长度为
+    4096 的可变长度字符串数据<br>
+    VARCHAR (n)&nbsp;&nbsp; &nbsp;VARCHAR (n)&nbsp;&nbsp; &nbsp;最大长度为 n
+    的可变长度字符串数据<br>
+    VARCHAR (n CHAR)&nbsp;&nbsp; &nbsp;VARCHAR (n CODEUNITS32 ) n = 1 到
+    8 168&nbsp;&nbsp; &nbsp;最大长度为 n 个 UTF-32 代码单元的可变长度字符串数据 1<br>
+    VARCHAR2 (n)&nbsp;&nbsp; &nbsp;VARCHAR2 (n) 6&nbsp;&nbsp;
+    &nbsp;最大长度为 n 的可变长度字符串数据<br>
+    VARCHAR2 (n CHAR)&nbsp;&nbsp; &nbsp;VARCHAR2 (n CODEUNITS32 ) n = 1
+    到 8 168 6&nbsp;&nbsp; &nbsp;最大长度为 n 个 UTF-32 代码单元的可变长度字符串数据 1<br>
+    <br>
+  </body>
+</html>

@@ -1,0 +1,989 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+  </head>
+  <body>
+    <h2 align="left">本科教学-数据库技术及应用(CENTOS环
+      境)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+      上机过程如有问题请看 &nbsp; <a href="/hustdbroot/hustbiodbqaa.html">oracle出
+        错集锦</a><br>
+    </h2>
+    <h1 align="center">Oracle上机练习三: 视图索引过程</h1>
+    <h1 align="center">(采用Oracle 19c/Oracle 21c/23c都可以)</h1>
+    <p>视图就是一张或多张表上的<strong>预定义查询</strong>。</p>
+    <div id="content">
+      <p>视图作用：减少子查询的<strong>复杂性</strong>；提高运行<strong>效率</strong>；可以仅提供视图
+        数据，提高数据的<strong>安全性</strong>。视图以定义的方式存储在数据库中，不占用表空间。</p>
+      <p>查询视图的时候就是执行视图里封装的逻辑，逻辑里用到的表称为 <strong>基表</strong>。<br>
+      </p>
+      <p>创建视图语法<br>
+      </p>
+      <p>&nbsp;&nbsp;&nbsp; create or replace view 视图名称_V<br>
+        &nbsp;&nbsp;&nbsp; as<br>
+        &nbsp;&nbsp;&nbsp; 查询的逻辑 （select）；<br>
+        &nbsp;&nbsp; -- with read only； 可以增加只读属性</p>
+    </div>
+    <h3>一 上机内容: </h3>
+    <p align="left">1. 了解视图的含义和作用；<br>
+      2.掌握表的定义和创建；<br>
+      3.掌握表的完整性约束定义和使用；</p>
+    <h3>二 实验环境</h3>
+    <p align="left">（一）硬件设备：计算机局域网，服务器 1 台，终端计算机每人一台<br>
+      （二）软件系统： CentOS 7.x 以上客户机操作系统；<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+      Oracle19.3c 服务端数据库系统，客户端工具 PL/SQL developer。<br>
+    </p>
+    <h3>三 上机目的: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h3>
+    &nbsp;&nbsp;&nbsp;&nbsp; 1. 了解关系数据库基本结构并加深对关系数据库的理解.<br>
+    &nbsp; &nbsp; &nbsp; 2. 练习关系查询语言sql.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. 学会命令行和图形界面创建表，主键，外键，索引，视图等。<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.初步掌握利用高级语言与数据库进行交互.<br>
+    <br>
+    <h3>上机操作:</h3>
+    <p>上机准备：</p>
+    <p><br>
+      SQL&gt; show pdbs<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; CON_ID CON_NAME&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; OPEN MODE&nbsp;
+      RESTRICTED<br>
+      ---------- ------------------------------ ---------- ----------<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;2 PDB$SEED&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ ONLY&nbsp; NO<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;3 FREEPDB1&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ WRITE NO<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;4 PDBDRUGDB&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; MOUNTED<br>
+      SQL&gt; alter pluggable database PDBDRUGDB OPEN; <br>
+      <br>
+      警告: PDB 已变更, 但出现错误。<br>
+      <br>
+      SQL&gt; SHOW PDBS;<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; CON_ID CON_NAME&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; OPEN MODE&nbsp;
+      RESTRICTED<br>
+      ---------- ------------------------------ ---------- ----------<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;2 PDB$SEED&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ ONLY&nbsp; NO<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;3 FREEPDB1&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ WRITE NO<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;4 PDBDRUGDB&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ WRITE YES<br>
+      <br>
+    </p>
+    <p>$ sqlplus HR/wtsgyh1972@localhost:1521/PDBDRUGDB</p>
+    <h3>1. 看看HR的视图<br>
+    </h3>
+    <h3>SELECT * FROM EMP_DETAILS_VIEW;<br>
+    </h3>
+    <h3><br>
+    </h3>
+    <h3>2. 在单表上创建视图</h3>
+    <p>SQL&gt; show user<br>
+      USER 为 "HR"</p>
+    <p>创建一个视图，字段与基本表一样：<br>
+      SQL&gt; CREATE VIEW view_tb AS SELECT score FROM TB;<br>
+      视图已创建。<br>
+      SQL&gt; desc view_tb;<br>
+      &nbsp;名
+      称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      是否为空? 类型<br>
+      &nbsp;----------------------------------------- --------
+      ----------------------------<br>
+      &nbsp;SCORE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      NUMBER(4)<br>
+    </p>
+    <p>SQL&gt; CREATE VIEW view_tb2(stdscore) AS SELECT score FROM TB;<br>
+      视图已创建。<br>
+      SQL&gt; desc view_tb2;<br>
+      &nbsp;名
+      称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      是否为空? 类型<br>
+      &nbsp;----------------------------------------- --------
+      ----------------------------<br>
+      &nbsp;STDSCORE&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; NUMBER(4)<br>
+      <br>
+    </p>
+    <p>SQL&gt; select * from view_tb2;<br>
+      &nbsp; STDSCORE<br>
+      ----------<br>
+      &nbsp;&nbsp;&nbsp; 95<br>
+      3. 创建多表上的视图:<br>
+      SQL&gt; CREATE VIEW empjob_v AS SELECT EMPLOYEES.EMPLOYEE_ID,
+      EMPLOYEES.SALARY, JOBS.JOB_TITLE FROM EMPLOYEES, JOBS WHERE
+      EMPLOYEES.JOB_ID=JOBS.JOB_ID;<br>
+      视图已创建。<br>
+      SQL&gt; SELECT * FROM EMPJOB;<br>
+      EMPLOYEE_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      SALARY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JOB_TITLE<br>
+      --------------------------------------------------------<br>
+      &nbsp;&nbsp;&nbsp; 100&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      24000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; President<br>
+      &nbsp;&nbsp;&nbsp; 101&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      17000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Administration Vice President<br>
+      &nbsp;&nbsp;&nbsp; 102&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      17000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Administration Vice President<br>
+      4.创建视图的视图：<br>
+      SQL&gt; CREATE OR REPLACE VIEW view_empjob_v AS SELECT
+      EMPLOYEE_ID, SALARY FROM empjob;<br>
+      视图已创建。<br>
+      SQL&gt; select * from view_empjob_v;<br>
+      EMPLOYEE_ID&nbsp;&nbsp;&nbsp; SALARY<br>
+      ----------- ----------<br>
+      &nbsp;&nbsp;&nbsp; 100&nbsp;&nbsp;&nbsp; &nbsp;24000<br>
+      &nbsp;&nbsp;&nbsp; 101&nbsp;&nbsp;&nbsp; &nbsp;17000<br>
+      &nbsp;&nbsp;&nbsp; 102&nbsp;&nbsp;&nbsp; &nbsp;17000</p>
+    <p>SQL&gt; select * from view_empjob_v WHERE SALARY &gt;=9000;<br>
+      <br>
+      EMPLOYEE_ID&nbsp;&nbsp;&nbsp; SALARY<br>
+      ----------- ----------<br>
+      &nbsp;&nbsp;&nbsp; 100&nbsp;&nbsp;&nbsp; &nbsp;24000<br>
+      &nbsp;&nbsp;&nbsp; 101&nbsp;&nbsp;&nbsp; &nbsp;17000<br>
+      &nbsp;&nbsp;&nbsp; 102&nbsp;&nbsp;&nbsp; &nbsp;17000<br>
+      &nbsp;&nbsp;&nbsp; 103&nbsp;&nbsp;&nbsp; &nbsp; 9000<br>
+      &nbsp;&nbsp;&nbsp; 108&nbsp;&nbsp;&nbsp; &nbsp;12008<br>
+      &nbsp;&nbsp;&nbsp; 109&nbsp;&nbsp;&nbsp; &nbsp; 9000<br>
+      &nbsp;&nbsp;&nbsp; 114&nbsp;&nbsp;&nbsp; &nbsp;11000<br>
+      &nbsp;&nbsp;&nbsp; 145&nbsp;&nbsp;&nbsp; &nbsp;14000<br>
+      &nbsp;&nbsp;&nbsp; 146&nbsp;&nbsp;&nbsp; &nbsp;13500<br>
+      &nbsp;&nbsp;&nbsp; 147&nbsp;&nbsp;&nbsp; &nbsp;12000<br>
+      &nbsp;&nbsp;&nbsp; 148&nbsp;&nbsp;&nbsp; &nbsp;11000<br>
+      看看是不是比原来的视图少了字段：JOB_TITLE;<br>
+      5. 创建没有源表的视图：<br>
+      SQL&gt; CREATE OR REPLACE VIEW view_nosrc_v AS SELECT ID, score
+      FROM hustibb;<br>
+      CREATE OR REPLACE VIEW view_nosrc_v AS SELECT ID, score FROM
+      hustibb<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      *<br>
+      第 1 行出现错误:<br>
+      ORA-00942: 表或视图&nbsp; 不存在<br>
+      帮助：https://docs.oracle.com/error-help/db/ora-00942/<br>
+    </p>
+    <p>结果显示失败：</p>
+    <p><br>
+    </p>
+    <p>使用FORCE进行强制创建没有源表的视图：<br>
+      SQL&gt; CREATE OR REPLACE FORCE VIEW view_nosrc_v AS SELECT ID,
+      score FROM hustibb;<br>
+      警告：视图已创建，但有编译错误。<br>
+      <br>
+    </p>
+    <h3>3.查询、删除视图</h3>
+    <p><br>
+    </p>
+    <h3>修改视图<br>
+    </h3>
+    SQL&gt; CREATE&nbsp; OR REPLACE VIEW view_tb(mysc) AS SELECT score
+    FROM TB;<br>
+    视图已创建。<br>
+    <br>
+    SQL&gt; desc view_tb;<br>
+    &nbsp;名
+    称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    是否为空? 类型<br>
+    &nbsp;----------------------------------------- --------
+    ----------------------------<br>
+    &nbsp;MYSC&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp; NUMBER(4)<br>
+    <br>
+    <br>
+    ALTER:<br>
+    SQL&gt; ALTER VIEW view_tb ADD CONSTRAINT tb_unique UNIQUE (SCORE)
+    DISABLE NOVALIDATE;<br>
+    视图已变更。<br>
+    SQL&gt; DESC view_tb;<br>
+    &nbsp;名
+    称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    是否为空? 类型<br>
+    &nbsp;----------------------------------------- --------
+    ----------------------------<br>
+    &nbsp;SCORE&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    NUMBER(4)<br>
+    ALTER VIEW view_tb DROP CONSTRAINT tb_unique;<br>
+    <br>
+    update view:<br>
+    SQL&gt; select * from view_tb;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; SCORE<br>
+    &nbsp;&nbsp;&nbsp; 95<br>
+    SQL&gt; update view_tb set score = 100&nbsp;&nbsp; where score = 95;<br>
+    已更新 1 行。<br>
+    SQL&gt; select * from view_tb;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; SCORE<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 100<br>
+    SQL&gt; commit;<br>
+    提交完成。<br>
+    SQL&gt; insert into view_tb values(500);<br>
+    已创建 1 行。<br>
+    SQL&gt; select * from view_tb;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MYSC<br>
+    ----------<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 100<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 500<br>
+    SQL&gt; commit;<br>
+    提交完成。<br>
+    SQL&gt; delete FROM VIEW_TB WHERE MYSC = 500;<br>
+    已删除 1 行。<br>
+    SQL&gt; select * from view_tb;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MYSC<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 100<br>
+    <br>
+    SQL&gt; drop view view_tb2;<br>
+    视图已删除。<br>
+    SQL&gt; drop view VIEW_EMPJOB_V;<br>
+    视图已删除。<br>
+    SQL&gt; desc view_tb2;<br>
+    ERROR:<br>
+    ORA-04043: 对象 view_tb2 不存在。<br>
+    帮助：https://docs.oracle.com/error-help/db/ora-04043/<br>
+    <br>
+    <br>
+    <br>
+    SQL&gt; CREATE&nbsp; OR REPLACE VIEW view_tb AS SELECT score FROM TB
+    with READ ONLY;<br>
+    <br>
+    视图已创建。<br>
+    <br>
+    SQL&gt;&nbsp; insert into view_tb values(500);<br>
+    &nbsp;insert into view_tb values(500)<br>
+    *<br>
+    第 1 行出现错误:<br>
+    ORA-42399: 无法对只读视图执行 DML 操作<br>
+    帮助：https://docs.oracle.com/error-help/db/ora-42399/<br>
+    SQL&gt; CREATE&nbsp; OR REPLACE VIEW view_tb AS SELECT score FROM
+    TB;<br>
+    视图已创建。<br>
+    <br>
+    SQL&gt; insert into view_tb values(500);<br>
+    已创建 1 行。<br>
+    SQL&gt; CREATE&nbsp; OR REPLACE VIEW view_tb AS SELECT score FROM TB
+    where SCORE &gt;100 WITH CHECK OPTION;<br>
+    视图已创建。<br>
+    <br>
+    SQL&gt; insert into view_tb values(50);<br>
+    insert into view_tb values(50)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+    第 1 行出现错误:<br>
+    ORA-01402: 视图 WITH CHECK OPTION where 子句违规<br>
+    帮助：https://docs.oracle.com/error-help/db/ora-01402/<br>
+    <br>
+    SQL&gt; insert into view_tb values(5000);<br>
+    已创建 1 行。<br>
+    <br>
+    <br>
+    SQL&gt; show SERVEROUTPUT;<br>
+    serveroutput ON SIZE UNLIMITED FORMAT WORD_WRAPPED<br>
+    SQL&gt; SET SERVEROUTPUT OFF;<br>
+    SQL&gt; show SERVEROUTPUT;<br>
+    serveroutput OFF<br>
+    SQL&gt; SET SERVEROUTPUT ON;<br>
+    SQL&gt; show SERVEROUTPUT;<br>
+    serveroutput ON SIZE UNLIMITED FORMAT WORD_WRAPPED<br>
+    <br>
+    什么是Oracle过程<br>
+    <br>
+    Oracle过程是一个在Oracle数据库中执行的程序单元。它是一组SQL语句和PL/SQL代码的组合，可以接收输入参数并返回结果。过程
+    可以被其他程序调用，也可以在数据库内部调用。通过编写过程，我们可以实现更复杂的业务逻辑和数据处理。<br>
+    <br>
+    <br>
+    在SQLDEVELOPER中：<br>
+    两种方式：<br>
+    1. <br>
+    SET SERVEROUTPUT ON;<br>
+    <br>
+    DECLARE<br>
+    &nbsp; -- 声明变量<br>
+    &nbsp; myyy TB.SCORE%TYPE;<br>
+    &nbsp; my_number NUMBER := 10;<br>
+    &nbsp; my_string VARCHAR2(20) := 'Hello World!';<br>
+    BEGIN<br>
+    &nbsp;&nbsp; SELECT TB.score INTO myyy FROM TB WHERE TB.SCORE = 500;<br>
+    &nbsp; -- 输出变量值<br>
+    &nbsp; DBMS_OUTPUT.PUT_LINE('My Number is: ' || my_number);<br>
+    &nbsp; DBMS_OUTPUT.PUT_LINE('My String is: ' || my_string);<br>
+    &nbsp; DBMS_OUTPUT.PUT_LINE('My String is: ' || myyy);<br>
+    END;<br>
+    /<br>
+    <br>
+    <br>
+    <br>
+    2 创建过程：<br>
+    <br>
+    create or replace PROCEDURE PROCEDURE1 AS <br>
+    <br>
+    &nbsp; -- 声明变量<br>
+    &nbsp; myyy TB.SCORE%TYPE;<br>
+    &nbsp; my_number NUMBER := 10;<br>
+    &nbsp; my_string VARCHAR2(20) := 'Hello World!';<br>
+    &nbsp; -- 输出变量值<br>
+    &nbsp; BEGIN<br>
+    &nbsp; SELECT TB.score INTO myyy FROM TB WHERE TB.SCORE = 500;<br>
+    &nbsp; --IF SQL%FOUND THEN<br>
+    &nbsp; DBMS_OUTPUT.PUT_LINE('My Number is: ' || my_number);<br>
+    &nbsp; DBMS_OUTPUT.PUT_LINE('My String is: ' || my_string);<br>
+    &nbsp; DBMS_OUTPUT.PUT_LINE('My String is: ' || myyy);<br>
+    &nbsp; --END；<br>
+    END PROCEDURE1;<br>
+    <br>
+    <br>
+    连接到数据库 HRorc23cpdb。<br>
+    My Number is: 10<br>
+    My String is: Hello World!<br>
+    My String is: 500<br>
+    进程已退出。<br>
+    从数据库 HRorc23cpdb 断开连接。<br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    CREATE OR REPLACE PROCEDURE create_tables_trigger AS<br>
+    &nbsp;&nbsp;&nbsp; CURSOR tb IS SELECT table_name FROM&nbsp;
+    user_tables;<br>
+    &nbsp;&nbsp;&nbsp; row_table_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    tb%rowtype;<br>
+    &nbsp;&nbsp;&nbsp; var_table_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    VARCHAR(100);<br>
+    &nbsp;&nbsp;&nbsp; var_trigger_name&nbsp;&nbsp;&nbsp; VARCHAR(100);<br>
+    &nbsp;&nbsp;&nbsp; var_table_name_temp VARCHAR(100);<br>
+    &nbsp;&nbsp;&nbsp;
+    var_temp_sql&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    VARCHAR(9999);<br>
+    BEGIN<br>
+    &nbsp;&nbsp;&nbsp; OPEN tb;<br>
+    &nbsp;&nbsp;&nbsp; LOOP<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FETCH tb INTO
+    row_table_name;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXIT WHEN tb%notfound;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var_table_name :=
+    row_table_name.table_name;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var_trigger_name :=
+    var_table_name || '_trigger';<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DBMS_OUTPUT.PUT_LINE('My
+    String is: ' || var_trigger_name);<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --EXECUTE IMMEDIATE
+    var_temp_sql;<br>
+    &nbsp;&nbsp;&nbsp; END LOOP;<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; CLOSE tb;<br>
+    &nbsp;&nbsp;&nbsp; COMMIT;<br>
+    END create_tables_trigger;<br>
+    <br>
+    <br>
+    <br>
+    CREATE OR REPLACE PROCEDURE create_tables_trigger AS<br>
+    &nbsp;&nbsp;&nbsp; CURSOR tb IS SELECT table_name FROM&nbsp;
+    user_tables;<br>
+    &nbsp;&nbsp;&nbsp; row_table_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    tb%rowtype;<br>
+    &nbsp;&nbsp;&nbsp; var_table_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    VARCHAR(100);<br>
+    &nbsp;&nbsp;&nbsp; var_trigger_name&nbsp;&nbsp;&nbsp; VARCHAR(100);<br>
+    &nbsp;&nbsp;&nbsp; var_table_name_temp VARCHAR(100);<br>
+    &nbsp;&nbsp;&nbsp;
+    var_temp_sql&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    VARCHAR(9999);<br>
+    BEGIN<br>
+    &nbsp;&nbsp;&nbsp; OPEN tb;<br>
+    &nbsp;&nbsp;&nbsp; LOOP<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FETCH tb INTO
+    row_table_name;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXIT WHEN tb%notfound;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var_table_name :=
+    row_table_name.table_name;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var_trigger_name :=
+    var_table_name || '_trigger';<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var_temp_sql := 'CREATE
+    or replace trigger&nbsp; '&nbsp; || var_trigger_name&nbsp; || '
+    after delete or insert or update on '&nbsp; || var_table_name || '<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; declare<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    v_type Changed_Info.Optiontype%type;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    v_tablename User_tables.table_name%type;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    v_index varchar(50);<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    BEGIN<br>
+    &nbsp;&nbsp; EXECUTE IMMEDIATE ''select change_index from
+    change_index'' into v_index;<br>
+    &nbsp;&nbsp; IF inserting then --insert trigger<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v_type := ''INSERT'';<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DBMS_OUTPUT.PUT_line(''INSERT SUCCESS'');<br>
+    &nbsp;&nbsp; ELSIF updating then --update trigger<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v_type := ''UPDATE'';<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    DBMS_OUTPUT.put_line(''UPDATE SUCCESS'');<br>
+    &nbsp;&nbsp; ELSIF deleting then --delete trigger<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v_type := ''DELETE'';<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Dbms_Output.put_line(''DELETE SUCCESS'');<br>
+    &nbsp;&nbsp; end if;<br>
+    &nbsp;&nbsp; insert into changed_info values (v_index,''' ||
+    var_table_name&nbsp; || ''',v_type,sysdate);<br>
+    END;';<br>
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXECUTE IMMEDIATE
+    var_temp_sql;<br>
+    &nbsp;&nbsp;&nbsp; END LOOP;<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; CLOSE tb;<br>
+    &nbsp;&nbsp;&nbsp; COMMIT;<br>
+    END create_tables_trigger;<br>
+    <h3>表空间的定义</h3>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    1.永久表空间：biodbspace <br>
+    &nbsp;&nbsp; create tablespace biodbspace<br>
+    datafile 'D:\app\wangyi\mydata\data.dbf' size 10M<br>
+    autoextend on next 5M maxsize 50M;<br>
+    2.创建临时表空间：mytemp<br>
+    create temporary tablespace mytemp<br>
+    tempfile 'D:\app\wangyi\mydata\mytemp.dbf' size 10M<br>
+    autoextend on next 2M maxsize 20M;<br>
+    3.创建撤销表空间：myundo create undo tablespace myundo<br>
+    datafile 'D:\app\wangyi\mydata\myundo.dbf' size 10M<br>
+    autoextend on next 5M maxsize 50M<br>
+    4.查询表空间<br>
+    <br>
+    select tablespace_name from user_tablespaces;<br>
+    <br>
+    5.查询表空间数据文件<br>
+    <br>
+    SELECT tablespace_name , file_name , bytes FROM dba_data_files WHERE<br>
+    <br>
+    tablespace_name = 'biodbspace'<br>
+    6．为当前表空间扩容 50M ALTER TABLESPACE wy ADD DATAFILE<br>
+    'D:\app\wangyi\mydata\data2.dbf' SIZE 10M AUTOEXTEND ON NEXT 5M
+    MAXSIZE 40M,<br>
+    <br>
+    <br>
+    <meta name="ProgId" content="Word.Document">
+    <meta name="Generator" content="Microsoft Word 14">
+    <meta name="Originator" content="Microsoft Word 14">
+    <link rel="File-List"
+href="file:///C:%5CUsers%5CADMINI%7E1%5CAppData%5CLocal%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_filelist.xml">
+    <!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:RelyOnVML/>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]-->
+    <link rel="themeData"
+href="file:///C:%5CUsers%5CADMINI%7E1%5CAppData%5CLocal%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_themedata.thmx">
+    <link rel="colorSchemeMapping"
+href="file:///C:%5CUsers%5CADMINI%7E1%5CAppData%5CLocal%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_colorschememapping.xml">
+    <!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves/>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:DrawingGridVerticalSpacing>7.8 磅</w:DrawingGridVerticalSpacing>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-US</w:LidThemeOther>
+  <w:LidThemeAsian>ZH-CN</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:AdjustLineHeightInTable/>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+   <w:UseFELayout/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="true"
+  DefSemiHidden="true" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="267">
+  <w:LsdException Locked="false" Priority="0" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 9"/>
+  <w:LsdException Locked="false" Priority="35" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" Priority="10" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" Priority="1" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" Priority="11" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" Priority="22" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" Priority="59" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Table Grid"/>
+  <w:LsdException Locked="false" UnhideWhenUsed="false" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" UnhideWhenUsed="false" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" QFormat="true" Name="TOC Heading"/>
+ </w:LatentStyles>
+</xml><![endif]-->
+    <style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-alt:SimSun;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 680460288 22 0 262145 0;}
+@font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-alt:SimSun;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 680460288 22 0 262145 0;}
+@font-face
+	{font-family:"Microsoft JhengHei";
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:136;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:135 680476672 22 0 1048585 0;}
+@font-face
+	{font-family:"\@Microsoft JhengHei";
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:136;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:135 680476672 22 0 1048585 0;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 680460288 22 0 262145 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";
+	mso-fareast-font-family:宋体;
+	mso-fareast-theme-font:minor-fareast;
+	mso-fareast-language:EN-US;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	font-size:10.0pt;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	mso-ascii-font-family:"Times New Roman";
+	mso-hansi-font-family:"Times New Roman";
+	mso-font-kerning:0pt;
+	mso-fareast-language:EN-US;}
+ /* Page Definitions */
+ @page
+	{mso-page-border-surround-header:no;
+	mso-page-border-surround-footer:no;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	mso-header-margin:36.0pt;
+	mso-footer-margin:36.0pt;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:普通表格;
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";
+	mso-fareast-language:EN-US;}
+</style>
+<![endif]--><br>
+    2. 验证实验:用户创建与管理<br>
+    1.创建用户 tuster<br>
+    create user tuster identified by admin default tablespace biodbspace<br>
+    quota 20M on biodbspace; //当前用户可用表空间最大值，可设为 unlimited<br>
+    2.查看当前用户会话信息<br>
+    Select sid,serial#,username,status,logon_time,machine<br>
+    FROM v$session WHERE username IS NOT NULL<br>
+    <br>
+    3.修改用户密码为 orcl<br>
+    alter user tuster identified by orcl<br>
+    <br>
+    4.修改用户的锁定状态<br>
+    alter user tuster account lock[unlock]<br>
+    5.设定用户密码为过期状态<br>
+    alter user tuster password expire<br>
+    6.删除用户，包括用户所有数据文件<br>
+    drop user tuster cascade<br>
+    注意 cascade 使用<br>
+    <br>
+    <br>
+    <br>
+    3. 验证内容：表的完整性约束。<br>
+    约束是保证表中数据完整性和一致性的机制，要求熟练掌握以下五种常见的约束，可在 列上定义也可单独定义约束。<br>
+    &nbsp;&nbsp; 主键约束：primary key<br>
+    &nbsp;&nbsp; 唯一约束：unique；<br>
+    &nbsp;&nbsp; 非空约束：not null；<br>
+    &nbsp;&nbsp; 外键约束：foreign key<br>
+    创建 scott 账户及其中的表，emp 员工表
+    empno,ename,job,mgr,hiredate,sal,comm.,deptno）<br>
+    dept 部门表（deptno,dname,loc）<br>
+    1.创建 dept 表，注意完整性约束。<br>
+    create table dept(<br>
+    deptno number(10)&nbsp;&nbsp; primary key, dname
+    varchar2(30)&nbsp;&nbsp; not null,<br>
+    loc varchar2(30)&nbsp;&nbsp; check (loc
+    in('Tianjin','Hebei','Shanghai') )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    //限定地点<br>
+    <br>
+    )<br>
+    <br>
+    添加几条数据到创建的 dept 表中<br>
+    (1) insert into dept values(1001, 'Sale Market','Tianjin');正常添加<br>
+    (2) insert into dept values(1002,'技术部','Shandong'); 添加非 check
+    条件的数据，出现违例。<br>
+    <br>
+    &nbsp;<br>
+    <br>
+    2.创建 emp 表<br>
+    create table emp(<br>
+    empno number(10) primary key, ename varchar2(30) not null,<br>
+    job varchar2(30), mgr varchar2(30), hiredate number(10), sal
+    number(10), comm number(10), deptno number(10),<br>
+    foreign key(deptno) references dept(deptno)<br>
+    )<br>
+    添加一些数据并进行测试。<br>
+    删除表：drop table emp;&nbsp;&nbsp;&nbsp;&nbsp; drop table dept;<br>
+    <br>
+    3.主键的设定也可在表列定义的后面，作为表级约束<br>
+    例如：<br>
+    create table categoryinfo(categoryID varchar(10), categroyName
+    varchar2(30), primary key(categoryID))<br>
+    4.&nbsp; 假如在创建表时没有添加约束，可以通过以下语句后期添加（也可移除约束）<br>
+    alter table categoryinfo add constraint PK_category primary
+    key(categoryID)<br>
+    <br>
+    alter table categoryinfo drop constraint PK_category<br>
+    <br>
+    <br>
+  </body>
+</html>

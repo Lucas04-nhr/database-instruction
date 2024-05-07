@@ -1,0 +1,1485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+  </head>
+  <body>
+    <div align="center">
+      <h1>Oracle上机练习六: 完整的数据创建及维护流程</h1>
+    </div>
+    <div align="center">
+      <h2><font color="#ff0000">酒店管理系统数据库开发实例</font></h2>
+      <br>
+      <div align="left">记住： LINUX下面再次创建数据库需要做以下操作<br>
+      </div>
+      <div align="left">1.$dbca&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        //安装数据库ORAHOTEL，本次上机有详细过程！！！！！！<br>
+        2. 配置listener.ora<br>
+        增加下面内容：<br>
+        ORAHOTEL =<br>
+        &nbsp; (DESCRIPTION_LIST =<br>
+        &nbsp;&nbsp;&nbsp; (DESCRIPTION =<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST
+        = localhost)(PORT = 1522))<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = IPC)(KEY =
+        EXTPROC1522))<br>
+        &nbsp;&nbsp;&nbsp; )<br>
+        &nbsp; )<br>
+        配置tnsnames.ora： 增加下面内容：<br>
+        LISTENER_ORAHOTEL =<br>
+        &nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =
+        1522))<br>
+        <br>
+        ORAHOTEL =<br>
+        &nbsp; (DESCRIPTION =<br>
+        &nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = TCP)(HOST =
+        localhost)(PORT = 1522))<br>
+        &nbsp;&nbsp;&nbsp; (CONNECT_DATA =<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SERVER = DEDICATED)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SERVICE_NAME = orahotel)<br>
+        &nbsp;&nbsp;&nbsp; )<br>
+        &nbsp; )<br>
+        最终成功的文件（SUREWTS with two instance on one Oracle 19.3）：<br>
+        &nbsp;CENTOS 7.9&nbsp; <a moz-do-not-send="true"
+          href="orahotel/listener.ora">listener.ora</a>&nbsp;&nbsp;<a
+          moz-do-not-send="true" href="orahotel/tnsnames.ora">
+          tnsnames.ora</a>&nbsp; <a moz-do-not-send="true"
+          href="orahotel/sqlnet.ora">tnsnames.ora</a><br>
+        3. 改下面的（重要！！！！！）<br>
+        $ export ORACLE_SID=drugdb<br>
+        $ export ORACLE_UNQNAME=drugdb<br>
+        $ export ORACLE_SID=orahotel<br>
+        $ export ORACLE_UNQNAME=orahotel<br>
+        <br>
+        4. ./lsnrctl start orahotel<br>
+        5. sqlplus&gt;startup(其余操作要记得哟！！！)<br>
+        SQL&gt; show pdbs<br>
+        <br>
+        &nbsp;&nbsp;&nbsp; CON_ID CON_NAME&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; OPEN MODE&nbsp;
+        RESTRICTED<br>
+        ---------- ------------------------------ ---------- ----------<br>
+        &nbsp;&nbsp;&nbsp; &nbsp;2 PDB$SEED&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ ONLY&nbsp; NO<br>
+        &nbsp;&nbsp;&nbsp; &nbsp;3 PDBHOTEL1&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; MOUNTED<br>
+        &nbsp;&nbsp;&nbsp; &nbsp;4 PDBHOTEL2&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; MOUNTED<br>
+        &nbsp;&nbsp;&nbsp; &nbsp;5 PDBHOTEL3&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; MOUNTED<br>
+        &nbsp;&nbsp;&nbsp; &nbsp;6 PDBHOTEL4&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; MOUNTED&nbsp;&nbsp;
+        //看看是不是有四个PDB？？？？？？？？？？？（后面会创建的哟！！！！）<br>
+        SQL&gt; <br>
+        <br>
+        6. 启动sqldeveloper:<br>
+        &nbsp;&nbsp; 创建数据库的连接<br>
+        <div align="center"><img moz-do-not-send="true"
+            src="../hustdbroot/orahotel/orahosucce.png" alt=""
+            width="657" height="435"><br>
+          <h3>看到： 成功了没？？？？？？？</h3>
+        </div>
+      </div>
+      <div align="left">
+        <h3><br>
+        </h3>
+        7. https://localhost:5501/em：&nbsp;
+        看看能不能连上？？？（刚安装完ORAHOTEL时是可以的哟！！！！）<br>
+        <br>
+        <meta name="ProgId" content="PowerPoint.Slide">
+        <meta name="Generator" content="Microsoft PowerPoint 14">
+        <br>
+      </div>
+    </div>
+    <h2> 上机目的:</h2>
+    <h2> 上机环境:</h2>
+    <h2> 上机内容: </h2>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    一 系统需求分析<br>
+    二 设计系统E-R图<br>
+    三 创建数据表<br>
+    四 创建系统视图<br>
+    五 创建系统存储过程 <br>
+    六 备份及恢复
+    <meta name="ProgId" content="PowerPoint.Slide">
+    <meta name="Generator" content="Microsoft PowerPoint 14">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="ProgId" content="PowerPoint.Slide">
+    <meta name="Generator" content="Microsoft PowerPoint 14">
+    <br>
+    <br>
+    <h2>上机操作过程<br>
+    </h2>
+    <h3>一 系统需求分析</h3>
+    <h3>&nbsp;酒店管理系统拟采用Tomcat作为网页服务器, 基于JSP与Oracle 19.3数据库进行开发的Web应用程序。</h3>
+    <h3><br>
+      &nbsp;系统使用三层架构开发模式:<br>
+    </h3>
+    数据库作为架构中的一个底层;<br>
+    表现层（也就是Web界面）做为架构中的顶层;<br>
+    数据访问层则处于一个中间层。<br>
+    Web应用程序页面不再直接与后台的数据库相连接，而是直接与中间数据访问层相关联，中间层的数据访问层直接与数据库相连接，从数据访问层中发送
+    相关SQL语句到数据库，数据库执行相关的SQL语句后，将执行结果返回到数据访问层。<br>
+    <br>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="ProgId" content="PowerPoint.Slide">
+    <meta name="Generator" content="Microsoft PowerPoint 14">
+    本系统主要的需求是能够完成对小型酒店日常的客房管理活动，系统主要面向的用户对象是前台接待人员。系统的具体需求分析如下：<br>
+    &nbsp;&nbsp;&nbsp; (1)
+    用户必须先从登录界面进入系统，在登录页面输入用户名、密码和验证码，通过身份验证后，才可以进入系统的首页。如果未能通过系统的身份验证
+    ，系统自动给出登录错误的提示信息。<br>
+    &nbsp;&nbsp;&nbsp; (2) 用户通过本系统可以为客人进行入住登记的办理。<br>
+    &nbsp;&nbsp;&nbsp; (3) 用户可以为客人进行退房的操作。<br>
+    &nbsp;&nbsp;&nbsp; (4) 用户能够查询住店客人的各种相关的详细信息。<br>
+    &nbsp;&nbsp;&nbsp; (5) 用户可以对酒店的客房类型进行操作。包括对新客房类型的添加和对原有客房类型进行修改。<br>
+    &nbsp;&nbsp;&nbsp; (6) 同样，用户能够对酒店的房间进行操作。包括对新房间的添加、对原来房间的修改和删除。<br>
+    &nbsp;&nbsp;&nbsp; (7) 用户还可以对酒店客房的状态进行修改操作。<br>
+    &nbsp;&nbsp;&nbsp; (8) 用户还能够为客人进行房间的预定操作。<br>
+    &nbsp;&nbsp;&nbsp; (9) 用户能够根据相应的查询条件对酒店客房的信息进行查询，包括客房的房态、客房的预定情况等。<br>
+    &nbsp;&nbsp;&nbsp; (10) 用户可以查询指定时间内的客房收入情况。<br>
+    &nbsp;&nbsp;&nbsp; (11) 用户也可以浏览酒店的介绍和新闻。<br>
+    &nbsp;&nbsp;&nbsp; (12) 用户能够修改登录系统的验证密码；<br>
+    &nbsp;&nbsp;&nbsp; (13) 当用户第一次登录前，必须先进行注册。设置登录时使用的用户名和密码以及保存个人的相关信息。<br>
+    <br>
+    <h3>二 创建Oracle数据库: orahotel&nbsp;&nbsp;&nbsp;
+      //这里创建数据库与安装Oracle时的那个稍微有点不一样！<br>
+    </h3>
+    SQL Developer 不能用于创建Oracle数据库，只能用来连接已经创建的数据库，数据库的建立要通过Database
+    Configuration Assistant（DBCA）来完成。<br>
+    <h3>&nbsp; 图形法</h3>
+    $dbca&nbsp;&nbsp;&nbsp; <br>
+    //打开Database Configuration Assistant对话框的欢迎界面，选中第一项： 创建数据库<br>
+    <div align="center">999<img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/orahotel01.png" alt="" width="705"
+        height="538"><br>
+      <br>
+      <br>
+      <br>
+      <div align="left">创建模式：<br>
+      </div>
+      <br>
+      <div align="left">RAC是real application cluster的缩写，译为“实时应用集群”，
+        是Oracle新版数据库中采用的一项新技术，是高可用性的一种，也是Oracle数据库支持网格计算环境的核心技术。<br>
+        <br>
+        <div align="center">777777<br>
+          <div align="left">1. 典型配置：<br>
+          </div>
+          <div align="left">全局数据库名（G）：SID： orahotel<br>
+          </div>
+          <div align="left">存储类型S:&nbsp; 文件系统/自动存储管理ASM<br>
+          </div>
+          <div align="left">数据库文件位置D：{ORACLE_BASE}/oradata
+            /{DB_UNIQUE_NAME}<br>
+          </div>
+          <div align="left">快速恢复区FRA（A）{ORACLE_BASE}/fast_recovery_area
+            /{DB_UNIQUE_NAME}<br>
+          </div>
+          <div align="left">数据库字符集： AL32UTF8 -Unicode UTF-8 通用字符集<br>
+            管理口令：wtsgyh1972<br>
+            确认口令：wtsgyh1972<br>
+            <br>
+            创建为容器数据库E:<br>
+            &nbsp; 可插入数据库名L: pdbhotel<br>
+            <div align="center">9999<img moz-do-not-send="true"
+                src="../hustdbroot/orahotel/commodecrea.png" alt=""
+                width="570" height="428"><br>
+            </div>
+            <br>
+          </div>
+        </div>
+        <br>
+      </div>
+      也可以： 点高级配置,下一步 部署类型：<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/adset1.png" alt="" width="583"
+        height="477">&nbsp; <br>
+      <br>
+      <br>
+      orahotel<br>
+      SID： orahotel<br>
+      PDB： 4 个， pdbhotel<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/advset22.png" alt="" width="731"
+        height="549"><br>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div align="center">存储选项：<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/cunchuxuanxinag.png" alt=""
+        width="679" height="511"><br>
+      <br>
+      <br>
+      快速恢复区：<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/fraassign.png" alt="" width="874"
+        height="663"><br>
+      <br>
+      <br>
+      <br>
+      lishotel&nbsp; 1521 不能用同一个号<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/setlishot.png" alt="" width="679"
+        height="509"><br>
+      <br>
+      <br>
+      oooo set data vault<br>
+      <br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/datavault.png" alt="" width="593"
+        height="447"><br>
+      <br>
+      <img moz-do-not-send="true" src="../hustdbroot/orahotel/dav1.png"
+        alt="" width="762" height="447"><br>
+      <br>
+      <br>
+      <br>
+      &nbsp;&nbsp;&nbsp;&nbsp; <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/dav5.png" alt="" width="567"
+        height="372"><br>
+      <img moz-do-not-send="true" src="./orahotel/dav2.png" alt=""
+        width="595" height="384"><img moz-do-not-send="true"
+        src="./orahotel/dav3.png" alt="" width="622" height="401"><br>
+      <img moz-do-not-send="true" src="../hustdbroot/orahotel/dav4.png"
+        alt="" width="495" height="324">&nbsp;&nbsp;&nbsp; <img
+        moz-do-not-send="true"
+src="file:///run/media/catalyst/officegyh/2023hustbiodbshaji/gohustdb/src/maindbgo/hustdbroot/orahotel/dav6.png"
+        alt="" width="624" height="405"><br>
+      <br>
+      <br>
+      &nbsp; <img moz-do-not-send="true" src="./orahotel/dav7.png"
+        alt="" width="644" height="420"><img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/dav0.png" alt="" width="579"
+        height="425"><br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div align="left">配置：<br>
+      </div>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/assignpeizhi.png" alt=""
+        width="1182" height="589"><br>
+      <br>
+      <br>
+      管理：<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/adminop.png" alt="" width="879"
+        height="657"><br>
+      <br>
+      user passwd:<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/userpadwd.png" alt="" width="666"
+        height="504"><img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/invalidpaswd.png" alt="" width="684"
+        height="513"><br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div align="left">完成配置，正式安装:<br>
+      </div>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/wanchenfirst.png" alt="" width="645"
+        height="480"><br>
+      <br>
+      <br>
+      progress:<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/progress.png" alt="" width="900"
+        height="663"><br>
+      <br>
+      <br>
+      安装完成：<br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/installcomp.png" alt="" width="825"
+        height="610"><br>
+      <div align="left">安装完成后：<br>
+        数据库创建完成，详细信息看日志：<br>
+        /opt/app/oracle/cfgtoollogs/dbca/orahotel/*.log<br>
+        全局数据库名： orahotel<br>
+        系统标识符SID： orahotel<br>
+        服务器参数文件名：&nbsp;
+        /opt/app/oracle/product/19.3.000/db_home/dbs
+        /spfileorahotel.ora&nbsp;
+        （二进制）<br>
+        EM Database Express&nbsp;&nbsp; URL: https://localhost:5501/em<br>
+        <br>
+      </div>
+      <div align="left">
+        <h3>口令管理：(看看都有哪些用户，现在没有scott用户了)</h3>
+      </div>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/passwdadmin.png" alt="" width="676"
+        height="575"><br>
+      <br>
+    </div>
+    到此安装OraHotel数据库完成。<br>
+    <br>
+    打开： https://localhost:5501/em<br>
+    username: SYS<br>
+    pwd: wtsgyh1972<br>
+    Container Name: 不要<br>
+    点： Log In就可以进入页面了。<br>
+    <div align="center"><img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/em5501log.png" alt="" width="622"
+        height="410">&nbsp;&nbsp;
+      <br>
+    </div>
+    命令行法:<br>
+    <p style="text-align: left;">$dbca -silent -createDatabase
+      -templateName General_Purpose.dbc -gdbName orahotel -sid orahotel
+      -sysPassword wtsgyh1972 -systemPassword wtsgyh1972
+      -datafileDestination /opt/oracle/oradata/ -characterSet zhs16gbk
+      -nationalCharacterSet al16utf16 -responseFile NO_VALUE</p>
+    会提示进程，等待到100%，建库完成<br>
+    2 创建用户：<br>
+    <span class="content-right_8Zs40"><span class="content-right_8Zs40"><strong><strong><span
+              class="content-right_8Zs40"><span
+                class="content-right_8Zs40"><strong><strong>SQL&gt;
+                    create user c##hoteldbuser identified by hoteldb123;
+                    <br>
+                    用户已创建。<br>
+                    SQL&gt; commit;<br>
+                    提交完成。</strong></strong></span></span></strong></strong></span></span><br>
+    3.
+    <h3> 二 设计系统E-R图</h3>
+    <p>实体模型就是我们通常所说E-R模型，它是设计数据库的基础。我们使用E-R模型对酒店管理系统的数据进行抽象加工，将实体集合抽象成实体
+      类型，用实体间关系反映本系统实体间的内在联系。下面根据需求分析设计酒店管理系统的E-R图。<br>
+      &nbsp;&nbsp;&nbsp; 1.住客实体E-R图<br>
+      &nbsp;&nbsp;&nbsp;
+      住客E-R图中包括的属性为：住客编号、住客姓名、住客性别、住客国籍、住客身份证、住客住址、住客电话、押金、住客房号、住客类别、入住时
+      间、离店时
+      间、操作人。这些属性描述的住客实体如下图1所示。<br>
+    </p>
+    <p align="center"><img src="../hustdbroot/orahotel/indexer1.png"
+        alt="" width="938" height="386"></p>
+    <p>&nbsp;&nbsp;&nbsp; 2. 房间实体E-R图<br>
+      &nbsp;&nbsp;&nbsp;
+      房间E-R图中包括的属性为：房间编号、房号、房间类型、房间状态、是否预定、床位数、是否有电视、是否有空调。这些属性描述的房间实体如下
+      图所示。<br>
+    </p>
+    <div align="center"><img src="../hustdbroot/orahotel/indexer2.png"
+        alt="" width="661" height="272"><br>
+      <br>
+      <div align="left">&nbsp;&nbsp;&nbsp; 3.房型实体E-R图<br>
+        &nbsp;&nbsp;&nbsp;
+        房型E-R图中包括的属性为：房型编号、房型名称、房间价格。这些属性描述的房型实体如下图所示。<br>
+        <div align="center"><img
+            src="../hustdbroot/orahotel/indexer3.png" alt="" width="216"
+            height="94"><br>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        &nbsp;&nbsp;&nbsp; 4.房态实体E-R图<br>
+        &nbsp;&nbsp;&nbsp; 房态E-R图中包括的属性为：房态编号、房态名称。这些属性描述的房态实体如下图所示。<br>
+        <div align="center"><img
+            src="../hustdbroot/orahotel/indexer4.png" alt="" width="257"
+            height="111"><br>
+          <br>
+          <div align="left">&nbsp;&nbsp;&nbsp; 5.预定信息实体E-R图<br>
+            &nbsp;&nbsp;&nbsp;
+            预定信息E-R图中包括的属性为：预定编号、预定房号、预定人姓名、预订人电话、预定人身份证、预定入住时间、操作人。这些属性
+            描述的预定信息实体如下图
+            所示。<br>
+            <br>
+            <div align="center"><img
+                src="../hustdbroot/orahotel/indexer5.png" alt=""
+                width="380" height="97"></div>
+            <br>
+            &nbsp;&nbsp;&nbsp; 6.酒店新闻实体E-R图<br>
+            &nbsp;&nbsp;&nbsp;
+            酒店新闻E-R图中包括的属性为：新闻编号、新闻标题、新闻内容、发布时间、图片路径。这些属性描述的酒店新闻实体如下图所示。<br>
+            <div align="center"><img
+                src="../hustdbroot/orahotel/indexer6.png" alt=""
+                width="385" height="100"></div>
+            <br>
+          </div>
+          <meta http-equiv="Content-Type" content="text/html;
+            charset=UTF-8">
+          <meta name="ProgId" content="PowerPoint.Slide">
+          <meta name="Generator" content="Microsoft PowerPoint 14">
+        </div>
+        <br>
+      </div>
+      <div align="left">&nbsp;&nbsp;&nbsp;
+        设计好系统中各种实体E-R图后，就要设计各个实体之间的关系，即E-R模型的关系。在酒店管理系统中，实体与实体间的关系描述如下：<br>
+        &nbsp;&nbsp;&nbsp; 1.
+        住客实体和房间实体之间存在的是多对多的关系，即：一个住客可以入住多个房间，一个房间可以被多个住客使用。<br>
+        &nbsp;&nbsp;&nbsp; 2.房间实体和房型实体之间存在的是一对一的关系，即：一间房间只能属于一种房型。<br>
+        &nbsp;&nbsp;&nbsp; 3.房间实体和房态实体之间存在的是一对一的关系，即：一间房间只能属于一种房间状态。<br>
+        &nbsp;&nbsp;&nbsp;
+        4.房间实体和预定信息实体之间存在的是多对多的关系，即：一个预定可以包括多个房间，一个房间可以被多次预定。<br>
+        &nbsp;&nbsp;&nbsp; <br>
+        <br>
+      </div>
+      <div align="left">以上实体间的关系可以用如下图所示的E-R关系图表示。 <br>
+        <div align="center"><img
+            src="../hustdbroot/orahotel/indexertotal.png" alt=""
+            width="499" height="298"></div>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+    <h3> 三 创建数据表</h3>
+    <p>&nbsp;&nbsp;&nbsp;
+      本酒店管理系统的数据库由两个部分组成。其中，第一部分是我们根据系统需求设计并创建的数据表，第二部分是为了实现ASP.NET
+      4.0的用户身份的验证和授权，由Visual Studio
+      2010开发环境自动生成一个自带数据库“ASPNETDB”，所有本系统的用户信息、个性化信息和基本配置等都保存在该数据库的11张数据
+      表中，表的名
+      称都以“aspnet_开头”。这里仅介绍第一部分的内容<br>
+      &nbsp;&nbsp;
+      为满足本系统功能的需要，根据设计好的系统实体E-R模型图，创建“oraHotel”的数据库中的数据表，在创建表的同时还要实现数据的完
+      整性。<br>
+    </p>
+    <h3>1. 住客信息表（GuestInfo），用来记录酒店住客的各种信息。使用身份证号和房号作为该表的主键。该表的字段结构如下表所述：</h3>
+    创建“GuestInfo”表的语句如下：
+    <p>CREATE TABLE C##WZT.GUESTINFO (ID NUMBER, NAME VARCHAR2(20), SEX
+      VARCHAR2(2), NATIONALITY VARCHAR2(20) <br>
+      , PASSPORTNUM VARCHAR2(20) NOT NULL, ADDRESS VARCHAR2(50),
+      TELEPHONE NUMBER, ROOMNUM NUMBER NOT NULL <br>
+      , GUESTKIND VARCHAR2(20), ARRIVALTIME DATE, DEPARTURETIME DATE,
+      DEPOSIT NUMBER, OPERATOR VARCHAR2(20) , <br>
+      CONSTRAINT GUESTINFO_PK PRIMARY KEY&nbsp; (PASSPORTNUM, ROOMNUM
+      /*设置双主键约束*/<br>
+      &nbsp; )<br>
+      &nbsp; ENABLE <br>
+      );<br>
+      <br>
+      <br>
+    </p>
+    <p>CREATE TABLE C##HOTELDBUSER.GuestInfo(<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Id int GENERATED ALWAYS AS IDENTITY
+      UNIQUE, /*设置唯一约束*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Name varchar(20) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Sex varchar(2) NOT NULL CHECK(Sex='男'
+      OR&nbsp; Sex='女'), /*设置CHECK约束*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Nationality varchar(20) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; PassportNum varchar(20) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Address varchar(50) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Telephone int NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; RoomNum int NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /*设置CHECK约束*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; GuestKind varchar(10) NOT NULL
+      CHECK(GuestKind ='团队' OR GuestKind ='散客'),<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; ArrivalTime date default sysdate,&nbsp;
+      /*设置DEFAULT约束*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; DepartureTime date NOT
+      NULL,/*设置DEFAULT约束*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Deposit decimal(10, 2) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; Operator varchar(10) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; CONSTRAINT GUESTINFO_PK PRIMARY KEY&nbsp;
+      (PASSPORTNUM, ROOMNUM), /*设置双主键约束*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; FOREIGN KEY(RoomNum) REFERENCES
+      C##WZT.RoomInfo(RoomNum) /*设置外键约束*/<br>
+      )</p>
+    <p><br>
+      /*设置唯一约束*/<br>
+      ALTER TABLE C##WZT.GUESTINFO ADD CONSTRAINT GUESTINFO_UK1 UNIQUE
+      (&nbsp; ID ) ENABLE;<br>
+      /*设置CHECK约束*/<br>
+      ALTER TABLE C##WZT.GUESTINFO ADD CONSTRAINT GUESTINFO_CHK1 CHECK
+      (SEX = '男' OR SEX = '女') ENABLE;<br>
+      /*设置CHECK约束*/<br>
+      ALTER TABLE C##WZT.GUESTINFO ADD CONSTRAINT GUESTINFO_CHK2
+      CHECK&nbsp; (GUESTKIND = '团队' OR GUESTKIND = '散客') ENABLE;<br>
+    </p>
+    <p>INSERT INTO
+      C##WZT.GuestInfo(Name,Sex,Nationality,PASSPORTNUM,Address,Telephone,ROOMNUM,GuestKind,
+
+
+DepartureTime,Deposit,Operator)
+      VALUES
+      ('wrs','男','China','123456','HUST1037',1234323654,12,'团队
+      ',TO_DATE('2021-01-01', 'YYYY-MM-DD'),100.00, 'watashi');<br>
+    </p>
+    <h3>2.酒店新闻表（News）用来记录酒店新闻的信息，新闻编号作为表的主键。该表的字段结构如下表所述：</h3>
+    创建“News”表的语句如下：&nbsp;&nbsp;&nbsp; <br>
+    <p>CREATE TABLE C##HOTELDBUSER.News(<br>
+      &nbsp;&nbsp;&nbsp; Id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+      , /*设置主键键约束*/<br>
+      &nbsp;&nbsp;&nbsp; Title varchar(70) NOT NULL ,<br>
+      &nbsp;&nbsp;&nbsp; Content varchar(1000) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; Time date NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; ImageUrl varchar(70) NULL<br>
+      )</p>
+    <p><br>
+      INSERT INTO C##WZT.News(Title ,&nbsp; Content , Time, ImageUrl)
+      VALUES ('Today is 1111 day', 'Happy 1111 day',&nbsp;
+      TO_DATE('2021-01-01', 'YYYY-MM-DD'), 'http://www.imgurl.io');<br>
+    </p>
+    <h3>3.预定表（Reservation），用来记录预定客房的信息。预定编号是主键。该表的字段结构如下表所述：<br>
+    </h3>
+    <p>创建“Reservation”表的语句如下：<br>
+      &nbsp;CREATE TABLE C##HOTELDBUSER.Reservation(<br>
+      &nbsp;&nbsp;&nbsp; Id int GENERATED ALWAYS AS IDENTITY PRIMARY
+      KEY, /*设置 主键键约束,自动增号*/<br>
+      &nbsp;&nbsp;&nbsp; RoomNum int NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; Name varchar(20),<br>
+      &nbsp;&nbsp;&nbsp; Telephone varchar(100) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; IdCard varchar(50) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; ArrivalTime date NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; Operator varchar(10) NULL,<br>
+      &nbsp;&nbsp;&nbsp; FOREIGN KEY(RoomNum) REFERENCES C##WZT.RoomInfo
+      (RoomNum) /*设置外键约束, 需要将C##WZT.RoomInfoZ中的RoomNum设为主键*/<br>
+      ）</p>
+    <p> INSERT INTO C##WZT.Reservation(RoomNum, Name, Telephone, IdCard,
+      ArrivalTime) VALUES (12, 'wtsdd', '13989099876', 'hust123',
+      TO_DATE('2021-01-01', 'YYYY-MM-DD'));&nbsp; <br>
+      <br>
+    </p>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      12c推出了varchar2的可扩展特性，从4000B增加到了32727B。许多超过4000B的文本内容除了使用CLOb字段，现在可
+      以考虑使用扩展后的varchar2。但是扩展操作不是Oracle12c默认支持的，需要手工开启才能生效。</p>
+    <p>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      alter system set max_string_size=EXTENDED scope=both;</p>
+    <h3>4.房间信息表（RoomInfo）:用于记录酒店房间的详细信息。</h3>
+    <h3>选择房间编号最为主键。该表的字段结构如下表所述：</h3>
+    <p> 创建“RoomInfo”表的语句如下<br>
+      CREATE TABLE C##HOTELDBUSER.RoomInfo(<br>
+      &nbsp;&nbsp;&nbsp; Id int GENERATED ALWAYS AS IDENTITY
+      UNIQUE,&nbsp; /*设置唯一约束, 可以不用： constraint name_unique
+      unique(Id)*/&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; RoomNum int NOT NULL PRIMARY
+      KEY,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /*设置主键约束*/<br>
+      &nbsp;&nbsp;&nbsp; Kind int NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; Status int NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; /*设置CHECK约束*/<br>
+      &nbsp;&nbsp;&nbsp; Reservation varchar(5) NOT NULL
+      CHECK(Reservation ='Yes' OR Reservation ='No'),<br>
+      &nbsp;&nbsp;&nbsp; Bed int NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; /*设置CHECK约束*/<br>
+      &nbsp;&nbsp;&nbsp; TV varchar(5) NULL CHECK(TV ='有' OR TV
+      ='无'),&nbsp;&nbsp;&nbsp;&nbsp; /*设置CHECK约束*/<br>
+      &nbsp;&nbsp;&nbsp; AirCondition varchar(5) NULL CHECK(AirCondition
+      ='有' OR AirCondition ='无'),<br>
+      &nbsp; FOREIGN KEY(Kind) REFERENCES C##HOTELDBUSER.RoomKind(Id),
+      /*设置外键约束*/<br>
+      &nbsp; FOREIGN KEY(Status) REFERENCES
+      C##HOTELDBUSER.RoomStatus(Id) /*设置外键约束*/<br>
+      &nbsp; )</p>
+    <p>OK!!!<br>
+    </p>
+    <p>INSERT INTO C##WZT.RoomInfo(RoomNum, Kind, Status, Reservation,
+      Bed ) VALUES (12, 2, 34,'Yes',8 );<br>
+    </p>
+    <h3>5.房间类型表（RoomKind）: 用于记录酒店房间的类型信息。</h3>
+    <h3>房间类型编号id作为表主键。该表的字段结构如下表所述：</h3>
+    <p>&nbsp; 创建“RoomKind”表的语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE TABLE C##HOTELDBUSER.RoomKind(<br>
+      &nbsp;&nbsp;&nbsp; Id int GENERATED ALWAYS AS IDENTITY, &nbsp;
+      /*设置行号自增*/&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; Kind varchar(10) NOT NULL UNIQUE, /*设置唯一约束*/<br>
+      &nbsp;&nbsp;&nbsp; RoomPrice decimal(10, 2) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; CONSTRAINT ROOMkind_PK PRIMARY KEY (ID) ENABLE
+      /*设置主键约束*/&nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; )<br>
+      OK!<br>
+    </p>
+    <p>INSERT INTO C##WZT.RoomKind(Kind,RoomPrice) VALUES ('Yes',800.00
+      );<br>
+      //1 行已插入。<br>
+    </p>
+    <h3>&nbsp; 6.房间状态表（RoomStatu）: 用于存放房间状态的信息。</h3>
+    <h3>&nbsp;&nbsp; 将房间状态编号作为主键。该表的字段结构如下表所述：</h3>
+    <p>创建“RoomStatus”表：<br>
+    </p>
+    <p>CREATE TABLE C##HOTELDBUSER.ROOMSTATUS (<br>
+      &nbsp;&nbsp;&nbsp; ID INT IDENTITY(1,1) NOT NULL, <br>
+      &nbsp;&nbsp;&nbsp; STATUS VARCHAR2(10) NOT NULL, <br>
+      &nbsp;&nbsp;&nbsp; CONSTRAINT ROOMSTATU_PK PRIMARY KEY (ID) ENABLE
+      /*设置主键约束*/<br>
+      );<br>
+    </p>
+    <p>/*设置唯一约束*/ <br>
+      CREATE TABLE C##HOTELDBUSER.ROOMSTATUS (ID INT NOT NULL PRIMARY
+      KEY, STATUS VARCHAR2(10) NOT NULL);<br>
+    </p>
+    <p>/*也还可以在表创建完成后手动的通过修改表的方式来增加约束设置唯一约束*/<br>
+      ALTER TABLE C##HOTELDBUSER.ROOMSTATU ADD CONSTRAINT ROOMSTATU_UK1
+      UNIQUE (STATUS) ENABLE;<br>
+      or<br>
+      ALTER TABLE C##HOTELDBUSER.ROOMSTATU ADD CONSTRAINT ROOMSTATU_UK1
+      UNIQUE (STATUS); <br>
+      //不要ENABLE一样的作用<br>
+    </p>
+    <p>或完整SQL句子:<br>
+      CREATE TABLE C##HOTELDBUSER.ROOMSTATUS (<br>
+      &nbsp;&nbsp;&nbsp; ID INT NOT NULL
+      GENERATED&nbsp;ALWAYS&nbsp;AS&nbsp;IDENTITY,<br>
+      &nbsp;&nbsp;&nbsp; STATUS VARCHAR2(10) NOT NULL,<br>
+      &nbsp;&nbsp;&nbsp; CONSTRAINT ROOMSTATU_PK PRIMARY KEY (ID)
+      ENABLE,&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; constraint name_unique unique(STATUS)<br>
+      );<br>
+    </p>
+    <p><br>
+    </p>
+    <h3>实现行号自增： 类似SYBASE的 IDENTITY(1,1)</h3>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    注：ORACLE 12C之前的版本中,要实现列自增长,需通过序列+触发器实现, ORACLE12C 引入Identity
+    Columns新特性,从而实现了列自增长功能。
+    <pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;"><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;">最终完整的语句：<br>CREATE TABLE C##HOTELDBUSER.ROOMSTATUS (
+&nbsp;&nbsp;&nbsp; ID INT GENERATED ALWAYS AS IDENTITY, &nbsp; /*设置行号自增*/
+&nbsp;&nbsp;&nbsp; STATUS VARCHAR2(10) NOT NULL,
+&nbsp;&nbsp;&nbsp; CONSTRAINT ROOMSTATU_PK PRIMARY KEY (ID) ENABLE, &nbsp;/*设置主键约束, 可以不要ENABLE*/
+&nbsp;&nbsp;&nbsp; constraint name_unique unique(STATUS) ENABLE &nbsp; /*设置唯一约束，可以不要ENABLE*/
+);<br>Table C##HOTELDBUSER.ROOMSTATUS 已创建<br></pre></pre>
+    <p style="margin: 10px auto; font-family: &quot;Times New
+      Roman&quot;, 宋体, 楷体_GB2312; font-size: 18px; line-height: 1.6;
+      white-space: normal; background-color: rgb(255, 255, 255);">
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      建表的时候自动生成了一个sequence, 查查看：<br>
+    </p>
+    <pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;"><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;">SELECT a.name AS table_name,b.name AS sequence_name FROM sys.idnseq$ c <br>JOIN obj$ a ON c.obj# = a.obj# JOIN obj$ b ON c.seqobj# = b.obj# <br>where a.name='ROOMSTATUS';<br>看看是不是有个序列名？？？<br><br>测试插入数据：<br>ALTER USER "SYS" QUOTA UNLIMITED ON "USERS";<br>ALTER USER "C##HOTELDBUSER" QUOTA UNLIMITED ON "USERS"; //没有这句，可能会报没有USERS表空间的权限！！！！<br><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;"><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;">INSERT&nbsp;INTO C##HOTELDBUSER.ROOMSTATUS(STATUS)&nbsp;VALUES&nbsp;('LEFT');<br>1行已插入。<br><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;"><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;"><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;">INSERT&nbsp;INTO C##HOTELDBUSER.ROOMSTATUS(STATUS)&nbsp;VALUES&nbsp;('APROACHING');<br><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;"><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;"><pre style="margin-top: 0px; margin-bottom: 0px; white-space: pre-wrap; word-wrap: break-word; font-family: &quot;Courier New&quot; !important;">1行已插入。</pre></pre></pre>
+可以删除一行，再插入一行，发现ID仍然加1！！！</pre></pre></pre>
+</pre></pre></pre></pre>
+    <p><br>
+      <img moz-do-not-send="true"
+        src="../hustdbroot/orahotel/status4.png" alt="" width="629"
+        height="493"><br>
+    </p>
+    <p><br>
+      插入数据顺序:<br>
+      1. INSERT INTO C##WZT.ROOMSTATUS(STATUS) VALUES
+      ('APROACHING');&nbsp;&nbsp; //ROOMSTATUS<br>
+      2. INSERT INTO C##WZT.RoomKind(Kind,RoomPrice) VALUES
+      ('Yes',800.00 );&nbsp;&nbsp; //RoomKind<br>
+      3. INSERT INTO C##WZT.RoomInfo(RoomNum, Kind, Status, Reservation,
+      Bed ) VALUES (12, 1, 1,'Yes',8 );&nbsp; <br>
+      //这里的: Kind=1,&nbsp; Status=1, 两个1要分别都在RoomKind,
+      ROOMSTATUS两个表中要都有对应的行的RoomKind.id=1,&nbsp; ROOMSTATUS.id=1;<br>
+      4.INSERT INTO C##WZT.Reservation(RoomNum, Name, Telephone, IdCard,
+      ArrivalTime) VALUES (12, 'wtsdd', '13989099876', 'hust123',
+      TO_DATE('2021-01-01', 'YYYY-MM-DD'));<br>
+      5. INSERT INTO C##WZT.News(Title ,&nbsp; Content , Time, ImageUrl)
+      VALUES ('Today is 1111 day', 'Happy 1111 day',&nbsp;
+      TO_DATE('2021-01-01', 'YYYY-MM-DD'), 'http://www.imgurl.io');<br>
+      6. INSERT INTO
+      C##WZT.GuestInfo(Name,Sex,Nationality,PASSPORTNUM,Address,Telephone,ROOMNUM,GuestKind,
+
+
+DepartureTime,Deposit,Operator)
+      VALUES
+      ('wrs','男','China','123456','HUST1037',1234323654,12,'团队
+      ',TO_DATE('2021-01-01', 'YYYY-MM-DD'),100.00, 'watashi');<br>
+      1 行已插入。<br>
+    </p>
+    <p><br>
+    </p>
+    <h3> 四 创建系统视图</h3>
+    <p>&nbsp;&nbsp;&nbsp;
+      在本系统的数据库设计中，采用了视图的方式将有各个有关联关系的表的通过SQL语句连接了起来。视图可以隐藏数据的复杂性，带来更改数据的灵
+      活性，方便用
+      户的查询和使用。当开发中遇到经常重复的查询和相同数据的复杂SQL语句时，可以将它们建立为视图。本数据库供共建立了5张视图：<br>
+    </p>
+    <h3>1.住客信息视图（vi_guest_room），</h3>
+    <p> &nbsp;&nbsp;&nbsp;
+      住客信息视图显示的是住客和所住房间的信息，它由“GuestInfo”表和“RoomInfo”表通过INNER
+      JOIN关键字的内连接连接组成。创建该视图的SQL语句如下：<br>
+      CREATE VIEW C##WZT.vi_guest_room AS<br>
+      SELECT g.Name, g.Sex, g.Nationality, g.PassportNum,&nbsp;
+      g.Address, g.Telephone, g.RoomNum, g.GuestKind, g.ArrivalTime,
+      g.DepartureTime, g.Deposit, g.Operator,<br>
+      r.Kind, r.Status, r.Reservation<br>
+      FROM C##WZT.GuestInfo g<br>
+      INNER JOIN C##WZT.RoomInfo r ON g.RoomNum = r.RoomNum;<br>
+    </p>
+    <p>测试视图:<br>
+      select * from C##WZT.vi_guest_room;<br>
+    </p>
+    <p>OK!<br>
+    </p>
+    <h3>2. 住客信息视图1（vi_guest_room1）</h3>
+    <p> &nbsp;&nbsp;&nbsp;
+      住客信息视图显示的是住客和房间类型的信息并显示中文的类标题。它由“vi_guest_room”视图、“RoomKind”表和
+      “RoomStatu”表通过INNER JOIN关键字的内连接连接组成。创建该视图的SQL语句如下：<br>
+      CREATE VIEW C##WZT.vi_guest_room1 AS <br>
+      SELECT&nbsp; g.roomnum AS 房号, g.name AS 姓名, g.sex AS 性别,
+      g.nationality AS 国籍,g.passportnum AS 证件号码, <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+g.telephone
+      AS 电话, g.guestkind AS 宾客, g.arrivaltime AS 入住日期,
+      g.departuretime AS 离店日期, <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+r.RoomPrice
+      AS 房价,&nbsp; g.deposit AS 押金, r.Kind AS 房间类别, r1.Statu
+      AS 房间状态, g.reservation AS 预定状态, g.operator AS 操作人员 <br>
+      FROM&nbsp;&nbsp; dbo.vi_guest_room AS g <br>
+      INNER JOIN&nbsp; dbo.RoomKind AS r ON g.kind = r.Id <br>
+      INNER JOIN&nbsp; dbo.RoomStatu AS r1 ON g.statu = r1.Id<br>
+      测试视图:<br>
+    </p>
+    <h3>3. 房间信息视图（vie_roominfo）</h3>
+    <p> &nbsp;&nbsp;&nbsp;
+      房间信息视图显示的房间和房间类型的信息并显示中文的列标题，它由“RoomInfo”表和“RoomKind”表通过INNER
+      JOIN关键字的内连接连接组成。创建该视图的SQL语句如下：<br>
+      CREATE VIEW C##WZT.vie_roominfo AS&nbsp; &nbsp; <br>
+      &nbsp;SELECT a.RoomNum AS 房号, a.Kind AS 房型, a.Statu AS 房态,
+      a.Reservation AS 预定状态, a.Bed AS 床位, a.TV&nbsp; AS 电视,
+      a.AirCondition AS 空调,&nbsp; b.RoomPrice<br>
+      FROM dbo.RoomInfo AS a <br>
+      INNER JOIN&nbsp; dbo.RoomKind AS b ON a.Kind = b.Id <br>
+      <br>
+      测试视图:<br>
+      <br>
+    </p>
+    <h3>4.房间信息视图1（vie_roominfo1），</h3>
+    <p> &nbsp;&nbsp;&nbsp;
+      房间信息视图1显示的是房间、房间类型和房间状态的信息并显示中文的列标题。它由“vie_roominfo”视图、“RoomKind”表
+      和
+      “RoomStatu”表通过INNER JOIN关键字的内连接连接组成。创建该视图的语句如下：<br>
+      CREATE VIEW C##WZT.vie_roominfo1 AS &nbsp;&nbsp;&nbsp; <br>
+      SELECT&nbsp; a.房号, b.Kind AS 房间类型, c.Statu AS 房间状态, <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      a.预定状态, a.roomprice AS [ 价格]<br>
+      &nbsp;&nbsp;&nbsp; FROM&nbsp;&nbsp;&nbsp; dbo.vie_roominfo AS a
+      INNER JOIN&nbsp; dbo.RoomKind AS <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      b ON a.房型 = b.Id INNER JOIN&nbsp; <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      dbo.RoomStatu AS c ON a.房态 = c.Id<br>
+      <br>
+      测试视图:<br>
+    </p>
+    <h3>5. 房间信息视图2（vie_roomkinddistinct）</h3>
+    <p> &nbsp;&nbsp;&nbsp;
+      房间信息视图2显示的是房间和房间类型中不重复的房间并显示中文的列标题。它由“RoomKind”表和“vie_roominfo”视图通
+      过INNER
+      JOIN关键字的内连接连接组成。创建该视图的语句如下：<br>
+      CREATE VIEW C##WZT.vie_roomkinddistinct AS
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      SELECT DISTINCT a.Kind, a.Id, a.RoomPrice FROM dbo.RoomKind AS a <br>
+      INNER JOIN dbo.vie_roominfo AS b ON a.Id = b.房型</p>
+    <p><br>
+      测试视图:<br>
+      <br>
+    </p>
+    <h3> 五 创建系统存储过程 <br>
+    </h3>
+    <p>所谓存储过程(Stored
+      Procedure)，就是一组用于完成特定数据库功能的SQL语句集，该SQL语句集经过编译后存储在数据库系统中。在使用时候，用户通过
+      指定已经定义
+      的存储过程名字并给出相应的存储过程参数来调用并执行它，从而完成一个或一系列的数据库操作。<br>
+      存储过程的创建<br>
+    </p>
+    <h3>Oracle存储过程包含三部分：</h3>
+    <p>过程声明，<br>
+      执行过程部分，<br>
+      存储过程异常。<br>
+    </p>
+    <h3>存储过程的优点</h3>
+    <p><br>
+      存储过程的优点是非常显而易见的。由于存储过程被编译并存储在数据库中，因此在多次执行存储过程时，可以减少语句的解释和分析时间。这主要是
+      因为，存储过程已被编译为二进制码，并被缓存到内存中。此外，存储过程可以帮助Oracle实现数据保护措施，如安全控制和访问权限。使用存
+      储过程可以简化应用程序，从而业务逻辑变得更加容易管理和调试。<br>
+    </p>
+    <p>存储过程是Oracle数据库中重要的一个组成部分。存储过程提供了一种可重用的代码组件，可以将业务逻辑分离出来。同时，由于存储过程已
+      编译并存储在Oracle数据库中，因此提高了应用程序的性能和执行速度。在合理使用的前提下，存储过程是提高Oracle数据库性能和可维
+      护性的一个不可或缺的部分。<br>
+    </p>
+    <h3>存储过程创建语法: 可以在sqldeveloper中执行过程编译<br>
+    </h3>
+    <p>create [or replace] procedure 存储过程名（param1 in type，param2 out
+      type）<br>
+      as<br>
+      变量1 类型（值范围）;<br>
+      变量2 类型（值范围）;<br>
+      Begin<br>
+      &nbsp;&nbsp;&nbsp; Select count(*) into 变量1 from 表A
+      where列名=param1；<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; If (判断条件) then<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Select 列名 into 变量2 from 表A
+      where列名=param1；<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dbms_output.Put_line(‘打印信息’);<br>
+      &nbsp;&nbsp;&nbsp; Elsif (判断条件) then<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dbms_output.Put_line(‘打印信息’);<br>
+      &nbsp;&nbsp;&nbsp; Else<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Raise 异常名（NO_DATA_FOUND）;<br>
+      &nbsp;&nbsp;&nbsp; End if;<br>
+      Exception<br>
+      &nbsp;&nbsp;&nbsp; When others then<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rollback;<br>
+      End;<br>
+      ******************************************************<br>
+    </p>
+    <h3>Java实现调用oracle的存储过程和函数</h3>
+    <p>使用Java实现存储过程的步骤：<br>
+      1、创建数据表、存储过程<br>
+      2、引入依赖包、配置数据源<br>
+      3、Java代码实现“存储过程调用”<br>
+    </p>
+    <h3>存储过程实践&nbsp; <br>
+    </h3>
+    <p>&nbsp;
+      为了提高本系统的性能，酒店管理系统中的SQL查询全部通过使用存储过程的方式来实现，在JSP程序的后台代码中看不到任何的SQL语句，而
+      是通
+      过函数进行调用数据库中的存储过程。因为存储过程全部保存在数据库中，为了保证程序的安全性，使用户无法在客户端查看到具体的SQL语句的
+      内容。本系统中存储过程较多，无法一一介绍，仅列出下面这些有代表性的存储过程。<br>
+      &nbsp;&nbsp;&nbsp; 1. 查询房间类型（pro_roomkind）<br>
+      &nbsp;&nbsp;&nbsp; 该存储过程用于在房间类型管理界面显示所有的房间类型的信息，其T-SQL语句如下：</p>
+    <p>启动sqldeveloper, 并进入SQL工作区, 输入存储过程语句:<br>
+      create or replace procedure C##WZT.pro_roomkind<br>
+      as<br>
+      begin<br>
+      &nbsp;&nbsp;&nbsp; SELECT * FROM roomkind;<br>
+      end;<br>
+      <br>
+      测试:过程调用（SQL命令行方式下）<br>
+      SQL&gt;exec C##WZT.pro_roomkind;&nbsp;&nbsp;&nbsp;&nbsp;
+      //在sqldeveloper的SQL区执行即可<br>
+      匿名块已完成<br>
+    </p>
+    <p>&nbsp;&nbsp;&nbsp; 2. 查询指定的房间类型（pro_roomcategory）<br>
+      &nbsp;&nbsp;&nbsp; 该存储过程用于在房间类型管理界面，用户查询指定的房间类型的信息，其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE proc pro_roomcategory <br>
+      &nbsp;&nbsp;&nbsp; @type int&nbsp;&nbsp; /*传递房间类型编号的参数*/<br>
+      &nbsp;&nbsp;&nbsp; as <br>
+      &nbsp;&nbsp;&nbsp; /*根据房间类型的编号，在视图中查询房间类型的信息*/<br>
+      &nbsp;&nbsp;&nbsp; select * from vie_roomkinddistinct where
+      id=@type<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; 3.结账（pro_ckeckout）<br>
+      &nbsp;&nbsp;&nbsp; 该存储过程用于在房间管理界面，用户进行结账时的操作，其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE proc pro_ckeckout <br>
+      &nbsp;&nbsp;&nbsp; @roomnum int /*传递房号的参数*/<br>
+      &nbsp;&nbsp;&nbsp; as<br>
+      &nbsp;&nbsp;&nbsp; delete guestinfo where
+      RoomNum=@roomnum/*根据房号删除该房<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      间的住客信息*/<br>
+      &nbsp;&nbsp;&nbsp; update roominfo set statu=1 where
+      roomnum=@roomnum/*根据房<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      号更新该房间的状态<br>
+      <br>
+    </p>
+    <p>&nbsp;&nbsp;&nbsp; 4. 查询指定时段和房号的住客的信息（pro_dateguestinfo）<br>
+      该存储过程用于在查询住客界面，用户选择入住时间和离店时间后查询该时间段的某房号的住客信息，其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE&nbsp; proc pro_dateguestinfo <br>
+      &nbsp;&nbsp;&nbsp; @from datetime,@to datetime ,@room int
+      /*传递入住时间、离<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      店时间和房号的参数*/<br>
+      &nbsp;&nbsp;&nbsp; as<br>
+      &nbsp;&nbsp;&nbsp; declare @time datetime&nbsp; /*声明局部变量用于获得时间*/<br>
+      &nbsp;&nbsp;&nbsp; set @time=dateadd(dd,1,@to)&nbsp;&nbsp;
+      /*获取离店时间后一天的日期并<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      赋给变量*/<br>
+      &nbsp;&nbsp;&nbsp; /*根据指定时间段指定房号的住客信息*/<br>
+      &nbsp;&nbsp;&nbsp; select * from vi_guest_room1 where
+      入住日期&gt;=@from and 离<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      店日期&lt;@time and 房号=@room<br>
+      <br>
+    </p>
+    <p>&nbsp;&nbsp;&nbsp; 5.删除房间信息（pro_deleteRoomInfo）<br>
+      &nbsp;&nbsp;&nbsp; 该存储过程用于在房间管理界面，当用户选择房号后进行删除该房间信息的操作。其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE proc pro_deleteRoomInfo<br>
+      &nbsp;&nbsp;&nbsp; @room int&nbsp; /*传递房号的参数*/<br>
+      &nbsp;&nbsp;&nbsp; as <br>
+      &nbsp;&nbsp;&nbsp; delete roominfo where roomnum=@room
+      /*根据房号删除房间*/<br>
+      &nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; 6. 获得所有新闻的信息（pro_GetAllNews）<br>
+      &nbsp;&nbsp;&nbsp; 该存储过程用于在系统首页，获取酒店新闻的列表。其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE proc pro_GetAllNews <br>
+      &nbsp;&nbsp;&nbsp; as<br>
+      &nbsp;&nbsp;&nbsp; select * from news<br>
+      <br>
+    </p>
+    <p>&nbsp;&nbsp;&nbsp; 7.添加房间信息（pro_insertroominfo）<br>
+      &nbsp;&nbsp;&nbsp; 该存储过程用于在添加房间信息界面，用户输入房间的信息后进行添加的操作。其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE proc pro_insertroominfo <br>
+      &nbsp;&nbsp;&nbsp; @room int,@kind int,@statu int,@reser
+      varchar(10),@bed&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; int,@tv varchar(5),@air varchar(5)&nbsp;
+      /*传递要添加的房间各种<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      信息的参数*/<br>
+      &nbsp;&nbsp;&nbsp; as&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; declare @i int&nbsp;&nbsp;&nbsp;
+      /*声明局部变量用于获取银行的行数*/<br>
+      &nbsp;&nbsp; insert into
+      roominfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      values(@room,@kind,@statu,@reser,@bed,@tv,@air)<br>
+      &nbsp;&nbsp; set @i=@@rowcount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /*将获取的行数赋给局部变量*/<br>
+      &nbsp;&nbsp; if
+      @i&gt;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /*判断是否插入成功*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; return 1<br>
+      &nbsp;&nbsp; else<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; return 0<br>
+      <br>
+    </p>
+    <p>&nbsp;&nbsp;&nbsp; 8. 修改房间信息（pro_updateroominfo）<br>
+      &nbsp;&nbsp;&nbsp; 该存储过程用于在修改房间信息界面，用户输入要修改的内容后进行修改的操作。其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE proc pro_updateroominfo <br>
+      &nbsp;&nbsp;&nbsp;&nbsp; @room int,@kind int,@statu int,@reser
+      varchar(5),@bed <br>
+      &nbsp;&nbsp;&nbsp;&nbsp; int,@tv varchar(5),@air varchar(5)
+      /*传递要修改的房间各<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      种信息的参数*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; as&nbsp; <br>
+      &nbsp;&nbsp;&nbsp;&nbsp; declare @i int<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; update roominfo
+      set&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      kind=@kind,statu=@statu,reservation=@reser,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      bed=@bed,tv=@tv,aircondition=@air where roomnum=@room<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; set @i=@@rowcount<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; if
+      @i&gt;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /*判断是否修改成功*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 1<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; else<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 0<br>
+      <br>
+    </p>
+    <p>&nbsp;&nbsp;&nbsp; 9. 查看所有房间信息（pro_roominfo）<br>
+      &nbsp;&nbsp;&nbsp; 该存储过程用于在管理房间信息界面，显示所有的房间信息。其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE proc pro_roominfo <br>
+      &nbsp;&nbsp;&nbsp; as <br>
+      &nbsp;&nbsp;&nbsp; select * from vie_roominfo<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; 10. 通过房型和房态查询房间信息（pro_roomfare）<br>
+      &nbsp;&nbsp;&nbsp;
+      该存储过程用于在管理房间信息界面，用户输入房型和房态，查询符合条件的房间信息。其T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; CREATE proc pro_roomfare<br>
+      &nbsp;&nbsp;&nbsp; @kind varchar(10) ,@statu varchar(10)&nbsp;
+      /*传递房型和房号的参数*/<br>
+      &nbsp;&nbsp;&nbsp; as&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; select * from vie_roominfo1 where 房间类型=@kind
+      and 房间状态=@statu<br>
+      <br>
+    </p>
+    <h3> 六 创建触发器<br>
+      &nbsp;&nbsp;&nbsp;
+      为了对系统中的数据表进行插入、删除、修改等操作时能自动执行一些相关的连续操作，所以，在其中的两张数据表中使用了触发器。但是为了减轻数
+      据库的负担，
+      仅设计了两个触发器。<br>
+      &nbsp;&nbsp;&nbsp; 1. 添加预定信息触发器<br>
+      &nbsp;&nbsp;&nbsp;
+      当往“Reservation”预定信息表中添加预定信息时，同时修改“Roominfo”房间信息表中“reservation”预定状态
+      字段的值修改
+      为“Yes”。我们通过使用“FOR INSERT”触发器来实现，具体的T-SQL语句如下：<br>
+    </h3>
+    &nbsp;&nbsp;&nbsp; /*创建预定触发器*/<br>
+    &nbsp;&nbsp;&nbsp; CREATE trigger C##HOTELDBUSER.[tri_reservation]
+    on C##HOTELDBUSER.[Reservation]&nbsp;&nbsp; <br>
+    &nbsp;&nbsp;&nbsp; for insert as <br>
+    &nbsp;&nbsp;&nbsp; declare @roomnum int&nbsp; /*声明局部变量用于获得预定的房号*/<br>
+    &nbsp;&nbsp;&nbsp; begin
+    try&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /*进行异常处理 */<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; begin
+    tran&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /*开始事务 */<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; select @roomnum=roomnum from inserted&nbsp;
+    /*从inserted表中获得预定的房号 */<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*更新房间信息表中预定状态*/<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update roominfo set
+    reservation='Yes' where&nbsp; roomnum=@roomnum<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; commit
+    tran&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*提交事务*/<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; print '成功'<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; end try<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; begin catch<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rollback tran&nbsp; /*回滚事务*/<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print '失败'<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; end catch<br>
+    <p>&nbsp;&nbsp;&nbsp; 2. 删除房型触发器<br>
+      当删除“RoomKind”房间类型表中的某一个房间类型时，同时修改“Roominfo”房间信息表中“kind”房型字段的值修改为
+      “2”。我们通过使用“INSTEAD OF DELETE”触发器来实现，具体的T-SQL语句如下：<br>
+      &nbsp;&nbsp;&nbsp; /*创建删除房型触发器*/<br>
+      &nbsp;&nbsp;&nbsp; Create trigger C##HOTELDBUSER.[tri_roomkind] on
+      C##HOTELDBUSER.[RoomKind] instead&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; of delete<br>
+      &nbsp;&nbsp;&nbsp; as&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; declare @kind int&nbsp;&nbsp;&nbsp;
+      /*声明局部变量用于获得要删除的房型编号*/<br>
+      &nbsp;&nbsp;&nbsp; begin try<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; begin
+      tran&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /*开始事务 */<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; select @kind=id from deleted&nbsp;&nbsp;
+      /*从deleted表中获得要删除的房型编号*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; update roominfo set kind=2 where
+      kind=@kind /*更新房间信息表中的房型*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete from roomkind where
+      id=@kind&nbsp; /*从房间类型表中删除指定的房型*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; commit
+      tran&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /*提交事务*/ <br>
+      &nbsp;&nbsp;&nbsp;&nbsp; print '成功'<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; end try<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; begin catch<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rollback
+      tran&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*回滚事务*/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; print '失败'<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; end catch<br>
+      <br>
+    </p>
+    <h3><br>
+    </h3>
+    <h3><br>
+    </h3>
+    <h3>7. 数据库实施,&nbsp; 运行, 维护</h3>
+    <p>运行运行系统后，出现的是如下图所示的登录界面。用户必须输入用户名、密码和验证码，通过系统身份认证才能使用页面中除注册外的功能。<br>
+    </p>
+    <p>7.1&nbsp; 启动Tomcat<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 出现界面:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    </p>
+    <p>7.2&nbsp; <br>
+      当用户登录成功后，就能进入如下图所示的系统首页，在首页中显示了系统的操作菜单，显示了酒店新闻类列表，广告栏和网站公告栏。<br>
+    </p>
+    <p><br>
+      &nbsp;&nbsp;&nbsp;
+      在首页中点击菜单中的“客房管理”导航链接，进入如下图所示的房间经营管理界面，可以在该界面中进行房间信息查询等操作。<br>
+    </p>
+    <p><br>
+      &nbsp;&nbsp;&nbsp;
+      点击左侧树状菜单中的“房间类型管理”项，可以进入如下图所示的房间类型管理的界面，在该界面中用户可以进行对房间类型查询、修改和添加等操
+      作。<br>
+    </p>
+    <p><br>
+      &nbsp;&nbsp;&nbsp;
+      点击房间类型列表中的“修改”链接，可以进入如下图所示的修改房间类型界面，在该界面中，用户只要输入要修改的房间名称和价格，点击“修改信
+      息”按钮即可
+      完成对房间类型的修改操作。<br>
+    </p>
+    <p><br>
+      <br>
+      &nbsp;&nbsp;&nbsp;
+      在房间类型管理的界面中，点击房间类型列表下的“添加新的房型”按钮，可进入如下图所示的添加房间类型界面。用户只要输入要添加的房间类型名
+      称和价格，点
+      击“添加信息”按钮即可完成对房间类型的添加操作。<br>
+      <br>
+    </p>
+    <h3><br>
+    </h3>
+    <h3>8.备份及恢复 </h3>
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp; <br>
+    <br>
+    <br>
+    <br>
+    3.建立一个返回游标： PKG_PUB_UTILS<br>
+    <br>
+    --建立一个返回游标<br>
+    <br>
+    CREATE OR REPLACE PACKAGE PKG_PUB_UTILS IS<br>
+    <br>
+    --动态游标<br>
+    <br>
+    TYPE REFCURSOR IS REF CURSOR;<br>
+    <br>
+    END PKG_PUB_UTILS;<br>
+    <br>
+    4.创建和存储过程：P_GET_PRICE<br>
+    <br>
+    --创建存储过程<br>
+    <br>
+    CREATE OR REPLACE PROCEDURE P_GET_PRICE<br>
+    <br>
+    (<br>
+    <br>
+    AN_O_RET_CODE OUT NUMBER,<br>
+    <br>
+    AC_O_RET_MSG OUT VARCHAR2,<br>
+    <br>
+    CUR_RET OUT PKG_PUB_UTILS.REFCURSOR,<br>
+    <br>
+    AN_I_PRICE IN NUMBER<br>
+    <br>
+    )<br>
+    <br>
+    IS<br>
+    <br>
+    BEGIN<br>
+    <br>
+    AN_O_RET_CODE := 0;<br>
+    <br>
+    AC_O_RET_MSG := '操作成功';<br>
+    <br>
+    OPEN CUR_RET FOR<br>
+    <br>
+    SELECT * FROM STOCK_PRICES WHERE PRICE<br>
+    <br>
+    EXCEPTION<br>
+    <br>
+    WHEN OTHERS THEN<br>
+    <br>
+    AN_O_RET_CODE := -1;<br>
+    <br>
+    AC_O_RET_MSG := '错误代码:' || SQLCODE || CHR(13) || '错误信息:' || SQLERRM;<br>
+    <br>
+    END P_GET_PRICE;<br>
+    <br>
+    5.创建函数：<br>
+    <br>
+    --创建函数：F_GET_PRICE<br>
+    <br>
+    CREATE OR REPLACE FUNCTION F_GET_PRICE(v_price IN NUMBER)<br>
+    <br>
+    RETURN PKG_PUB_UTILS.REFCURSOR<br>
+    <br>
+    AS<br>
+    <br>
+    stock_cursor PKG_PUB_UTILS.REFCURSOR;<br>
+    <br>
+    BEGIN<br>
+    <br>
+    OPEN stock_cursor FOR<br>
+    <br>
+    SELECT * FROM stock_prices WHERE price &lt; v_price;<br>
+    <br>
+    RETURN stock_cursor;<br>
+    <br>
+    END;<br>
+    <br>
+    6.JAVA调用存储过程返回结果集<br>
+    <br>
+    代码示例：JDBCoracle10G_INVOKEPROCEDURE.java<br>
+    <br>
+    import java.sql.*;<br>
+    <br>
+    import oracle.jdbc.OracleCallableStatement;<br>
+    <br>
+    import oracle.jdbc.OracleTypes;<br>
+    <br>
+    /* 本例是通过调用oracle的存储过程来返回结果集:<br>
+    <br>
+    * oracle 9i、10G 的jdbc由1个jar包组成：classes12.zip<br>
+    <br>
+    */<br>
+    <br>
+    public class JDBCoracle10G_INVOKEPROCEDURE {<br>
+    <br>
+    Connection conn = null;<br>
+    <br>
+    Statement statement = null;<br>
+    <br>
+    ResultSet rs = null;<br>
+    <br>
+    CallableStatement stmt = null;<br>
+    <br>
+    String driver;<br>
+    <br>
+    String url;<br>
+    <br>
+    String user;<br>
+    <br>
+    String pwd;<br>
+    <br>
+    String sql;<br>
+    <br>
+    String in_price;<br>
+    <br>
+    public JDBCoracle10G_INVOKEPROCEDURE()<br>
+    <br>
+    {<br>
+    <br>
+    driver = "oracle.jdbc.driver.OracleDriver";<br>
+    <br>
+    url = "jdbc:oracle:thin:@localhost:1521:ORCL";<br>
+    <br>
+    // oracle 用户<br>
+    <br>
+    user = "test";<br>
+    <br>
+    // oracle 密码<br>
+    <br>
+    pwd = "test";<br>
+    <br>
+    init();<br>
+    <br>
+    // mysid：必须为要连接机器的sid名称，否则会包以下错：<br>
+    <br>
+    // java.sql.SQLException: Io 异常: Connection<br>
+    <br>
+    //
+refused(DESCRIPTION=(TMP=)(VSNNUM=169870080)(ERR=12505)(ERROR_STACK=(ERROR=(CODE=12505)(EMFI=4))))<br>
+    <br>
+    // 参考连接方式:<br>
+    <br>
+    // Class.forName( "oracle.jdbc.driver.OracleDriver" );<br>
+    <br>
+    // cn = DriverManager.getConnection(<br>
+    <br>
+    // "jdbc:oracle:thin:@MyDbComputerNameOrIP:1521:ORCL", sUsr, sPwd );<br>
+    <br>
+    }<br>
+    <br>
+    public void init() {<br>
+    <br>
+    System.out.println("oracle jdbc test");<br>
+    <br>
+    try {<br>
+    <br>
+    Class.forName(driver);<br>
+    <br>
+    System.out.println("driver is ok");<br>
+    <br>
+    conn = DriverManager.getConnection(url, user, pwd);<br>
+    <br>
+    System.out.println("conection is ok");<br>
+    <br>
+    statement = conn.createStatement();<br>
+    <br>
+    // conn.setAutoCommit(false);<br>
+    <br>
+    // 输入参数<br>
+    <br>
+    in_price = "3.0";<br>
+    <br>
+    // 调用函数<br>
+    <br>
+    stmt = conn.prepareCall("call P_GET_PRICE(?,?,?,?)");<br>
+    <br>
+    stmt.registerOutParameter(1, java.sql.Types.FLOAT);<br>
+    <br>
+    stmt.registerOutParameter(2, java.sql.Types.CHAR);<br>
+    <br>
+    stmt.registerOutParameter(3, oracle.jdbc.OracleTypes.CURSOR);<br>
+    <br>
+    stmt.setString(4, in_price);<br>
+    <br>
+    stmt.executeUpdate();<br>
+    <br>
+    int retCode = stmt.getInt(1);<br>
+    <br>
+    String retMsg = stmt.getString(2);<br>
+    <br>
+    if (retCode == -1) { // 如果出错时，返回错误信息<br>
+    <br>
+    System.out.println("报错！");<br>
+    <br>
+    } else {<br>
+    <br>
+    // 取的结果集的方式一：<br>
+    <br>
+    rs = ((OracleCallableStatement) stmt).getCursor(3);<br>
+    <br>
+    // 取的结果集的方式二：<br>
+    <br>
+    // rs = (ResultSet) stmt.getObject(3);<br>
+    <br>
+    String ric;<br>
+    <br>
+    String price;<br>
+    <br>
+    String updated;<br>
+    <br>
+    // 对结果进行输出<br>
+    <br>
+    while (rs.next()) {<br>
+    <br>
+    ric = rs.getString(1);<br>
+    <br>
+    price = rs.getString(2);<br>
+    <br>
+    updated = rs.getString(3);<br>
+    <br>
+    System.out.println("ric:" + ric + ";-- price:" + price<br>
+    <br>
+    + "; --" + updated + "; ");<br>
+    <br>
+    }<br>
+    <br>
+    }<br>
+    <br>
+    } catch (Exception e) {<br>
+    <br>
+    e.printStackTrace();<br>
+    <br>
+    } finally {<br>
+    <br>
+    System.out.println("close ");<br>
+    <br>
+    }<br>
+    <br>
+    }<br>
+    <br>
+    public static void main(String args[])// 自己替换［］<br>
+    <br>
+    {<br>
+    <br>
+    new JDBCoracle10G_INVOKEPROCEDURE();<br>
+    <br>
+    }<br>
+    <br>
+    }<br>
+    <br>
+    7.开发JAVA调用函数返回结果集<br>
+    <br>
+    代码示例：JDBCoracle10G_INVOKEFUNCTION.java<br>
+    <br>
+    import java.sql.*;<br>
+    <br>
+    import oracle.jdbc.OracleCallableStatement;<br>
+    <br>
+    import oracle.jdbc.OracleTypes;<br>
+    <br>
+    /*<br>
+    <br>
+    /* 本例是通过调用oracle的函数来返回结果集:<br>
+    <br>
+    * oracle 9i、10G 的jdbc由1个jar包组成：classes12.zip<br>
+    <br>
+    */<br>
+    <br>
+    public class JDBCoracle10G_INVOKEFUNCTION {<br>
+    <br>
+    Connection conn = null;<br>
+    <br>
+    Statement statement = null;<br>
+    <br>
+    ResultSet rs = null;<br>
+    <br>
+    CallableStatement stmt = null;<br>
+    <br>
+    String driver;<br>
+    <br>
+    String url;<br>
+    <br>
+    String user;<br>
+    <br>
+    String pwd;<br>
+    <br>
+    String sql;<br>
+    <br>
+    String in_price;<br>
+    <br>
+    public JDBCoracle10G_INVOKEFUNCTION()<br>
+    <br>
+    {<br>
+    <br>
+    driver = "oracle.jdbc.driver.OracleDriver";<br>
+    <br>
+    url = "jdbc:oracle:thin:@localhost:1521:ORCL";<br>
+    <br>
+    // oracle 用户<br>
+    user = "test";<br>
+    // oracle 密码<br>
+    pwd = "test";<br>
+    <br>
+    init();<br>
+    <br>
+    // mysid：必须为要连接机器的sid名称，否则会包以下错：<br>
+    <br>
+    // java.sql.SQLException: Io 异常: Connection<br>
+    <br>
+    //
+refused(DESCRIPTION=(TMP=)(VSNNUM=169870080)(ERR=12505)(ERROR_STACK=(ERROR=(CODE=12505)(EMFI=4))))<br>
+    <br>
+    // 参考连接方式:<br>
+    <br>
+    // Class.forName( "oracle.jdbc.driver.OracleDriver" );<br>
+    <br>
+    // cn = DriverManager.getConnection(<br>
+    <br>
+    // "jdbc:oracle:thin:@MyDbComputerNameOrIP:1521:ORCL", sUsr, sPwd );<br>
+    <br>
+    }<br>
+    <br>
+    public void init() {<br>
+    <br>
+    System.out.println("oracle jdbc test");<br>
+    <br>
+    try {<br>
+    Class.forName(driver);<br>
+    System.out.println("driver is ok");<br>
+    conn = DriverManager.getConnection(url, user, pwd);<br>
+    System.out.println("conection is ok");<br>
+    statement = conn.createStatement();<br>
+    <br>
+    // conn.setAutoCommit(false);<br>
+    // 输入参数<br>
+    <br>
+    in_price = "5.0";<br>
+    <br>
+    // 调用函数<br>
+    <br>
+    stmt = conn.prepareCall("{? = call F_GET_PRICE(?)}");<br>
+    <br>
+    // stmt.registerOutParameter(1, java.sql.Types.FLOAT);<br>
+    <br>
+    // stmt.registerOutParameter(2, java.sql.Types.CHAR);<br>
+    <br>
+    stmt.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);<br>
+    <br>
+    stmt.setString(2, in_price);<br>
+    <br>
+    stmt.executeUpdate();<br>
+    <br>
+    // 取的结果集的方式一：<br>
+    <br>
+    rs = ((OracleCallableStatement) stmt).getCursor(1);<br>
+    <br>
+    // 取的结果集的方式二：<br>
+    <br>
+    // rs = (ResultSet) stmt.getObject(1);<br>
+    <br>
+    String ric;<br>
+    <br>
+    String price;<br>
+    <br>
+    String updated;<br>
+    <br>
+    while (rs.next()) {<br>
+    <br>
+    ric = rs.getString(1);<br>
+    <br>
+    price = rs.getString(2);<br>
+    <br>
+    updated = rs.getString(3);<br>
+    <br>
+    System.out.println("ric:" + ric + ";-- price:" + price + "; --"<br>
+    <br>
+    + updated + "; ");<br>
+    <br>
+    }<br>
+    <br>
+    } catch (Exception e) {<br>
+    <br>
+    e.printStackTrace();<br>
+    <br>
+    } finally {<br>
+    <br>
+    System.out.println("close ");<br>
+    <br>
+    }<br>
+    <br>
+    }<br>
+    <br>
+    public static void main(String args[])// 自己替换［］<br>
+    {<br>
+    new JDBCoracle10G_INVOKEFUNCTION();<br>
+    }<br>
+    }<br>
+  </body>
+</html>

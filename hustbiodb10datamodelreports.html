@@ -1,0 +1,891 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html pageencoding="UTF-8" lang="zh-CN">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+  </head>
+  <body>
+    <div align="center">
+      <h2 align="left"> 本科教学-数据库技术及应用(CENTOS环境)</h2>
+      <p align="left"><br>
+      </p>
+      <div id="obe_content" class="obe_content_default" align="left">
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+        <h1 class="obe_title" align="center"><a name="top" id="top">使用
+            Oracle SQL Developer Data Modeler <br>
+          </a></h1>
+        <h1 class="obe_title" align="center"><a name="top" id="top">设计小型
+            数据库并输出表单</a></h1>
+        <h2 class="obe_section"><a name="s1" id="s1">目的</a></h2>
+        <p>本教程将介绍如何在 Oracle SQL Developer 中运行可供选择的报表来查看您的 Oracle SQL
+          Developer Data Modeler 设计。</p>
+        <h2 class="obe_section"><a name="s3" id="s3">概述</a></h2>
+        <p class="bodycopy">Oracle SQL Developer Data Modeler 支持
+          Oracle、Microsoft SQL Server 和 IBM DB2 的逻辑和物理数据建模。这个 Oracle SQL
+          Developer
+          系列工具的新成员为使用图形数据模型的所有开发人员提供了数据库结构的正向和反向工程设计方法。其中提供了各种绘图选项，您可以创建域，还可以借助一组设
+          计规则确保您的模型符合一系列标准。Oracle SQL Developer Data Modeler
+          还提供了一个只读报表信息库用于查看设计。将所有设计保存到该信息库中，之后可以使用 Oracle SQL Developer
+          运行提供的报表。 </p>
+        <p class="bodycopy">
+          在本教程中，您需要创建一个信息库所有者，用于存储报表模式。您首次将设计保存到信息库时，如果尚不存在信息库，Oracle
+          SQL Developer Data Modeler 将创建信息库之后的模型都保存到同一信息库，并通过全局唯一标识符
+          (GUID) 来区别不同的模型。</p>
+        <h2 class="obe_section"><a name="s4" id="s4">前提条件</a></h2>
+        <p>开始本教程之前，您应该： </p>
+        <ul>
+          <li class="obe_li">安装 Oracle SQL Developer Data Modeler23.1。 </li>
+          <li class="obe_li">安装 Oracle SQL Developer 23.3。安装过程请看:
+            上机练习预备： 关系数据库Oracle 19c。</li>
+          <li class="obe_li"> 安装 Oracle Database 12c,19c 或更高版本。 </li>
+          <li class="obe_li">下载并解压缩 <a
+              href="../../../../dbdesign/datamodel4reprpt.zip"
+              moz-do-not-send="true">datamodel4reprpt.zip</a>
+            文件，该文件包含您执行该教程所需的全部文件。</li>
+        </ul>
+        <h2 class="obe_topic"><a name="t1" id="t1">创建报表模式用户</a></h2>
+        <p> <span class="bodycopy">在本节中，您将在 Oracle SQL Developer
+            中创建一个用户，然后将您的模型（关系设计和逻辑数据模型）导入到该用户。执行以下步骤：</span></p>
+        <table width="1198" height="1270" cellspacing="0"
+          cellpadding="1" border="0">
+          <tbody>
+            <tr valign="top">
+              <th width="28">
+                <p> 1 .</p>
+              </th>
+              <td class="bodycopy" width="618">
+                <p>展开您的安装中的 <span class="style3">sqldeveloper</span>
+                  文件夹，打开 <strong>Oracle SQL Developer</strong>，然后双击 <strong>sqldeveloper.exe</strong>。</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="28">
+                <p> 2 .</p>
+              </th>
+              <td class="bodycopy" width="618">
+                <p>需要创建一个连接。右键单击 <strong>Connections</strong> 并选择 <strong>New
+
+
+
+
+                    Connection</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/conn01.gif"
+                    class="imgborder_on" id="conn01"
+                    onclick="toggleImage(this)"></p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="28">
+                <p> 3 .</p>
+              </th>
+              <td class="bodycopy" width="618">
+                <p class="bodycopy">输入以下信息并单击 <strong>reporttest</strong>。</p>
+                <p class="bodycopy">Connection Name：<strong>drugdb_system</strong><br>
+                  Username：<strong>system</strong><br>
+                  Password：<strong>wtsgyh1972</strong></p>
+                <p class="bodycopy"> 选中 <strong>Save Password</strong>
+                  复选框</p>
+                <p class="bodycopy">Hostname：<strong>localhost</strong><br>
+                  SID：<strong>drugdb</strong></p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/conn02.gif"
+                    class="imgborder_on" id="conn02"
+                    onclick="toggleImage(this)"></p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="28">
+                <p> 4 .</p>
+              </th>
+              <td class="bodycopy" width="618">
+                <p>连接成功。单击 <strong>Connect</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/conn03.gif"
+                    class="imgborder_on" id="conn03"
+                    onclick="toggleImage(this)"></p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="28">
+                <p> 5 .</p>
+              </th>
+              <td class="bodycopy" width="618">
+                <p>展开 <strong>drugdb_system</strong>。 </p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/conn04.gif"
+                    class="imgborder_on" id="conn04"
+                    onclick="toggleImage(this)"></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 class="obe_topic"><a name="t2" id="t2">打开 HR 模式关系模型</a></h2>
+        <p> <span class="bodycopy">在本节中，您将打开 HR 模式关系模型。执行以下步骤：</span> </p>
+        <table width="1170" height="1934" cellspacing="0"
+          cellpadding="1" border="0">
+          <tbody>
+            <tr valign="top">
+              <th width="25">
+                <p> 1 .</p>
+              </th>
+              <td class="bodycopy" width="621">
+                <p>启动：<strong>Oracle SQL Developer Data Modeler<br>
+                  </strong></p>
+                <p><strong>$$ datamodeler</strong><br>
+                </p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 2 .</p>
+              </th>
+              <td class="bodycopy" width="621">
+                <p>选择 <strong>File</strong> &gt;<strong>Open</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/dbcatimp01.png"
+                    class="imgborder_on" id="dbcatimp01"
+                    onclick="toggleImage(this)" moz-do-not-send="true"
+                    alt="" width="196" height="429"></p>
+                <p><br>
+                </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 3 .</p>
+              </th>
+              <td class="bodycopy" width="621">
+                <p>选中前面解压缩datamodel4reprpt.zip后得到的目录中选择 <strong>HR_Schema.xml</strong>
+                  文件，然后单击 <strong>Open</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/dbcatimp02.png"
+                    class="imgborder_on" id="dbcatimp02"
+                    onclick="toggleImage(this)" moz-do-not-send="true"
+                    alt="" width="605" height="538"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 4 .</p>
+              </th>
+              <td class="bodycopy" width="621">
+                <p>关系模型已成功打开。在下一节中，您将进行反向工程以创建逻辑模型（这里用Data modeler
+                  23.1打开会报错，其实就是重复了一些联系，鼠标点击某个重复联系，按delete,
+                  再按ctrl+z,即可得到如下所示的样子）。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/dbcatimp12.png"
+                    class="imgborder_on" id="dbcatimp12"
+                    onclick="toggleImage(this)" moz-do-not-send="true"
+                    alt="" width="565" height="598"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 class="obe_topic"><a name="t3" id="t3">将关系设计导出到报表模式</a></h2>
+        <p><span class="bodycopy">下面，将把您的关系设计导出到报表模式中，之后您可以在 SQL
+            Developer 中查看它。执行以下步骤 ：</span></p>
+        <table width="1506" height="2289" cellspacing="0"
+          cellpadding="1" border="0">
+          <tbody>
+            <tr valign="top">
+              <th width="25">
+                <p> 1 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>选择 <strong>File</strong> &gt; <strong>Export</strong>
+                  &gt; <strong>To Reporting Schema</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/export01.png"
+                    class="imgborder_on" id="export01"
+                    onclick="toggleImage(this)" moz-do-not-send="true"
+                    alt="" width="465" height="398"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 2 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>需要创建一个连接。单击“+”加号图标。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/export02.gif"
+                    class="imgborder_on" id="export02"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 3 .</p>
+              </th>
+              <td class="bodycopy">
+                <p class="bodycopy">输入以下信息，并单击 <strong>OK</strong>。</p>
+                <p class="bodycopy">Name：mydrugdb<strong></strong><br>
+                  Username：<strong>hr</strong><br>
+                  Password：<strong>wtsgyh1972<br>
+                  </strong>单击 <strong>Save Password</strong> 复选框<br>
+                  Host：<strong>localhost</strong><br>
+                  SID：<strong>drugdb</strong><br>
+                </p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/export03.png"
+                    class="imgborder_on" id="export03"
+                    onclick="toggleImage(this)" moz-do-not-send="true"
+                    alt="" width="676" height="441"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 4 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>从列表中选择您的连接，然后单击 <strong>OK</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/export04.gif"
+                    class="imgborder_on" id="export04"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 5 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>您的模型正在被导出到报表模式中。导出完成后，进度窗口将消失。 </p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/export05.gif"
+                    class="imgborder_on" id="export05"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 class="obe_topic"><a name="t4" id="t4">查看报表结果</a></h2>
+        <p>将查看Data Modeler导出的报表结果。执行以下步骤：</p>
+        <table width="1514" height="3512" cellspacing="0"
+          cellpadding="1" border="0">
+          <tbody>
+            <tr valign="top">
+              <th width="26">
+                <p> 1 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p>切换到 SQL Developer。首先需要为 DM1 用户创建一个连接。右键单击 <strong>orcl_system</strong>
+                  用户并选择 <strong>Properties</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt01.gif"
+                    class="imgborder_on" id="crrpt01"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 2 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p class="bodycopy">输入以下信息并单击 <strong>Connect</strong>。</p>
+                <p class="bodycopy">Connection Name：mydrugdb<strong></strong><br>
+                  Username：<strong>hr</strong><br>
+                  Password：<strong>wtsgyh1972</strong><br>
+                  选中 <strong>Save Password</strong><br>
+                  Hostname：localhost<strong></strong><br>
+                  SID：<strong>drugdb</strong></p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt02.gif"
+                    name="crrpt02" class="imgborder_on" id="crrpt02"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 3 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p>连接已创建。单击 <strong>Reports</strong> 选项卡。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt03.gif"
+                    name="crrpt03" class="imgborder_on" id="crrpt03"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 4 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p class="bodycopy">展开 <strong>Data Modeler Reports</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt04.gif"
+                    class="imgborder_on" id="crrpt04"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 5 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p>展开 <strong>Design Content &gt; Relational Model</strong>。
+                  将显示您可以运行的报表的列表。选择 <strong>Relational Designs</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt07.gif"
+                    class="imgborder_on" id="crrpt07"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 6 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p>从连接列表中选择 <strong>orcl_dm1</strong>，然后单击 <strong>OK</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt08.gif"
+                    class="imgborder_on" id="crrpt08"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 7 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p>您可以通过指定绑定值来更改显示的结果。如果您希望使用默认值，单击 <strong>Apply</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt08a.gif"
+                    class="imgborder_on" id="crrpt08a"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 8 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p>现在就可以看到，显示一个模型列表，这就是再Data Modeler中完成的那个了。<br>
+                </p>
+                <p>右键单击 Model 列中的 <strong>Relational_1</strong> 并选择 <strong>Reports
+
+
+                    &gt; Tables</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt09.gif"
+                    class="imgborder_on" id="crrpt09"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 9 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p>查看表列表。要查看表中的各列的列表，您可以下钻对应的报表。右键单击 <strong>JOBS</strong>
+                  表并选择 <strong>Reports &gt; Columns</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt10.gif"
+                    class="imgborder_on" id="crrpt10"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="26">
+                <p> 10 .</p>
+              </th>
+              <td class="bodycopy" width="620">
+                <p>查看 JOBS 表中所有列的列表。如果您单击某一列，您将看到如下的详细信息。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/crrpt11.gif"
+                    class="imgborder_on" id="crrpt11"
+                    onclick="toggleImage(this)"></p>
+                <p>下面将更改模型并将其再次导出以查看报表中的变化。</p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 class="obe_topic"><a name="t5" id="t5">更改关系设计并将其再次导出</a></h2>
+        <p><span class="bodycopy">在本节中，您将删除一列并添加两个未定义域的新列，然后再次导出该模型。执行以下
+            步骤：</span></p>
+        <table width="1521" height="3804" cellspacing="0"
+          cellpadding="1" border="0">
+          <tbody>
+            <tr valign="top">
+              <th width="25">
+                <p> 1 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>切换回 Data Modeler 工具并双击 <strong>JOBS</strong> 表。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/rdchg01.gif"
+                    class="imgborder_on" id="rdchg01"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 2 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>选择 <strong>Columns</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/rdchg02.gif"
+                    class="imgborder_on" id="rdchg02"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 3 .</p>
+              </th>
+              <td class="bodycopy">
+                <p class="bodycopy">选择 <strong>MIN_SALARY</strong>
+                  列，然后单击 Remove 图标。<br>
+                </p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/rdchg03.gif"
+                    class="imgborder_on" id="rdchg03"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 4 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>单击 Add Column 图标。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/rdchg04.gif"
+                    class="imgborder_on" id="rdchg04"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 5 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>创建了 Column_4。再次单击 Add Column 图标。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/rdchg05.gif"
+                    class="imgborder_on" id="rdchg05"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 6 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>创建了 Column_5。单击 <strong>OK</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/rdchg07.gif"
+                    class="imgborder_on" id="rdchg07"
+                    onclick="toggleImage(this)"></p>
+                <p>您会看到您对 JOBS 表所做的更改。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/rdchg08.gif"
+                    class="imgborder_on" id="rdchg08"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 7 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>为了在 SQL Developer 的 Data Modeler
+                  报表中显示这些更改，您需要将该模型再次导出。选择 <strong>File &gt; Export
+                    &gt; To Reporting Schema</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/export201.gif"
+                    class="imgborder_on" id="export201"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 8 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>选择 <strong>orcl_dm1</strong> 连接，然后单击 <strong>OK</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/export202.gif"
+                    class="imgborder_on" id="export202"
+                    onclick="toggleImage(this)"></p>
+                <p>该模型成功导出。 </p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 class="obe_topic"><a name="t6" id="t6">查看报表更改</a></h2>
+        <p><span class="bodycopy">在本节中，您将再次查看 Data Modeling
+            报表以了解所做的更改。执行以下步骤：</span></p>
+        <table width="1524" height="2837" cellspacing="0"
+          cellpadding="1" border="0">
+          <tbody>
+            <tr valign="top">
+              <th width="25">
+                <p> 1 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>切换回 <strong>SQL Developer</strong>，右键单击 <strong>Relational
+
+
+
+
+                    Designs</strong>，然后再次选择 <strong>Open</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt01.gif"
+                    class="imgborder_on" id="revrpt01"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 2 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>右键单击 Model 列中的 <strong>Relational_1</strong> 并选择 <strong>Reports
+
+
+
+
+                    &gt; Tables</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt02.gif"
+                    class="imgborder_on" id="revrpt02"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 3 .</p>
+              </th>
+              <td class="bodycopy">
+                <p class="bodycopy">将显示表的列表。选择 <strong>JOBS</strong>
+                  表。注意该表详细信息中的列数。右键单击 <strong>JOBS</strong> 表并选择 <strong>Reports
+
+
+
+
+                    &gt; Columns</strong>。<br>
+                </p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt03.gif"
+                    class="imgborder_on" id="revrpt03"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 4 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>查看列列表。您会看到不再显示 MIN_SALARY，而是显示新加的两列。确实！</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt04.gif"
+                    class="imgborder_on" id="revrpt04"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 5 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>您还可以查看 Design Rules 报表。在左侧导航器的 Report 选项卡下面，展开 <strong>Design
+
+
+
+
+                    Rules &gt; Relational Model</strong>。右键单击 <strong>Columns</strong>
+                  并选择 <strong>Open</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt05.gif"
+                    class="imgborder_on" id="revrpt05"
+                    onclick="toggleImage(this)"></p>
+                <p>如果您有多个连接，可能会显示一个对话框询问您希望使用哪个连接，选择 <strong>orcl_dm1</strong>。</p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 6 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>如果有多个模型，您可以指定模型的名称。在本示例中，单击 <strong>Apply</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt06.gif"
+                    class="imgborder_on" id="revrpt06"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 7 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>选择 <strong>Relational_1</strong>
+                  模型。注意，您可以在下方窗口中看到列出的违规。<br>
+                </p>
+                <p>可以看处，前面将JOBS个新增加的两列有问题，在本示例中，您创建的两个新列都没有指定数据类型，因此会显示违
+                  规。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt07.gif"
+                    class="imgborder_on" id="revrpt07"
+                    onclick="toggleImage(this)"></p>
+                <p>在下一节中，您将对关系设计进行反向工程以创建逻辑数据模型，然后再次导出该模型。 </p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 class="obe_topic"><a name="t7" id="t7">将关系设计反向工程为逻辑数据模型</a></h2>
+        <p><span class="bodycopy">在本节中，您将对关系设计进行反向工程以创建逻辑数据模型。然后将该模型导出以便
+            在 SQL Developer Data Modeler 报表中查看结果。执行以下步骤：</span></p>
+        <table width="1520" height="1898" cellspacing="0"
+          cellpadding="1" border="0">
+          <tbody>
+            <tr valign="top">
+              <th width="25">
+                <p> 1 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>切换回 Data Modeler 工具并双击 Engineer 图标。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/reveng01.gif"
+                    class="imgborder_on" id="reveng01"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 2 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>将使用默认值。单击 <strong>Engineer</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/reveng02.gif"
+                    class="imgborder_on" id="reveng02"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 3 .</p>
+              </th>
+              <td class="bodycopy">
+                <p class="bodycopy">为了在 SQL Developer 的 Data Modeler
+                  报表中显示该逻辑数据模型的对象，您需要将该模型再次导出。<br>
+                </p>
+                <p class="bodycopy">选择 <strong>File &gt; Export &gt; To
+                    Reporting Schema</strong>。<br>
+                </p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/reveng03.gif"
+                    class="imgborder_on" id="reveng03"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 4 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>选择 <strong>orcl_dm1</strong> 连接，然后单击 <strong>OK</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/reveng04.gif"
+                    class="imgborder_on" id="reveng04"
+                    onclick="toggleImage(this)"></p>
+                <p>该模型成功导出。 </p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 class="obe_topic"><a name="t8" id="t8">查看逻辑数据模型报表</a></h2>
+        <p><span class="bodycopy">在本节中，您将在 SQL Developer
+            中查看逻辑数据模型报表。执行以下步骤：</span></p>
+        <table width="1527" height="3357" cellspacing="0"
+          cellpadding="1" border="0">
+          <tbody>
+            <tr valign="top">
+              <th width="25">
+                <p> 1 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>切换回 <strong>SQL Developer</strong> 并展开 <strong>Design
+
+
+
+
+                    Content &gt; Logical Model</strong>，右键单击 <strong>Logical
+
+
+
+
+                    Designs</strong> 并选择 <strong>Open</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt201.gif"
+                    class="imgborder_on" id="revrpt201"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 2 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>您可以更改一个绑定值。选择 <strong>Most Recent Design
+                    (True/False)</strong>。注意，默认值为 True。如果您希望显示所有设计，将该值改为
+                  <strong>False</strong>，然后单击 <strong>Apply</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt202.gif"
+                    class="imgborder_on" id="revrpt202"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 3 .</p>
+              </th>
+              <td class="bodycopy">
+                <p class="bodycopy">可以看到，您执行的全部三个导出现在已全部显示。最新导出的列在最前面。右键
+                  单击 <strong>HR_Schema</strong> 设计并选择 <strong>Reports
+                    &gt; Entities</strong>。<br>
+                </p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt203.gif"
+                    class="imgborder_on" id="revrpt203"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp; </p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 4 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>将显示实体的列表。右键单击 <strong>JOBS</strong> 表并选择 <strong>Reports
+
+
+
+
+                    &gt; Attributes</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt204.gif"
+                    class="imgborder_on" id="revrpt204"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 5 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>将显示属性的列表。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt205.gif"
+                    class="imgborder_on" id="revrpt205"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 6 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>您还可以查看该逻辑模型的设计规则报表。在 Design Rules 下面，展开 <strong>
+                    Logical Model</strong>。选择 <strong>Attributes</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt206.gif"
+                    class="imgborder_on" id="revrpt206"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 7 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>单击 <strong>Apply</strong>。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt207.gif"
+                    class="imgborder_on" id="revrpt207"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr valign="top">
+              <th width="25">
+                <p> 8 .</p>
+              </th>
+              <td class="bodycopy">
+                <p>从列表中选择 <strong>HR_Schema</strong> 设计。可以看到 Attributes
+                  without Datatypes 中列出了两个属性。</p>
+                <p align="center"><img
+                    src="hustbiodb10datamodelreports_files/revrpt208.gif"
+                    class="imgborder_on" id="revrpt208"
+                    onclick="toggleImage(this)"></p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 class="obe_section"><a name="s7" id="s7">总结</a></h2>
+        <p>通过本次上机，学习了如何用Oracle SQL Developer Data Modeler和SQL
+          Developer进行： </p>
+        <ul>
+          <li>将关系设计导出到报表模式</li>
+          <li>查看 Data Modeler 报表结果</li>
+          <li>更改关系设计，再次导出模式并查看报表结果</li>
+          <li>对关系设计进行反向工程，再次导出模式并查看报表结果</li>
+        </ul>
+        由此可以检查数据创建有没有问题！<br>
+        <ul>
+        </ul>
+      </div>
+    </div>
+    <div align="left"><code class="hljs language-cobol"> </code><br>
+    </div>
+  </body>
+</html>
