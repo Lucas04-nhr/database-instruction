@@ -12,10 +12,11 @@
 
 
 
+
       上机过程如有问题请看 &nbsp; <a href="/hustdbroot/hustbiodbqaa.html">oracle出
         错集锦</a><br>
     </h2>
-    <h1 align="center">Oracle上机练习三: 视图索引过程</h1>
+    <h1 align="center">Oracle上机练习三: 视图、索引和过程</h1>
     <h1 align="center">(采用Oracle 19c/Oracle 21c/23c都可以)</h1>
     <p>视图就是一张或多张表上的<strong>预定义查询</strong>。</p>
     <div id="content">
@@ -43,6 +44,7 @@
 
 
 
+
       Oracle19.3c 服务端数据库系统，客户端工具 PL/SQL developer。<br>
     </p>
     <h3>三 上机目的: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h3>
@@ -53,8 +55,7 @@
     <br>
     <h3>上机操作:</h3>
     <p>上机准备：</p>
-    <p><br>
-      SQL&gt; show pdbs<br>
+    <p> SQL&gt; show pdbs<br>
       <br>
       &nbsp;&nbsp;&nbsp; CON_ID CON_NAME&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; OPEN MODE&nbsp;
@@ -102,10 +103,12 @@
       称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
+
       是否为空? 类型<br>
       &nbsp;----------------------------------------- --------
       ----------------------------<br>
       &nbsp;SCORE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
       NUMBER(4)<br>
@@ -115,6 +118,7 @@
       SQL&gt; desc view_tb2;<br>
       &nbsp;名
       称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
       是否为空? 类型<br>
@@ -146,6 +150,7 @@
       17000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Administration Vice President<br>
       &nbsp;&nbsp;&nbsp; 102&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
       17000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Administration Vice President<br>
@@ -183,6 +188,7 @@
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
+
       *<br>
       第 1 行出现错误:<br>
       ORA-00942: 表或视图&nbsp; 不存在<br>
@@ -198,8 +204,6 @@
       <br>
     </p>
     <h3>3.查询、删除视图</h3>
-    <p><br>
-    </p>
     <h3>修改视图<br>
     </h3>
     SQL&gt; CREATE&nbsp; OR REPLACE VIEW view_tb(mysc) AS SELECT score
@@ -209,6 +213,7 @@
     SQL&gt; desc view_tb;<br>
     &nbsp;名
     称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
     是否为空? 类型<br>
@@ -228,12 +233,14 @@
     称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
+
     是否为空? 类型<br>
     &nbsp;----------------------------------------- --------
     ----------------------------<br>
     &nbsp;SCORE&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
     NUMBER(4)<br>
@@ -440,12 +447,16 @@
     after delete or insert or update on '&nbsp; || var_table_name || '<br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; declare<br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
     v_type Changed_Info.Optiontype%type;<br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
     v_tablename User_tables.table_name%type;<br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
     v_index varchar(50);<br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
     BEGIN<br>
     &nbsp;&nbsp; EXECUTE IMMEDIATE ''select change_index from
     change_index'' into v_index;<br>
