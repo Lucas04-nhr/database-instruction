@@ -19,6 +19,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       上机过程如有问题请看 &nbsp; <a href="/hustdbroot/hustbiodbqaa.html">oracle
         出错集锦</a><br>
     </h2>
@@ -77,6 +87,16 @@
           生关系S(SNO<span class="090312102-15042009">,</span>SNAME,AGE,SEX)</font></font></font><br>
     <div align="left"><font size="2"><font face="Courier New"><font
             color="#800000"> <span class="090312102-15042009">&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
             </span>学 习关系SC(SNO,CNO,GRADE)<br>
             <span class="090312102-15042009">&nbsp;&nbsp;&nbsp; </span>课
             程关系C(CNO,CNAME,TEACHER)<br>
@@ -136,12 +156,32 @@
     <h3>投影运算是从关系的垂直方向进行运算，在关系 R 中选出若干属性列 A 组成新的关系，记作 πA(R )，其形式如下：</h3>
     <h3 align="center"><font size="+1">π</font><font size="-2">A</font>(R
 
+
+
+
+
+
+
+
+
+
+
       )={t[A]|t∈R}<br>
     </h3>
     <h3> 选择（Selection）：</h3>
     <h3>选择运算是从关系的水平方向进行运算，是从关系 R 中选择满足给定条件的元组，记作 <font size="+2">σ</font><font
         size="-2">F</font>(R )，其形式如下：</h3>
     <h3 align="center"><font size="+2">σ</font><font size="-2">F</font>(R
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -237,12 +277,42 @@
               <td valign="top">DEPARTMENT_ID</td>
               <td valign="top">NUMBER(4,0)</td>
               <td valign="top">No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
                 <br>
               </td>
               <td valign="top">(null)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
                 <br>
               </td>
               <td valign="top">1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
                 &nbsp; &nbsp; <br>
               </td>
               <td valign="top">Primary key column of departments table.</td>
@@ -279,6 +349,16 @@
               </td>
               <td valign="top">(null)</td>
               <td valign="top">4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
                 <br>
               </td>
               <td valign="top">Location id where a department is
@@ -362,6 +442,16 @@
           </tr>
           <tr>
             <td valign="top">HIRE_DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -466,6 +556,16 @@
       SQL&gt; DESC COUNTRIES;&nbsp;&nbsp; <br>
       &nbsp;名
       称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
       是否为空? 类型<br>
       &nbsp;----------------------------------------- --------
       ----------------------------<br>
@@ -481,6 +581,16 @@
       SQL&gt; DESC DEPARTMENTS;&nbsp;&nbsp; <br>
       &nbsp;名
       称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
       是否为空? 类型<br>
       &nbsp;----------------------------------------- --------
       ----------------------------<br>
@@ -498,6 +608,16 @@
       SQL&gt; DESC EMPLOYEES;<br>
       &nbsp;名
       称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
       是否为空? 类型<br>
       &nbsp;----------------------------------------- --------
       ----------------------------<br>
@@ -563,6 +683,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
                   表 | </span>视图 </td>
               <td valign="top">要查询的对象：表或视图<br>
               </td>
@@ -621,6 +751,16 @@
       DEPARTMENTS<br>
       select * from EMPLOYEES;&nbsp; //等价于&nbsp; select
       EMPLOYEE_ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE_NUMBER,HIRE_DATE,JOB_ID,SALARY,COMMISSION_PCT,MANAGER_ID,DEPARTMENT_ID
+
+
+
+
+
+
+
+
+
+
       from EMPLOYEES;<br>
       select * from JOB_HISTORY; //等价于&nbsp; SELECT
       EMPLOYEE_ID,START_DATE,&nbsp; END_DATE, JOB_ID,DEPARTMENT_ID FROM
@@ -639,6 +779,16 @@
       DEPARTMENTS<br>
       select
       EMPLOYEE_ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE_NUMBER,HIRE_DATE,JOB_ID,SALARY,COMMISSION_PCT,MANAGER_ID,DEPARTMENT_ID
+
+
+
+
+
+
+
+
+
+
 
       from EMPLOYEES;<br>
       SELECT EMPLOYEE_ID,START_DATE,&nbsp; END_DATE,
@@ -669,6 +819,16 @@
       SQL&gt; DESC JOBS<br>
       &nbsp;名
       称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
       是否为空? 类型<br>
       &nbsp;----------------------------------------- --------
       ----------------------------<br>
@@ -721,8 +881,7 @@
               size="2" face="Courier New" color="#000080"><strong>的国家号，国
                 家名和地区<br>
                 <br>
-              </strong></font>
-            全选：<br>
+              </strong></font> 全选：<br>
             SELECT ALL COUNTRY_ID from COUNTRIES;<br>
             SELECT ALL COUNTRY_ID from COUNTRIES;<br>
             <h4>去除重复元组</h4>
@@ -826,8 +985,8 @@
           <h4>
             <meta http-equiv="content-type" content="text/html;
               charset=UTF-8">
-            <h4><br>
-            </h4>
+          </h4>
+          <h4><br>
           </h4>
           <br>
           <br>
@@ -1256,10 +1415,30 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
         ------------------------ ----------- ------------ -----------
         ------------ ------------<br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2388 04-6月 -07 03.41.12.554435 下
         午&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1271,7 +1450,27 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
         150&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1331,6 +1530,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       *<br>
       <b>第 1 行出现错误:</b><b><br>
       </b><b>ORA-00904: "C"."CID": 标识符无效</b><br>
@@ -1351,7 +1560,24 @@
       981Daniel<br>
       <br>
       <br>
-      <h3> 使用正则表达式查询：</h3>
+      <h3> 使用正则表达式(Regular Expression)查询：</h3>
+      <div class="tutintro">
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+        <p>正则表达式是一种文本模式,
+          用于匹配和操作文本，由一系列字符和特殊字符组成的模式，用于描述要匹配的文本模式。正则表达式可以在文本中查找、替换、提取和验证特定的模式。</p>
+      </div>
+      <div class="tutintro">
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+        <p>正则表达式包括普通字符（如a 到 z 间的字母）和特殊字符（称为"元字符"），可以用来描述和匹配字符串的特定模式。</p>
+        <p>正则表达式是一种用于模式匹配和搜索文本的工具。</p>
+        <p>正则表达式提供了一种灵活且强大的方式来查找、替换、验证和提取文本数据。</p>
+        <p>正则表达式可以应用于各种编程语言和文本处理工具中，如 Oracle,
+          JavaScript、Python、Java、Perl 等。</p>
+      </div>
+      <p><br>
+      </p>
       <p>正则表达式通常<br>
       </p>
       <div align="center">
@@ -1455,7 +1681,160 @@
           </tbody>
         </table>
         <br>
-        <div align="left">Oracle中如何使用正则表达式进行查询：<br>
+        <div align="left"><br>
+        </div>
+        <div align="left">正则表达式的模式</div>
+        <div class="article-intro" id="content">
+          <p align="left"> 正则表达式的模式可以包括以下内容：</p>
+          <ul>
+            <li>
+              <div align="left">
+                <p>字面值字符：例如字母、数字、空格等，可以直接匹配它们自身。</p>
+              </div>
+            </li>
+            <li>
+              <div align="left">
+                <p>特殊字符：例如点号 <code>.</code>、星号 <code>*</code>、加号 <code>+</code>、
+                  问号 <code>?</code> 等，它们具有特殊的含义和功能。</p>
+              </div>
+            </li>
+            <li>
+              <div align="left">
+                <p>字符类：用方括号 <code>[ ]</code> 包围的字符集合，用于匹配方括号内的任意一个字符。</p>
+              </div>
+            </li>
+            <li>
+              <div align="left">
+                <p>元字符：例如 <code>\d</code>、<code>\w</code>、<code>\s</code>
+                  等，用于匹配特定类型的字符，如数字、字母、空白字符等。</p>
+              </div>
+            </li>
+            <li>
+              <div align="left">
+                <p>量词：例如 <code>{n}</code>、<code>{n,}</code>、<code>{n,m}</code>
+                  等，用于指定匹配的次数或范围。</p>
+              </div>
+            </li>
+            <li>
+              <div align="left">
+                <p>边界符号：例如 <code>^</code>、<code>$</code>、<code>\b</code>、<code>\B</code>
+                  等，用于匹配字符串的开头、结尾或单词边界位置。</p>
+              </div>
+            </li>
+          </ul>
+          <p align="left"><br>
+            正则表达式元字符和特性<br>
+            字符匹配<br>
+            <br>
+            &nbsp;&nbsp;&nbsp; 普通字符：普通字符按照字面意义进行匹配，例如匹配字母 "a" 将匹配到文本中的
+            "a" 字符。<br>
+            &nbsp;&nbsp;&nbsp; 元字符：元字符具有特殊的含义，例如 \d 匹配任意数字字符，\w
+            匹配任意字母数字字符，. 匹配任意字符（除了换行符）等。<br>
+            <br>
+            量词<br>
+            <br>
+            &nbsp;&nbsp;&nbsp; *：匹配前面的模式零次或多次。<br>
+            &nbsp;&nbsp;&nbsp; +：匹配前面的模式一次或多次。<br>
+            &nbsp;&nbsp;&nbsp; ?：匹配前面的模式零次或一次。<br>
+            &nbsp;&nbsp;&nbsp; {n}：匹配前面的模式恰好 n 次。<br>
+            &nbsp;&nbsp;&nbsp; {n,}：匹配前面的模式至少 n 次。<br>
+            &nbsp;&nbsp;&nbsp; {n,m}：匹配前面的模式至少 n 次且不超过 m 次。<br>
+            <br>
+            字符类<br>
+            &nbsp;&nbsp;&nbsp; [ ]：匹配括号内的任意一个字符。例如，[abc] 匹配字符 "a"、"b" 或
+            "c"。<br>
+            &nbsp;&nbsp;&nbsp; [^ ]：匹配除了括号内的字符以外的任意一个字符。例如，[^abc] 匹配除了字符
+            "a"、"b" 或 "c" 以外的任意字符。<br>
+            <br>
+            边界匹配<br>
+            &nbsp;&nbsp;&nbsp; ^：匹配字符串的开头。<br>
+            &nbsp;&nbsp;&nbsp; $：匹配字符串的结尾。<br>
+            &nbsp;&nbsp;&nbsp; \b：匹配单词边界。<br>
+            &nbsp;&nbsp;&nbsp; \B：匹配非单词边界。<br>
+            <br>
+            分组和捕获<br>
+            &nbsp;&nbsp;&nbsp; ( )：用于分组和捕获子表达式。<br>
+            &nbsp;&nbsp;&nbsp; (?: )：用于分组但不捕获子表达式。<br>
+            <br>
+            特殊字符<br>
+            &nbsp;&nbsp;&nbsp; \：转义字符，用于匹配特殊字符本身。<br>
+            &nbsp;&nbsp;&nbsp; .：匹配任意字符（除了换行符）。<br>
+            &nbsp;&nbsp;&nbsp; |：用于指定多个模式的选择。<br>
+          </p>
+          <p align="left"><br>
+            正则表达式 - 语法<br>
+          </p>
+        </div>
+        <br>
+        <div align="left">
+          <div class="article-intro" id="content">
+            <meta http-equiv="content-type" content="text/html;
+              charset=UTF-8">
+            <h1>正则表达式 - <span class="color_h1">运算符优先级</span></h1>
+            正则表达式从左到右进行计算，并遵循优先级顺序，这与算术表达式非常类似。<br>
+            相同优先级的从左到右进行运算，不同优先级的运算先高后低。<br>
+            以下是一些常见正则表达式运算符按照优先级从高到低的顺序：<br>
+            &nbsp;&nbsp;&nbsp; 转义符号： \ 是用于转义其他特殊字符的转义符号。它具有最高的优先级。<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+            示例：\d、\. 等，其中 \d 匹配数字，\. 匹配点号。<br>
+            &nbsp;&nbsp;&nbsp; 括号：(), (?:), (?=), [] &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp;&nbsp; 圆括号 () 用于创建子表达式，具有高于其他运算符的优先级。<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+            示例：(abc)+ 匹配 "abc" 一次或多次。<br>
+            &nbsp;&nbsp;&nbsp; 量词： 量词指定前面的元素可以重复的次数。<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+            示例：a* 匹配零个或多个 "a"。<br>
+            &nbsp;&nbsp;&nbsp; 字符类： 字符类使用方括号 [] 表示，用于匹配括号内的任意字符。<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+            示例：[aeiou] 匹配任何一个元音字母。<br>
+            &nbsp;&nbsp;&nbsp; 断言： 断言是用于检查字符串中特定位置的条件的元素。<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+            示例：^ 表示行的开头，$ 表示行的结尾。<br>
+            &nbsp;&nbsp;&nbsp; 连接： 连接在没有其他运算符的情况下表示字符之间的简单连接。<br>
+            &nbsp;&nbsp;&nbsp; 示例：abc 匹配 "abc"。<br>
+            &nbsp;&nbsp;&nbsp; 管道： 管道符号 | 表示"或"关系，用于在多个模式之间选择一个。<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+            示例：cat|dog 匹配 "cat" 或 "dog"。<br>
+          </div>
+          <br>
+          <br>
+          Oracle中如何使用正则表达式进行查询：<br>
         </div>
         <div align="left">1. 查询特定字符或字符串开头的记录<br>
         </div>
@@ -1472,6 +1851,16 @@
       &nbsp;&nbsp;&nbsp; &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1502,8 +1891,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       AU&nbsp;&nbsp;&nbsp;&nbsp; Australia&nbsp;&nbsp;&nbsp; <br>
+      <br>
+      SELECT * FROM "HR"."COUNTRIES"&nbsp; WHERE
+      REGEXP_LIKE(COUNTRY_NAME,'^[A-Z][a-z]*ia$');<br>
       <br>
       查询特定字符结尾：<br>
       SQL&gt; set linesize 300;<br>
@@ -1518,6 +1920,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1558,6 +1970,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       SG&nbsp;&nbsp;&nbsp;&nbsp; Singapore&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1583,6 +2005,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       SG&nbsp;&nbsp;&nbsp;&nbsp; Singapore&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1594,7 +2026,6 @@
       用“*”和“+”匹配多个字符<br>
       SQL&gt; SELECT * FROM COUNTRIES WHERE
       REGEXP_LIKE(COUNTRY_NAME,'^Au*');<br>
-      <br>
       COUNTR COUNTRY_NAME&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1603,6 +2034,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1625,7 +2066,6 @@
       <br>
       SQL&gt; SELECT * FROM COUNTRIES WHERE
       REGEXP_LIKE(COUNTRY_NAME,'^Aa*');<br>
-      <br>
       COUNTR COUNTRY_NAME&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1634,6 +2074,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1654,8 +2104,7 @@
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;3<br>
       <br>
       SQL&gt; SELECT * FROM COUNTRIES WHERE
-      REGEXP_LIKE(COUNTRY_NAME,'^A*');<br>
-      <br>
+      REGEXP_LIKE(COUNTRY_NAME,'^A*'); //与前一个正则对比一下<br>
       COUNTR COUNTRY_NAME&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1664,6 +2113,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1736,21 +2195,6 @@
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1<br>
-      <br>
-      COUNTR COUNTRY_NAME&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;REGION_ID<br>
-      ------
-      ------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-      ----------<br>
       IL&nbsp;&nbsp;&nbsp;&nbsp; Israel&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1817,21 +2261,6 @@
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1<br>
-      <br>
-      COUNTR COUNTRY_NAME&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      &nbsp;REGION_ID<br>
-      ------
-      ------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-      ----------<br>
       US&nbsp;&nbsp;&nbsp;&nbsp; United States of America
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1870,6 +2299,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       AR&nbsp;&nbsp;&nbsp;&nbsp; Argentina&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1900,6 +2339,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       AU&nbsp;&nbsp;&nbsp;&nbsp; Australia&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1920,6 +2369,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1949,6 +2408,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       AU&nbsp;&nbsp;&nbsp;&nbsp; Australia&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -1972,6 +2441,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       *<br>
       第 1 行出现错误:<br>
       ORA-00933: SQL 命令未正确结束<br>
@@ -1988,6 +2467,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2074,6 +2563,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       SG&nbsp;&nbsp;&nbsp;&nbsp; Singapore&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -2111,6 +2610,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2197,6 +2706,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       ZW&nbsp;&nbsp;&nbsp;&nbsp; Zimbabwe &nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -2217,6 +2736,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2298,6 +2827,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2359,6 +2898,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       AR&nbsp;&nbsp;&nbsp;&nbsp; Argentina&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -2440,6 +2989,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       IL&nbsp;&nbsp;&nbsp;&nbsp; Israel&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -2516,6 +3075,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2559,6 +3128,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       AR&nbsp;&nbsp;&nbsp;&nbsp; Argentina&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -2640,6 +3219,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       IL&nbsp;&nbsp;&nbsp;&nbsp; Israel&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -2716,6 +3305,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2760,6 +3359,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       AR&nbsp;&nbsp;&nbsp;&nbsp; Argentina&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -2836,6 +3445,16 @@
       &nbsp;REGION_ID<br>
       ------
       ------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2922,6 +3541,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       ----------<br>
       US&nbsp;&nbsp;&nbsp;&nbsp; United States of America
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -2953,12 +3582,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       *<br>
       第 1 行出现错误:<br>
       ORA-12728: 正则表达式中的范围无效<br>
       <br>
       <br>
-      使用{n,}或{n,m}来指定字符串<font size="+2"><b>连续</b></font>出现的次数<br>
+      使用{n,}或{n,m}来指定字符串连续出现的次数<br>
       {n,}：至少匹配n次，<br>
       {n,m}：至少匹配n次，最多匹配m次<br>
       SQL&gt; SELECT * FROM DEPARTMENTS WHERE
@@ -2970,6 +3609,16 @@
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;MANAGER_ID LOCATION_ID<br>
       -------------
       ------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3004,7 +3653,7 @@
       &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;515.123.7777<br>
       <br>
       <br>
-      插入，更新和删除表中的数据：<br>
+      <h3> 插入，更新和删除表中的数据：</h3>
       INSERT INSERT TABLE_A VALUES(‘Jack’, 18);<br>
       UPDATE TABLE_A SET COL=‘Jack’WHERE ID=18;<br>
       DELETE FROM TABLE_A WHERE ID=18; </div>
@@ -3029,7 +3678,27 @@
 FIRST_NAME-------------------------LAST_NAME--------------------------------------<br>
       &nbsp;&nbsp;&nbsp;
       400&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
       BIO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
       HUST<br>
       <pre>SQL&gt; select  EMPLOYEE_ID,concat(FIRST_NAME,LAST_NAME) FROM "HR"."EMPLOYEES" WHERE EMPLOYEE_ID=400;<br><pre>EMPLOYEE_ID-----------CONCAT(FIRST_NAME,LAST_NAME)----------------------------------------<br>	400           BIOHUST<br>SQL&gt; select  EMPLOYEE_ID,START_DATE,END_DATE FROM JOB_HISTORY WHERE EMPLOYEE_ID=400;<br>EMPLOYEE_ID START_DATE	       END_DATE<br>----------- ------------------ ------------------<br>	400 2024:05:1200:00:00 2024:05:3100:00:00<br><br></pre></pre>
       SQL&gt; DELETE FROM EMPLOYEES WHERE EMPLOYEE_ID IN (SELECT
@@ -3084,66 +3753,30 @@ FIRST_NAME-------------------------LAST_NAME------------------------------------
                 size="2" face="Courier New"><span
                   class="090312102-15042009"><font size="2"
                     face="Courier New"><span class="090312102-15042009"><br>
-                      ************************************</span> </font>
-                </span> </font> </span> </span> </span> </font> </div>
-    <h3>6.oracle：如何用SQL表示关系除法(基本代数表达式)</h3>
-    <h2>How to represent relational division(basic algebra expression)
-      in terms of SQL</h2>
-    <p><wyn>Query:</wyn>查找保留了所有船只的水手的姓名<br>
-      表的架构如下：<br>
-      <wyn>Sailors</wyn>(sid：整数，sname：字符串，等级：整数，年龄：实数)<br>
-      <wyn>Boats</wyn>(出价：整数，bname：字符串，颜色：字符串)<br>
-      <wyn>Reserves</wyn>(sid：整数，bid：整数，day：日期)</p>
-    <p><span class="kw1">CREATE</span> <span class="kw1">TABLE</span>
-      Boats<span class="br0">(</span><br>
-      &nbsp; bid <span class="kw1">INT</span><span class="sy0">,</span><br>
-      &nbsp; bname <span class="kw1">VARCHAR</span><span class="br0">(</span><span
-        class="nu0">50</span><span class="br0">)</span><span class="sy0">,</span><br>
-      &nbsp; color <span class="kw1">VARCHAR</span><span class="br0">(</span><span
-        class="nu0">50</span><span class="br0">)</span><br>
-      <span class="br0">)</span>;<br>
-      <br>
-      <span class="kw1">CREATE</span> <span class="kw1">TABLE</span>
-      Reserves<span class="br0">(</span><br>
-      &nbsp; sid <span class="kw1">INT</span><span class="sy0">,</span><br>
-      &nbsp; bid <span class="kw1">INT</span><span class="sy0">,</span><br>
-      &nbsp; <span class="kw1">DAY</span> <span class="kw1">DATE</span><br>
-      <span class="br0">)</span>;<br>
+                      ************************************<br>
+                      <br>
+                    </span> </font> </span> </font> </span> </span>
+        </span> </font> </div>
+    <h3>6.oracle如何用SQL表示关系除法(基本代数表达式)</h3>
+    <p><strong>
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+        <span style="font-family: 楷体; font-size: 18px"><strong>关系除法
+            R÷S&nbsp;&nbsp; </strong></span></strong><strong>其中 </strong>关
+      系模式 R(X,Y) S(Y,Z)<br>
+      定义：设关系 R除以关系S的结果为关系T，则T包含所有在R中但不在S中的属性及其值，且T的元组与S的元组的所有组合都在R 中;<br>
+      关系的除法实际上是一个关系的某些元素真包含另一个关系的某些元素的问题，因此可以用来解“关系包含”类的问题。<br>
     </p>
-    <p><br>
-      <span class="co1">-- All sailors who reserved at least one boat</span><br>
-      <span class="kw1">SELECT</span> <span class="kw1">DISTINCT</span>
-      sid <span class="kw1">FROM</span> Reserves<br>
-      MINUS <br>
-      <br>
-      <span class="co1">-- All sailors who reserved at least one boat,
-        but not all of them</span><br>
-      <span class="kw1">SELECT</span> sid<br>
-      <span class="kw1">FROM</span> <span class="br0">(</span><br>
-      &nbsp; <span class="co1">-- all combinations of a sailor who
-        reserved any boat with any boat</span><br>
-      &nbsp; <span class="co1">-- available to be reserved:</span><br>
-      &nbsp; <span class="kw1">SELECT</span> Reserves<span class="sy0">.</span>sid<span
-        class="sy0">,</span> Boats<span class="sy0">.</span>bid<br>
-      &nbsp; <span class="kw1">FROM</span><br>
-      &nbsp; &nbsp; Reserves<br>
-      &nbsp; &nbsp; <span class="kw1">CROSS</span> <span class="kw1">JOIN</span><br>
-      &nbsp; &nbsp; Boats<br>
-      <br>
-      &nbsp; MINUS<br>
-      <br>
-      &nbsp; <span class="co1">-- all combinations of sailor and boat
-        for actual reservations made</span><br>
-      &nbsp; <span class="kw1">SELECT</span> sid<span class="sy0">,</span>
-      bid<br>
-      &nbsp; <span class="kw1">FROM</span> Reserves<br>
-      <span class="br0">)</span> sids<br>
-    </p>
+    <pre><pre><pre>关系除法是同时从关系的水平方向和垂直方向进行运算，对于关系R（X，Y）和S（Y，Z）， X，Y，Z为属性，<br><pre><pre>R÷S就是查寻符合R关系的元组X分量x的像集Yx包含关系S在属性Y上的投影的集合。</pre></pre>R÷S = { t[X] | t∈R <span><span><span>∧</span></span></span> <span class="090312102-15042009"><font size="2" face="Courier New">πy</font></span>(S)<span><meta http-equiv="content-type" content="text/html; charset=UTF-8"><span><span> ⊆</span></span></span> Yx }， Yx 为 X在R中的像集， x = t[X]<br><br>文字上过于抽象，若用图来表示，以下表示为关系R、S、T之间的运算：<br></pre></pre></pre>
+    <div align="center"><img src="./lesson2/chufarel.png" alt=""
+        moz-do-not-send="true" width="500" height="373"></div>
+    <pre><pre><pre>图中阴影部分为关系R与关系S重叠的部分，即某些属性的值发生了重合，这些属性是某些元组的子属性，将R÷S，得到的结果是，元组中除了这些重叠的属性外剩下的属性。<br><br>首先给出其一般表达语句<br><br></pre></pre></pre>
     <h3> Oracle关系数据库中的除法运算</h3>
-    <p> Oracle关系数据库中的除法运算是指计算关系数据库中两个表之间的交集，将交集中的数据取出，并显示出来。<br>
-      这项操作在实际的数据处理中非 常常见，因此理解和掌握这项操作至关重要。<br>
-      <br>
-      除法运算的基本概念<br>
+    Oracle关系数据库中的除法运算是指计算关系数据库中两个表之间的交集，将交集中的数据取出，并显示出来。<br>
+    这项操作在实际的数据处理中非常常见，因此理解和掌握这项操作至关重要。
+    <h2>如何用SQL表示关系除法(basic algebra expression)</h2>
+    除法运算的基本概念<br>
+    <p>
       关系数据库中的除法运算是指在两个表A和B中，选出A表的某些列，使得这些列的联合是A表的一行，在B表中选择能够联接上所有A表的这些列的
       数据，然后取出B表中所选列的结果，并输出。其实际操作可看作如下SQL语句：<br>
       <br>
@@ -3154,41 +3787,118 @@ FIRST_NAME-------------------------LAST_NAME------------------------------------
       其中B为第二个表，A与B的连接条件是A中每一列等于B中每一列的值，而所选的列即为B表的列。<br>
       <br>
       除法运算的操作<br>
-      在Oracle数据库中，执行除法运算需要利用关键字“DIVIDE BY”。具体操作步骤如下：<br>
+      在Oracle数据库中，操作步骤如下：<br>
       <br>
-      1. 创建两张测试表<br>
-      CREATE TABLE TABLE_A(name varchar2(30), age number);<br>
-      CREATE TABLE TABLE_B(name varchar2(30), job varchar2(30));<br>
+      1. 创建两张基础表R和S</p>
+    <pre><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre><span style="color: rgba(0, 0, 255, 1)">CREATE</span> <span style="color: rgba(0, 0, 255, 1)">TABLE</span> R (X <span style="color: rgba(0, 0, 255, 1)">VARCHAR2</span>(<span style="color: rgba(128, 0, 0, 1); font-weight: bold">10</span>),Y <span style="color: rgba(0, 0, 255, 1)">VARCHAR2</span>(<span style="color: rgba(128, 0, 0, 1); font-weight: bold">10</span><span style="color: rgba(0, 0, 0, 1)">));
+</span><span style="color: rgba(0, 0, 255, 1)">CREATE</span> <span style="color: rgba(0, 0, 255, 1)">TABLE</span> S (Y <span style="color: rgba(0, 0, 255, 1)">VARCHAR2</span>(<span style="color: rgba(128, 0, 0, 1); font-weight: bold">10</span>),Z <span style="color: rgba(0, 0, 255, 1)">VARCHAR2</span>(<span style="color: rgba(128, 0, 0, 1); font-weight: bold">10</span><span style="color: rgba(0, 0, 0, 1)">));</span></pre></pre>
+    <pre><meta http-equiv="content-type" content="text/html; charset=UTF-8"><pre><span style="color: rgba(0, 0, 255, 1)">INSERT</span> <span style="color: rgba(128, 128, 128, 1)">ALL</span>
+<span style="color: rgba(0, 0, 255, 1)">INTO</span> R <span style="color: rgba(0, 0, 255, 1)">VALUES</span> (<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">X1</span><span style="color: rgba(255, 0, 0, 1)">'</span>,<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">Y1</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 0, 255, 1)">INTO</span> R <span style="color: rgba(0, 0, 255, 1)">VALUES</span> (<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">X2</span><span style="color: rgba(255, 0, 0, 1)">'</span>,<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">Y2</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 0, 255, 1)">INTO</span> R <span style="color: rgba(0, 0, 255, 1)">VALUES</span> (<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">X2</span><span style="color: rgba(255, 0, 0, 1)">'</span>,<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">Y3</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 0, 255, 1)">INTO</span> R <span style="color: rgba(0, 0, 255, 1)">VALUES</span> (<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">X2</span><span style="color: rgba(255, 0, 0, 1)">'</span>,<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">Y1</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 0, 255, 1)">SELECT</span> <span style="color: rgba(128, 0, 0, 1); font-weight: bold">1</span> <span style="color: rgba(0, 0, 255, 1)">FROM</span><span style="color: rgba(0, 0, 0, 1)"> DUAL;
+
+</span><span style="color: rgba(0, 0, 255, 1)">INSERT</span> <span style="color: rgba(128, 128, 128, 1)">ALL</span>
+<span style="color: rgba(0, 0, 255, 1)">INTO</span> S <span style="color: rgba(0, 0, 255, 1)">VALUES</span> (<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">Y1</span><span style="color: rgba(255, 0, 0, 1)">'</span>,<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">Z1</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 0, 255, 1)">INTO</span> S <span style="color: rgba(0, 0, 255, 1)">VALUES</span> (<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">Y2</span><span style="color: rgba(255, 0, 0, 1)">'</span>,<span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">Z3</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 0, 255, 1)">SELECT</span> <span style="color: rgba(128, 0, 0, 1); font-weight: bold">1</span> <span style="color: rgba(0, 0, 255, 1)">FROM</span> DUAL;<span style="color: rgba(0, 0, 255, 1)">FROM</span><span style="line-height: 1.5"> R;<br>                                                                      <br></span></pre></pre>
+    示例表<br>
+    <table width="398" height="195" cellspacing="2" cellpadding="2"
+      border="1">
+      <tbody>
+        <tr>
+          <td rowspan="1" colspan="2" valign="top">R<br>
+          </td>
+          <td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+            <br>
+          </td>
+          <td rowspan="1" colspan="2" valign="top">S<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">X<br>
+          </td>
+          <td valign="top">Y<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">Y<br>
+          </td>
+          <td valign="top">Z<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">X1<br>
+          </td>
+          <td valign="top">Y1<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">Y1<br>
+          </td>
+          <td valign="top">Z1<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">X2<br>
+          </td>
+          <td valign="top">Y2<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">Y2<br>
+          </td>
+          <td valign="top">Z3<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">X2<br>
+          </td>
+          <td valign="top">Y3<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">X2<br>
+          </td>
+          <td valign="top">Y1<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p data-pid="D0E6ztRk">
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
       <br>
-      2. 向表中插入测试数据<br>
-      INSERT INTO TABLE_A VALUES(‘Jack’, 18);<br>
-      INSERT INTO TABLE_A VALUES(‘Rose’, 20);<br>
-      INSERT INTO TABLE_A VALUES(‘Tom’, 21);<br>
-      INSERT INTO TABLE_B VALUES(‘Jack’, ‘Student’);<br>
-      INSERT INTO TABLE_B VALUES(‘Rose’, ‘Teacher’);<br>
-      <br>
-      3. 执行除法运算<br>
-      执行以下SQL语句：<br>
-      SELECT A.name, B.job<br>
-      FROM TABLE_A A, TABLE_B B<br>
-      WHERE A.name = B.name<br>
-      AND NOT EXISTS (<br>
-      SELECT ‘X’ FROM TABLE_A C<br>
-      WHERE NOT EXISTS (<br>
-      SELECT ‘Y’ FROM TABLE_B D<br>
-      WHERE C.name = D.name<br>
-      AND A.name = C.name<br>
-      AND B.job = D.job<br>
-      )<br>
-      );<br>
-      <br>
-      执行结果为：<br>
-      Jack Student<br>
-      Rose Teacher<br>
-      <br>
-      可以看出，该操作将表A的name列与表B的name列相等的行取出，然后再从B表中取出job列的结果，并将其输出。<br>
-      <br>
-      除法运算的表现形式<br>
+      求解步骤过程：<br>
+      县看看两个表内容<br>
+    </p>
+    <pre><pre><span style="line-height: 1.5">SQL&gt; SELECT * FROM R;<br>X			       Y<br>------------------------------ ------------------------------<br>X1			       Y1<br>X2			       Y2<br>X2			       Y3<br>X2			       Y1<br><br>SQL&gt; SELECT * FROM S;<br>Y			       Z<br>------------------------------ ------------------------------<br>Y1			       Z1<br>Y2			       Z3<br></span><br><span style="line-height: 1.5">第一步：找出关系R和关系S中相同的属性，即Y属性。<br>在关系S中对Y做投影（即将Y列取出）；所得结果如下<br>SQL&gt; SELECT Y FROM S;<br>Y<br>------------------------------<br>Y1<br>Y2<br></span><br>第二步：被除关系R中与S中不相同的属性列是X ，关系R在属性（X）上做取消重复值的投影为{X1，X2}；<br><pre><span style="line-height: 1.5">SQL&gt; SELECT DISTINCT X FROM R;<br>X<br>------------------------------<br>X1<br>X2<br></span><span style="line-height: 1.5"></span><br>第三步：求关系R中X属性对应的像集Y<br>根据关系R的记录，求像集Y
+<br>可得到与X1值有关的记录；<br>SQL&gt; SELECT X,Y FROM R WHERE X='X1';<br>X			       Y<br>------------------------------ ------------------------------<br>X1			       Y1<br><br>与X2有关的记录：<br><pre><pre>SQL&gt; SELECT X,Y FROM R WHERE X='X2';<br>X			       Y<br>------------------------------ ------------------------------<br>X2			       Y2<br>X2			       Y3<br>X2			       Y1
+</pre></pre>第四步：判断包含关系<br>R÷S其实就是判断关系R中X各个值的像集Y是否包含关系S中属性Y的所有值。对比即可发现：<br>X1的像集只有Y1，不能包含关系S中属性Y的所有值，所以排除掉X1；<br>而X2的像集包含了关系S中属性Y的所有值，<br><br>所以R÷S的最终结果： X2<br></pre></pre></pre>
+    <pre><pre><span style="line-height: 1.5"></span><br><span style="line-height: 1.5"><strong><meta http-equiv="content-type" content="text/html; charset=UTF-8"><strong>使用双not exists运算符实现除法运算</strong></strong><br>-- 除法通用模板<br>select distinct R1.X	-- 选择R里的X<br>from R R1<br>where not exists(	-- 不存在这个X对应的Y值<br>	select S.Y from S<br>	where not exists(	-- 这个Y值在S中没有对应的值<br>		select * from R R2<br>		where R2.Y=S.Y and R1.X=R2.X	-- 这句比较关键，把R和S联系起来<br>	)<br>)<br><br>用一句话来讲就是: </span>要从R中取出某个元组，对每个取出的元组（其X属性为R1.X），不存在这样的情况：<br>                  即从S中依次取出任意一个Y属性，不存在从R中依次取出的Y与这次从S中的Y属性相等，并且这个Y对应的X与要取出的X相等。<br><br>也可以结合图形重叠来解释：<br>1.<span style="color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">最外层的selct: 指明在R中查找X元组，同进把R命名为R1；</span>
+2.最内层的子查询：表明要在R中查找元组，这些元组的X属性是我们要找的目标属性（即最外层的R1.X），同时这些元组的Y列等于S.Y（即R与S发生重叠的部分）。<br>也就是说，这两句话指明了要查找文章开头那张图中的R与S发生重叠的部分。<br>3.<span style="color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">第二个select后的意思： 第二个</span><span style="line-height: 1.5">where not exists</span><span style="color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">后的语义为：不存在②中这样的元组，即不存在“R与S发生重叠的部分”。<br>那第二个SELECT后表示：要在S中找S.Y，并且S.Y与R.Y不发生任何重叠。</span><br style="box-sizing: border-box; outline: 0px; font-synthesis-style: auto; overflow-wrap: break-word; color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box; outline: 0px; font-synthesis-style: auto; overflow-wrap: break-word; color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><span style="color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">4. 从除法图形表示： 可知R与Y做除法，一定有R.Y与S.Y发生了重叠，怎么可能发生这样的情况呢？</span><br style="box-sizing: border-box; outline: 0px; font-synthesis-style: auto; overflow-wrap: break-word; color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><span style="color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">因此就有了最外层的not exists:</span><br><span style="color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">结合上述分析：<br>不存在S.Y与R.Y不发生重叠的部分。此处的两个“不存在”分别对应与</span><a href="https://so.csdn.net/so/search?q=SQL%E8%AF%AD%E5%8F%A5&amp;spm=1001.2101.3001.7020" target="_blank" class="hl hl-1" data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.7020&quot;,&quot;dest&quot;:&quot;https://so.csdn.net/so/search?q=SQL%E8%AF%AD%E5%8F%A5&amp;spm=1001.2101.3001.7020&quot;,&quot;extra&quot;:&quot;{\&quot;searchword\&quot;:\&quot;SQL语句\&quot;}&quot;}" data-tit="SQL语句" data-pretit="sql语句" style="box-sizing: border-box; outline: none; margin: 0px 3px 0px 0px; padding: 0px 14px 0px 3px; font-weight: 400; text-decoration: none; cursor: pointer; background: url(&quot;../img/iconHighlight.svg&quot;) right top / 12px 14px no-repeat rgb(255, 255, 255); color: rgb(252, 85, 49); font-synthesis-style: auto; overflow-wrap: break-word; border-radius: 3px; box-shadow: none; font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal;">SQL语句</a><span style="color: rgb(77, 77, 77); font-family: -apple-system, &quot;SF UI Text&quot;, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: no-common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">中的两个"not exists"。</span>
+
+<!--EndFragment--><br><br>&nbsp;<!--EndFragment--><span style="line-height: 1.5"></span>实际查询操作：<br><pre><span style="line-height: 1.5">SQL&gt; select distinct R1.X from R R1 where not exists(select S.Y from S where not exists(select * from R R2 where R2.Y=S.Y and R1.X=R2.X));<br>X<br>------------------------------<br>X2<br></span></pre>
+<span style="line-height: 1.5"></span></pre></pre>
+    <h3>除法运算的表现形式</h3>
+    <p>
       在Oracle中，除法运算可以有多种形式，如利用连接（join）、子查询（subquery）和逆运算（inverse）等。以下是其中
       几种表现形式的简介。<br>
       1. 利用连接（join）<br>
@@ -3201,7 +3911,8 @@ FIRST_NAME-------------------------LAST_NAME------------------------------------
       <br>
       除法运算在Oracle关系数据库中具有重要作用，它能够帮助企业轻松地完成数据处理，从而提高工作效率。<br>
     </p>
-    <br>
+    <!--StartFragment--><br>
+    <!--EndFragment-->
     <h3>通过NOT EXISTS来实现SQL中的关系除法</h3>
     熟悉一下 EXISTS 的作用和用法：<br>
     下面的代码功能： 找出在Table1、Table2中同时存在的全部id所对应的行<br>
@@ -3217,59 +3928,657 @@ FIRST_NAME-------------------------LAST_NAME------------------------------------
     SELECT * FROM Table1 WHERE id IN(SELECTid FROM Table2);<br>
     <br>
     <br>
-    下来展示关系除法：查询选修了所有的数据库基础课程的学生姓名<br>
+    <h3> 下来用另一个例子来展示关系除法：</h3>
+    <h3>查询选修了所有的数据库基础课程的学生姓名</h3>
+    <p>SQL&gt; show pdbs<br>
+      &nbsp;&nbsp;&nbsp; CON_ID CON_NAME&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; OPEN MODE&nbsp;
+      RESTRICTED<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;2 PDB$SEED&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; READ ONLY&nbsp; NO<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;4 PDBDRUGDB&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+      MOUNTED&nbsp;&nbsp;&nbsp; (这样不行，需要打开可插拔数据库！)<br>
+      SQL&gt; alter pluggable database PDBDRUGDB OPEN;<br>
+      警告: PDB 已变更,。<br>
+      <br>
+      SQL&gt; show pdbs<br>
+      &nbsp;&nbsp;&nbsp; CON_ID CON_NAME&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; OPEN MODE&nbsp;
+      RESTRICTED<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;2 PDB$SEED&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; READ ONLY&nbsp; NO<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;4 PDBDRUGDB&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; READ WRITE YES<br>
+      <br>
+    </p>
     用两张表作为示例用表。 <br>
-    <h3> orabase表(三行):&nbsp; <br>
+    <h3> 创建orabase表(三行):&nbsp; <br>
     </h3>
+    CREATE TABLE ORABASE (PRECOURSE VARCHAR2(20));&nbsp;&nbsp; //或用
     CREATE TABLE C##BIODBUSER.ORABASE (PRECOURSE VARCHAR2(20));<br>
     ***********************************<br>
-    Html<br>
-    Golang<br>
-    Java<br>
-    ***********************************<br>
     插入数据:<br>
-    INSERT INTO "C##BIODBUSER"."ORABASE" (PRECOURSE) VALUES ('Html')<br>
-    INSERT INTO "C##BIODBUSER"."ORABASE" (PRECOURSE) VALUES ('Golang')<br>
-    INSERT INTO "C##BIODBUSER"."ORABASE" (PRECOURSE) VALUES ('Java')<br>
-    <br>
-    <h3> BIODBSTD表：</h3>
+    INSERT ALL<br>
+    &nbsp; INTO ORABASE (PRECOURSE) VALUES ('Html')<br>
+    &nbsp; INTO ORABASE (PRECOURSE) VALUES ('Golang')<br>
+    &nbsp; INTO ORABASE (PRECOURSE) VALUES ('Java')<span style="color:
+      rgba(0, 0, 255, 1)"></span><span style="color: rgba(0, 0, 255, 1)"><br>
+      SELECT</span> <span style="color: rgba(128, 0, 0, 1);
+      font-weight: bold">1</span> <span style="color: rgba(0, 0, 255,
+      1)">FROM</span><span style="color: rgba(0, 0, 0, 1)"> DUAL;<br>
+    </span><br>
+    <span style="color: rgba(0, 0, 0, 1)">结果：3 行已插入<br>
+      SQL&gt; SELECT * FROM ORABASE;<br>
+      <br>
+      PRECOURSE<br>
+      -------------------------------------------------------</span><span
+      style="color: rgba(0, 0, 0, 1)"><span style="color: rgba(0, 0, 0,
+        1)">里面存储开设的全部课程</span>-<br>
+      Html<br>
+      Golang<br>
+      Java</span><span style="color: rgba(0, 0, 0, 1)"><br>
+    </span> <br>
+    <h3> </h3>
+    <h3>创建BIODBSTD表：</h3>
     CREATE TABLE C##BIODBUSER.BIODBSTD (STDNAME VARCHAR2(20), PRECOURSE
     VARCHAR2(20));<br>
-    <pre class="prettyprint"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('鲁平', '</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Html')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('鲁平', '</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Golang')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('鲁平', 'Java')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('鲁平', 'Linux')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('卫莱', '</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Html')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('卫莱', 'Linux')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('卫莱', 'Java')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('毛亮', '</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Html')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, PRECOURSE) VALUES ('毛亮', 'Golang')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, PRECOURSE) VALUES ('毛亮', 'Perl')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, PRECOURSE) VALUES ('毛亮', 'Java')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, PRECOURSE) VALUES ('毛亮', 'UNIX')<br>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, PRECOURSE) VALUES ('郝锦添', 'MongoDB')</span></code><br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, PRECOURSE) VALUES ('郝锦添', 'Perl')<br></span></code>INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, PRECOURSE) VALUES ('董乐', 'Oracle')<br></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">INSERT INTO "C##BIODBUSER"."BIODBSTD" (STDNAME, PRECOURSE) VALUES ('董乐', 'Golang')</span></code></span></code></pre>
-    <p>以下这个问题就是除法的典型应用：</p>
+    或用：<br>
+    CREATE TABLE BIODBSTD (STDNAME VARCHAR2(20), PRECOURSE
+    VARCHAR2(20));<br>
+    结果：Table BIODBSTD 已创建。<br>
+    <pre class="prettyprint"><br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">INSERT ALL<br>INTO BIODBSTD (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('鲁平', '</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Html')<br>INTO BIODBSTD (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('鲁平', '</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Golang')<br>INTO BIODBSTD (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('鲁平', 'Java')<br>INTO BIODBSTD (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('鲁平', 'Linux')<br>INTO BIODBSTD (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('卫莱', '</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Html')<br>INTO BIODBSTD (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('卫莱', 'Linux')<br>INTO BIODBSTD (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('卫莱', 'Java')<br>INTO BIODBSTD (STDNAME, </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">PRECOURSE</span></code>) VALUES ('毛亮', '</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Html')<br>INTO BIODBSTD (STDNAME, PRECOURSE) VALUES ('毛亮', 'Golang')<br>INTO BIODBSTD (STDNAME, PRECOURSE) VALUES ('毛亮', 'Perl')<br>INTO BIODBSTD (STDNAME, PRECOURSE) VALUES ('毛亮', 'Java')<br>INTO BIODBSTD (STDNAME, PRECOURSE) VALUES ('毛亮', 'UNIX')<br>INTO BIODBSTD (STDNAME, PRECOURSE) VALUES ('郝锦添', 'MongoDB')</span></code><br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">INTO BIODBSTD (STDNAME, PRECOURSE) VALUES ('郝锦添', 'Perl')<br></span></code>INTO BIODBSTD (STDNAME, PRECOURSE) VALUES ('董乐', 'Oracle')<br></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">INTO BIODBSTD (STDNAME, PRECOURSE) VALUES ('董乐', 'Golang')<br></span></code></span></code><span style="color: rgba(0, 0, 255, 1)">SELECT</span> <span style="color: rgba(128, 0, 0, 1); font-weight: bold">1</span> <span style="color: rgba(0, 0, 255, 1)">FROM</span><span style="color: rgba(0, 0, 0, 1)"> DUAL;<br></span><span style="color: rgba(0, 0, 0, 1)">结果：16 行已插入。<br>SQL&gt; SELECT * FROM BIODBSTD;<br><br>STDNAME 						     PRECOURSE<br>鲁平                                                         Html<br>鲁平                                                         Golang<br>鲁平                                                         Java<br>鲁平                                                         Linux<br>卫莱                                                         Html<br>卫莱                                                         Linux<br>卫莱                                                         Java<br>毛亮                                                         Html<br>毛亮                                                         Golang<br>毛亮                                                         Perl<br>毛亮                                                         Java<br>毛亮                                                         UNIX<br>郝锦添                                                       MongoDB<br>郝锦添                                                       Perl<br>董乐                                                         Oracle<br>董乐                                                         Golang<br><br>已选择 16 行。<br><br>其中</span><span style="color: rgba(0, 0, 0, 1)"><span style="color: rgba(0, 0, 0, 1)">鲁平选修了四门课程：<br></span>SQL&gt; SELECT PRECOURSE FROM BIODBSTD SP2 WHERE STDNAME='鲁平';<br>PRECOURSE<br>Html<br>Golang<br>Java<br>Linux<br><br></span><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></span></code></pre>
+    <h3>以下这个问题就是除法的典型应用：</h3>
     <p>“从BIODBSTD表中选出选修了ORABASE表中所有3门基础课的学生”</p>
     <h3>方法一：</h3>
-    <pre class="prettyprint"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">//sqlserver用法： SELECT</span> <span class="hljs-keyword">DISTINCT</span> emp <span class="hljs-keyword">FROM</span> BIODBSTD ES1 <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> (<span class="hljs-keyword">SELECT</span> skill <span class="hljs-keyword">FROM</span> Skills <span class="hljs-keyword">EXCEPT</span> <span class="hljs-keyword">SELECT</span> skill <span class="hljs-keyword">FROM</span> BIODBSTD ES2 <span class="hljs-keyword">WHERE</span> ES1.emp = ES2.emp);<br>oracle用法： &nbsp;</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">minus<br></span></code>SELECT DISTINCT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code> <br>FROM "C##BIODBUSER"."BIODBSTD" SP1 WHERE NOT EXISTS<br>(SELECT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE FROM "C##BIODBUSER"."</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">ORABASE" <br>minus SELECT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE</span></code> FROM "C##BIODBUSER"."BIODBSTD" </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2 WHERE </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>1.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code> = </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code>);   //oracle不能用EXCEPT,但是可以直接换成:</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">minus</span></code></pre>
+    <pre class="prettyprint"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">//sqlserver用法： SELECT</span> <span class="hljs-keyword">DISTINCT</span> emp <span class="hljs-keyword">FROM</span> BIODBSTD ES1 <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> (<span class="hljs-keyword">SELECT</span> skill <span class="hljs-keyword">FROM</span> Skills <span class="hljs-keyword">EXCEPT</span> <span class="hljs-keyword">SELECT</span> skill <span class="hljs-keyword">FROM</span> BIODBSTD ES2 <span class="hljs-keyword">WHERE</span> ES1.emp = ES2.emp);<br>oracle用法(减法)： &nbsp;</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">minus<br></span></code>SELECT DISTINCT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code> FROM BIODBSTD SP1 <br>WHERE NOT EXISTS<br>(SELECT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE FROM </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">ORABASE minus SELECT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE</span></code> FROM BIODBSTD </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2 WHERE </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>1.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code> = </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code>);   //oracle不能用EXCEPT,但是可以直接换成:</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">minus</span></code></pre>
     <p>结果： 得到鲁平和<code class="hljs asciidoc has-numbering"
         onclick="mdcp.copyCode(event)"><span class="hljs-header">毛亮</span></code>2
       人</p>
     <pre class="prettyprint"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code></span></code>
 ------</span>
-鲁平</code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>毛亮<br><br></span></code></pre>
+鲁平</code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>毛亮<br>意思是：1.从</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">BIODBSTD SP1选出这样的学生，该学生所修的课程不存在： ORABASE里面的所课程可以减去这个学生在</span></code></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">BIODBSTD </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2中的所有课程<br>        （<b><font color="#ff0000">能减表示括号里面为真，也就是这个学生选的课程不是全部课程，所以才能减</font></b>）<br>        2.括号里面为真，表示NOT EXISTS （XXX） 为假，<b>那这个学生就不是想要查的学生</b>。<br></span></code></pre>
     <h3><code class="hljs asciidoc has-numbering"
-        onclick="mdcp.copyCode(event)"><span class="hljs-header">看看过程：</span></code></h3>
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">下面来看看详细
+          的过程：</span></code></h3>
     <h3><code class="hljs asciidoc has-numbering"
         onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></h3>
-    <pre class="prettyprint"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">第一步：选出所有学生<br>SELECT DISTINCT STDNAME FROM "C##BIODBUSER"."BIODBSTD" SP1<br>得到：<br>STDNAME: &nbsp;鲁平 董乐 卫莱 毛亮 郝锦添 &nbsp;(</span></code>如果不加<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">DISTINCT会怎样？ </span></code>请自行练习<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">)<br><br>第二步：依次把第一步得到的学生作为参数，传给WHERE NOT EXISTS 后的语句： <br></span></code>即：<br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SELECT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE FROM "C##BIODBUSER"."</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">ORABASE" minus SELECT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE</span></code> FROM "C##BIODBUSER"."BIODBSTD" </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2 WHERE </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>1.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code> = </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code></span></code><br>其中的： </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>1.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME =&gt; 依次换为：</span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></span></code></span></code></span></code> </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平 董乐 卫莱 毛亮 郝锦添 (也就是循环查每个学生！！！)<br>得到:<br><br>1. SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '鲁平' = SP2.STDNAME</span></code>;<br></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">2. SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '董乐' = SP2.STDNAME</span></code> </span></code>
-</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">3. SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '卫莱' = SP2.STDNAME</span></code> </span></code>
-</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">4. SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '毛亮' = SP2.STDNAME</span></code> </span></code>
-</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">5. SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '郝锦添' = SP2.STDNAME</span></code> <br>第三步</span></code></span></code>：求差：<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code>
-3.1 &nbsp;求所有与修课程<br>SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE";<br>PRECOURSE： { Html, Golang, Java }<br><br>3.2 </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">看看<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平同学的情况：</span></code></span></code></span></code>
-</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '鲁平' = SP2.STDNAME</span></code>;</span></code><br>PRECOURSE: {Linux, Java, Golang, Html}<br>对鲁平同学的选修情况求差： </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">所有必修：</span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">{ <b>Html, Golang, Java</b> }</span></code> &nbsp;- &nbsp;</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平</span></code>选修{Linux, <b>Java, Golang, Html</b>} &nbsp; &nbsp;=</span></code></span></code>&gt; &nbsp;<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">未选定行<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br></span></code>也可以完整语句看看如何：<br>SQL&gt; SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '鲁平' = SP2.STDNAME;<br>未选定行： 即本语句结果为false, 表示<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平</span></code></span></code></span></code>选修了所有课程（还多修一门呢！！）所以求查结果为假即false。
-<b>反着求差看看：</b><b><br></b><b>SQL&gt; SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '鲁平' = SP2.STDNAME minus SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE";</b><b><br></b><b>PRECOURSE： { Linux }, 这表明选表所有基础课程，还多修了一门课。</b><br><br>3.3 再看看<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">董乐同学的情况：<br>SQL&gt; SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '董乐' = SP2.STDNAME;<br>PRECOURSE: { Html,Java }</span></code></span></code></span></code> , 表示同学确实有两门课没有选，求差结果为真，true.<br><br>3.4 再看看<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">卫莱同学的情况：</span></code></span></code></span></code><br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">SQL&gt; SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '卫莱' = SP2.STDNAME;<br>PRECOURSE: { Golang }, 没有选修</span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Golang, 求差结果为真，true;<br><br>3.5 </span></code></span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">再看看<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">毛亮同学的情况：<br></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">SQL&gt; SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '毛亮' = SP2.STDNAME;<br>未选定行,结果表明，</span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">毛亮</span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code>同学选课足够。<br>SQL&gt; SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '毛亮' = SP2.STDNAME minus SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE";<br>PRECOURSE： {Perl, UNIX }, </span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code>看起来还多修了两门课程,<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">求差为</span></code>false。<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></span></code></span></code><br><br>3.6&nbsp; </span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">郝锦添</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">同学似乎基础太差，一门基础课都没有选：<br>SQL&gt; SELECT PRECOURSE FROM "C##BIODBUSER"."ORABASE" minus SELECT PRECOURSE FROM "C##BIODBUSER"."BIODBSTD" SP2 WHERE '郝锦添' = SP2.STDNAME;<br>PRECOURSE: { Golang, Html, Java }， 求差为</span></code>true.<br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>3.7 归</span></code>总：<br><b><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平</span></code></span></code></span></code></span></code>: SELECT DISTINCT </span></code></b><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></b><b> FROM "C##BIODBUSER"."BIODBSTD" SP1 WHERE NOT EXISTS {false}, &nbsp;可以放入结果集；</b><br></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">董乐</span></code></span></code></span></code>: SELECT DISTINCT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code> FROM "C##BIODBUSER"."BIODBSTD" SP1 WHERE NOT EXISTS {true}, &nbsp;</span></code></span></code>不能<code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">放入结果集；</span></code>
+    <pre class="prettyprint"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">第一步：选出所有学生<br>SELECT DISTINCT STDNAME FROM BIODBSTD SP1<br>得到：<br>STDNAME: &nbsp;鲁平 董乐 卫莱 毛亮 郝锦添 &nbsp;(</span></code>如果不加<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">DISTINCT会怎样？ </span></code>请自行练习<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">)<br><br>第二步：依次把第一步得到的学生作为参数（</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">因为SP</span></code>1.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME需要</span></code></span></code></span></code>），传给WHERE NOT EXISTS 后的语句： <br></span></code>即：<br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SELECT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE FROM </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">ORABASE minus SELECT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE</span></code> FROM BIODBSTD </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2 WHERE </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>1.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code> = </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>2.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code></span></code><br>其中的： </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">SP</span></code>1.</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME =&gt; 依次换为：</span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></span></code></span></code></span></code> </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平 董乐 卫莱 毛亮 郝锦添 (也就是循环查每个学生！！！)<br>得到:<br>1. SELECT PRECOURSE FROM ORABASE minus <font color="#ff0000"><b>SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '鲁平' = SP2.STDNAME</b></font></span></code>; <br>   \                           /        \                                                           /<br>    \_________________________/          \_________________________________________________________/<br>           全部开设的课程        (</span></code>减去<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">)            标红的部分表示：</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><font color="#ff0000"><b>查出鲁平选修的所有课程   </b></font></span></code></span></code></span></code><br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><font color="#ff0000"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">         { Html, Golang, Java }                     { </span></code></b></font></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><font color="#ff0000"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><span style="color: rgba(0, 0, 0, 1)">Html Golang Java Linux</span> }  (</span></code></b></font></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><font color="#ff0000"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><span style="color: rgba(0, 0, 0, 1)"><span style="color: rgba(0, 0, 0, 1)">鲁平选修了四门课程</span></span>)<br><br></span></code></b></font></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">2. SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '董乐' = SP2.STDNAME</span></code> </span></code>
+</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">3. SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '卫莱' = SP2.STDNAME</span></code> </span></code>
+</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">4. SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '毛亮' = SP2.STDNAME</span></code> </span></code>
+</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">5. SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '郝锦添' = SP2.STDNAME</span></code> <br>第三步</span></code></span></code>：求差：<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code>
+3.1 &nbsp;求所有与修课程<br>SELECT PRECOURSE FROM ORABASE;<br>PRECOURSE： { Html, Golang, Java }        // </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><font color="#ff0000"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">{ Html, Golang, Java } - </span></code></b></font></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><font color="#ff0000"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></b></font></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><font color="#ff0000"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">{ </span></code></b></font></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><font color="#ff0000"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><span style="color: rgba(0, 0, 0, 1)">Html Golang Java Linux</span> }<br><br></span></code></b></font></span></code></span></code></span></code>3.2 </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">看看<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平同学的情况：</span></code></span></code></span></code>
+</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '鲁平' = SP2.STDNAME</span></code>;</span></code><br>PRECOURSE: {Linux, Java, Golang, Html}<br>对鲁平同学的选修情况求差： </span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>所有必修：</span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">{ <b>Html, Golang, Java</b> }</span></code> &nbsp;- &nbsp;</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平</span></code>选修{Linux, <b>Java, Golang, Html</b>} &nbsp; &nbsp;=</span></code></span></code>&gt; &nbsp;<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">未选定行<br><br>试一试：<br>SQL&gt; SELECT PRECOURSE FROM ORABASE minus (SELECT PRECOURSE FROM BIODBSTD SP2 WHERE STDNAME='鲁平');<br>未选定行  (也就是为假的，)<br>SQL&gt; (SELECT PRECOURSE FROM BIODBSTD SP2 WHERE STDNAME='鲁平')  minus (SELECT PRECOURSE FROM ORABASE);<br>PRECOURSE<br>------------------------------------------------------------<br>Linux      (这个表示为真的，也就是</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平还多选了一门课程</span></code>)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br></span></code>也可以完整语句看看如何：<br>SQL&gt; SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '鲁平' = SP2.STDNAME;<br>未选定行： 即本语句结果为false, 表示<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平</span></code></span></code></span></code>选修了所有课程（还多修一门呢！！）所以求查结果为假即false。
+<b>反着求差看看：</b><b><br></b><b>SQL&gt; SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '鲁平' = SP2.STDNAME minus SELECT PRECOURSE FROM ORABASE;</b><b><br></b><b>PRECOURSE： { Linux }, 这表明选表所有基础课程，还多修了一门课。</b><br><br>3.3 再看看<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">董乐同学的情况：<br>SQL&gt; SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '董乐' = SP2.STDNAME;<br>PRECOURSE: { Html,Java }</span></code></span></code></span></code> , 表示同学确实有两门课没有选，求差结果为真，true.<br><br>3.4 再看看<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">卫莱同学的情况：</span></code></span></code></span></code><br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">SQL&gt; SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '卫莱' = SP2.STDNAME;<br>PRECOURSE: { Golang }, 没有选修</span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">Golang, 求差结果为真，true;<br><br>3.5 </span></code></span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">再看看<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">毛亮同学的情况：<br></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">SQL&gt; SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '毛亮' = SP2.STDNAME;<br>未选定行,结果表明，</span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">毛亮</span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code>同学选课足够。<br>SQL&gt; SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '毛亮' = SP2.STDNAME minus SELECT PRECOURSE FROM ORABASE;<br>PRECOURSE： {Perl, UNIX }, </span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code>看起来还多修了两门课程,<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">求差为</span></code>false。<code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></span></code></span></code><br><br>3.6&nbsp; </span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code></span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">郝锦添</span></code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">同学似乎基础太差，一门基础课都没有选：<br>SQL&gt; SELECT PRECOURSE FROM ORABASE minus SELECT PRECOURSE FROM BIODBSTD SP2 WHERE '郝锦添' = SP2.STDNAME;<br>PRECOURSE: { Golang, Html, Java }， 求差为</span></code>true.<br><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>3.7 归</span></code>总：<br><b><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">鲁平</span></code></span></code></span></code></span></code>: SELECT DISTINCT </span></code></b><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><b><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></b><b> FROM "C##BIODBUSER"."BIODBSTD" SP1 WHERE NOT EXISTS {false}, &nbsp;可以放入结果集；</b><br></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">董乐</span></code></span></code></span></code>: SELECT DISTINCT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code> FROM "C##BIODBUSER"."BIODBSTD" SP1 WHERE NOT EXISTS {true}, &nbsp;</span></code></span></code>不能<code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">放入结果集；</span></code>
 </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">卫莱</span></code></span></code></span></code></span></code>: SELECT DISTINCT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code> FROM "C##BIODBUSER"."BIODBSTD" SP1 WHERE NOT EXISTS {true}, &nbsp;不能放入结果集；</span></code>
 </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">毛亮</span></code></span></code></span></code></span></code>: SELECT DISTINCT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code> FROM "C##BIODBUSER"."BIODBSTD" SP1 WHERE NOT EXISTS {false}, &nbsp;可以放入结果集；</span></code>
 <code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">郝锦添</span></code></span></code></span></code></span></code>: SELECT DISTINCT </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code> FROM "C##BIODBUSER"."BIODBSTD" SP1 WHERE NOT EXISTS {true}, &nbsp;不能放入结果集；</span></code>
 
 <code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></pre>
     <h3>方法二：通过另一种方法，可以实现同样的结果。</h3>
-    <pre class="prettyprint"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">SELECT</span> </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code></span></code> <span class="hljs-keyword">FROM</span> </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">C##BIODBUSER.</span></code>BIODBSTD <span class="hljs-keyword">WHERE</span> </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE</span></code> <span class="hljs-keyword">in</span> (<span class="hljs-keyword">SELECT</span> </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE</span></code> <span class="hljs-keyword">FROM</span> </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">C##BIODBUSER.</span></code>ORABASE</span></code>) <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code></span></code> <span class="hljs-keyword">HAVING</span> <span class="hljs-aggregate">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE</span></code>)=(<span class="hljs-keyword">SELECT</span> <span class="hljs-aggregate">COUNT</span>(</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">PRECOURSE</span></code>) <span class="hljs-keyword">FROM</span> </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">C##BIODBUSER.</span></code></span></code>ORABASE</span></code>);<br>同样可以得到：<br></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code></span></code>: {</span>鲁平</code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">, 毛亮}<br></span></code></span></code></pre>
+    <pre class="prettyprint"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">SQL&gt; SELECT STDNAME FROM BIODBSTD WHERE PRECOURSE in (SELECT PRECOURSE FROM ORABASE) GROUP BY STDNAME HAVING COUNT(DISTINCT PRECOURSE)=(SELECT COUNT(PRECOURSE) FROM ORABASE);<br>STDNAME<br>鲁平<br>毛亮<br></span></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><br>同样可以得到：   </span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header"><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">STDNAME</span></code></span></code></span></code> {</span>鲁平</code><code class="hljs asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-header">, 毛亮}<br></span></code></span></code></pre>
     <h3><code class="hljs sql has-numbering"
         onclick="mdcp.copyCode(event)"><span class="hljs-operator"></span></code></h3>
-    <pre class="prettyprint"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><br></span></code></pre>
-    <h3>7. 半结构化数据</h3>
+    <pre class="prettyprint"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator">上面这句话的意思是： 从</span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">BIODBSTD中选出学生；<br> 这些许学生选的课程要在这个范围：（</span></span></code></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">in (SELECT PRECOURSE FROM ORABASE)</span></span></code>）；<br> 按学生名字排列：而这个学生的名字要有这样的数量，即名字相关的课程数量 = 开设的全部课程的数量；   //COUNT(DISTINCT PRECOURSE)=(SELECT COUNT(PRECOURSE) FROM ORABASE);<br><br>下面来看看细节：<br>SQL&gt; SELECT STDNAME FROM BIODBSTD WHERE PRECOURSE in (SELECT PRECOURSE FROM ORABASE);<br><br>STDNAME<br>------------------------------------------------------------<br>鲁平<br>卫莱<br>毛亮<br>鲁平<br>毛亮<br>董乐<br>鲁平<br>卫莱<br>毛亮<br></span></span></code></span></code></pre>
+    <h3><code class="hljs sql has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-operator"><code
+            class="hljs sql has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span
+                class="hljs-keyword">看看： </span></span></code></span></code><code
+        class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-operator"><code class="hljs sql has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span
+                class="hljs-keyword"><code class="hljs sql
+                  has-numbering" onclick="mdcp.copyCode(event)"><span
+                    class="hljs-operator"><code class="hljs sql
+                      has-numbering" onclick="mdcp.copyCode(event)"><span
+                        class="hljs-operator"><span class="hljs-keyword">鲁
+                          平是不是出现了三次？ 毛亮是不是出现了三次？</span></span></code></span></code></span></span></code></span></code></h3>
+    <p>再看看总开设的课程数量：<br>
+      SQL&gt; SELECT COUNT(PRECOURSE) FROM ORABASE;<br>
+      COUNT(PRECOURSE)<br>
+      ----------------<br>
+      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (总共为 3 )<br>
+    </p>
+    <pre class="prettyprint"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">看看总共选了多少课程：<br>SQL&gt; SELECT COUNT(DISTINCT PRECOURSE) FROM BIODBSTD WHERE STDNAME='鲁平';<br>COUNT(DISTINCTPRECOURSE)<br>------------------------<br>		       4<br>现在看看：如果限定某个学生选的所有课程要全都在开设的所有课程，在看看这个学生至少选课的数量：<br></span></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">SQL&gt; SELECT COUNT(DISTINCT PRECOURSE)  FROM BIODBSTD WHERE STDNAME='鲁平' AND PRECOURSE in (SELECT PRECOURSE FROM ORABASE);<br>COUNT(DISTINCTPRECOURSE)<br>------------------------<br>		       3   //</span></span></code><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword">鲁平 至少选了 3 门课程！！！</span></span></code>
+</span></span></code>
+<code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"><span class="hljs-keyword"></span></span></code></pre>
+    <p><br>
+    </p>
+    <h3>再看一个例子：</h3>
+    <p>选出符合B表中所有的Student和Teacher的名字和job类型：<br>
+      CREATE TABLE TABLE_A(name varchar2(30), age number);<br>
+      name &nbsp;&nbsp;&nbsp; age<br>
+      Jack &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 18<br>
+      Rose &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20<br>
+      Tome &nbsp;&nbsp;&nbsp; 21<br>
+      <br>
+      <br>
+      CREATE TABLE TABLE_B(name varchar2(30), job varchar2(30));<br>
+      name &nbsp;&nbsp;&nbsp; job<br>
+      Jack &nbsp;&nbsp;&nbsp; Student<br>
+      Rose &nbsp;&nbsp;&nbsp; Teacher<br>
+      <br>
+      <br>
+      2. 向表中插入测试数据<br>
+      <br>
+      INSERT ALL<br>
+      INTO TABLE_A VALUES('Jack', 18)<br>
+      INTO TABLE_A VALUES('Rose', 20)<br>
+      INTO TABLE_A VALUES('Tom', 21)<br>
+      INTO TABLE_B VALUES('Jack', 'Student')<br>
+      INTO TABLE_B VALUES('Rose', 'Teacher')<br>
+      SELECT 1 FROM DUAL;<br>
+      &nbsp;<br>
+      <br>
+      3. 除法运算思考：<br>
+      执行以下两个SQL语句对学校结果并分析：<br>
+      (a)<br>
+      SELECT A.name, B.job FROM TABLE_A A, TABLE_B B<br>
+      WHERE A.name = B.name<br>
+      AND NOT EXISTS (<br>
+      SELECT * FROM TABLE_A C<br>
+      WHERE NOT EXISTS (<br>
+      SELECT * FROM TABLE_B D<br>
+      WHERE C.name = D.name<br>
+      AND A.name = C.name<br>
+      AND B.job = D.job<br>
+      ));<br>
+    </p>
+    <p><br>
+    </p>
+    <p>(b)<br>
+      SELECT A.name, B.job FROM TABLE_A A, TABLE_B B<br>
+      WHERE A.name = B.name<br>
+      AND EXISTS (<br>
+      SELECT * FROM TABLE_A C<br>
+      WHERE EXISTS (<br>
+      SELECT * FROM TABLE_B D<br>
+      WHERE C.name = D.name<br>
+      AND A.name = C.name<br>
+      AND B.job = D.job<br>
+      ));执行结果为：<br>
+      Jack Student<br>
+      Rose Student</p>
+    <p><br>
+      分析原因：<br>
+      如果这样呢？（假设A表和B表开始查第一行）<br>
+      SELECT * FROM TABLE_A C<br>
+      WHERE NOT EXISTS (<br>
+      SELECT * FROM TABLE_B D<br>
+      WHERE C.name = D.name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //第一行：'Jack' =
+      'Jack'<br>
+      AND 'Jack' =
+      'Jack'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      //A.name = C.name<br>
+      AND 'Student' = 'Student'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //B.job =
+      D.job<br>
+      )<br>
+      结果是：<br>
+      Tom&nbsp;&nbsp;&nbsp; 21&nbsp;&nbsp; //显然， 能查出结果来， 为真<br>
+      但是外面还有一个 AND NOT EXISTS （真）， 那：<br>
+      <font color="#ff0000">WHERE A.name = B.name AND NOT EXISTS
+        （真）&nbsp;&nbsp;</font>&nbsp; 就为假的！！！！！<br>
+    </p>
+    <p><br>
+      如果：<br>
+      A到了： Tome &nbsp;&nbsp;&nbsp; 21 ；；；； <br>
+      &nbsp;B到了：Jack &nbsp;&nbsp;&nbsp; Student&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      C到了&nbsp;&nbsp;&nbsp; Jack &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      18&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      D&nbsp;&nbsp; Jack &nbsp;&nbsp;&nbsp; Student<br>
+    </p>
+    <p>SELECT * FROM TABLE_A C<br>
+      WHERE NOT EXISTS (<br>
+      SELECT * FROM TABLE_B D<br>
+      WHERE 'Jack' = 'Jack'<br>
+      AND 'Tome' = 'Jack'<br>
+      AND 'Studentb' = 'Student'<br>
+      );<br>
+    </p>
+    <p>结果内层全选了，即为真：<br>
+      Jack&nbsp;&nbsp;&nbsp; 18<br>
+      Rose&nbsp;&nbsp;&nbsp; 20<br>
+      Tom&nbsp;&nbsp;&nbsp; 21<br>
+      可是外面还有一个： AND NOT EXISTS，&nbsp; 即： <font color="#ff0000">WHERE
+        A.name = B.name AND NOT EXISTS （真）<br>
+        那最终还是没有结果！！！<br>
+      </font></p>
+    <p>如果只执行：<br>
+      SELECT * FROM TABLE_A C<br>
+      WHERE NOT EXISTS (<br>
+      SELECT * FROM TABLE_B D<br>
+      WHERE C.name = D.name<br>
+      );</p>
+    <p>Tom&nbsp;&nbsp;&nbsp; 21</p>
+    <p><br>
+    </p>
+    <p>如果这样呢？<br>
+      以下这个可以正常工作：<br>
+      SELECT A.name, B.job FROM TABLE_A A, TABLE_B B<br>
+      WHERE A.name = B.name<br>
+      AND NOT EXISTS (<br>
+      SELECT * FROM TABLE_A C<br>
+      WHERE NOT EXISTS (<br>
+      SELECT * FROM TABLE_B D<br>
+      WHERE A.name = D.name<br>
+      AND B.job = D.job<br>
+      ));<br>
+      可以看出，该操作将表A的name列与表B的name列相等的行取出，然后再从B表中取出job列的结果，并将其输出。<br>
+      <br>
+    </p>
+    <p><wyn>Query:</wyn>查找预定了所有船只的水手的姓名<br>
+      表的架构如下：<br>
+      <wyn>Sailors</wyn>(sid：整数，sname：字符串，等级：整数，年龄：整数)<br>
+      <wyn>Boats</wyn>(出价：整数，bname：字符串，颜色：字符串)<br>
+      <wyn>Reserves</wyn>(sid：整数，bid：整数，day：日期)</p>
+    <p><br>
+      <span class="kw1"><span class="kw1">CREATE</span> <span
+          class="kw1">TABLE</span> </span>Sailors<span class="kw1"><span
+          class="br0">(</span> sid <span class="kw1">INT</span><span
+          class="sy0">,&nbsp;</span> sname <span class="kw1">VARCHAR</span><span
+          class="br0">(</span><span class="nu0">50</span><span
+          class="br0">)</span><span class="sy0">, </span>&nbsp; salevel
+        INT, age INT<span class="br0"></span><span class="br0">)</span>;</span></p>
+    <p><span class="kw1">Table SAILORS 已创建。<br>
+        &nbsp;CREATE</span> <span class="kw1">TABLE</span> Boats<span
+        class="br0">(</span> bid <span class="kw1">INT</span><span
+        class="sy0">,&nbsp;</span> bname <span class="kw1">VARCHAR</span><span
+        class="br0">(</span><span class="nu0">50</span><span class="br0">)</span><span
+        class="sy0">, </span>&nbsp; color <span class="kw1">VARCHAR</span><span
+        class="br0">(</span><span class="nu0">50</span><span class="br0">)</span><span
+        class="br0">)</span>;<br>
+      Table BOATS 已创建。</p>
+    <p> <span class="kw1">CREATE</span> <span class="kw1">TABLE</span>
+      Reserves<span class="br0">(</span> sid <span class="kw1">INT</span><span
+        class="sy0">,</span>&nbsp; bid <span class="kw1">INT</span><span
+        class="sy0">,&nbsp;</span> <span class="kw1">DAYS</span> <span
+        class="kw1">INT</span><span class="br0">)</span>;</p>
+    <p>Table RESERVES 已创建<br>
+    </p>
+    <p>插入数据：</p>
+    <p>INSERT <code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">INTO </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1"></span>Sailors<span class="kw1"><span
+              class="br0">(</span></span> </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1">sid</span>, </span></code><span class="kw1">sname</span><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">, </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1"><span class="kw1">salevel,</span>age</span>)
+          VALUES (11, 'Jane</span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">',9, 24)&nbsp;</span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code></p>
+    <p><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"> </span></code>INSERT
+      <code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">INTO </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1"></span>Sailors<span class="kw1"><span
+              class="br0">(</span></span> </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1">sid</span>, </span></code><span class="kw1">sname</span><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">, </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1"><span class="kw1">salevel,</span>age</span>）VALUES
+          (22, '</span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">Gamp',8,28)</span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+        </span></code></p>
+    <p>insert <code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">INTO </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1"></span>Sailors<span class="kw1"><span
+              class="br0">(</span></span> </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1">sid</span>, </span></code><span class="kw1">sname</span><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">, </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1"><span class="kw1">salevel,</span>age</span>）VALUES
+          (25, 'Trump',7, 19)</span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><br>
+        </span></code></p>
+    <p>insert <code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">INTO </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1"></span>Sailors<span class="kw1"><span
+              class="br0">(</span></span> </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1">sid,</span> </span></code><span class="kw1">sname</span><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">, </span></code><span
+        class="kw1">salevel,</span><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><span class="kw1">age</span>）VALUES (17,
+          'Oska',6, 21)</span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><br>
+          insert </span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header">INTO
+            </span></code><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+                class="kw1"></span>Sailors<span class="kw1"><span
+                  class="br0">(</span></span> </span></code><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+                class="kw1">sid</span>, </span></code><span class="kw1">sname,</span><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"> </span></code><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+                class="kw1"><span class="kw1">salevel,</span>age</span>）VALUES
+              (98, '</span></code><code class="hljs asciidoc
+            has-numbering" onclick="mdcp.copyCode(event)"><span
+              class="hljs-header">Lilian',8, 26)</span></code><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+              insert </span></code></span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+                class="hljs asciidoc has-numbering"
+                onclick="mdcp.copyCode(event)"><span class="hljs-header">INTO
+                </span></code><code class="hljs asciidoc has-numbering"
+                onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+                    class="kw1"></span>Sailors<span class="kw1"><span
+                      class="br0">(</span></span> </span></code><code
+                class="hljs asciidoc has-numbering"
+                onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+                    class="kw1">sid</span>, </span></code><code
+                class="hljs asciidoc has-numbering"
+                onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+                    class="hljs asciidoc has-numbering"
+                    onclick="mdcp.copyCode(event)"><span
+                      class="hljs-header"><code class="hljs asciidoc
+                        has-numbering" onclick="mdcp.copyCode(event)"><span
+                          class="hljs-header"></span></code><span
+                        class="kw1">sname,</span><code class="hljs
+                        asciidoc has-numbering"
+                        onclick="mdcp.copyCode(event)"><span
+                          class="hljs-header"></span></code> </span></code></span></code><code
+                class="hljs asciidoc has-numbering"
+                onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+                    class="hljs asciidoc has-numbering"
+                    onclick="mdcp.copyCode(event)"><span
+                      class="hljs-header"><span class="kw1"><span
+                          class="kw1">salevel,</span>age</span></span></code>)
+                  VALUES (43, 'Xiaoming',7, 22)</span></code><code
+                class="hljs asciidoc has-numbering"
+                onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+                </span></code> </span></code> </span></code></p>
+    <p>INSERT ALL<code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"> </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+          INTO </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">Boats<span
+            class="br0">(</span></span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">bid, </span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">bname, </span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">color) VALUES (1002,'dongfang', 'red')</span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+          INTO </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">Boats<span
+            class="br0">(</span></span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">bid, </span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">bname, </span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">color) VALUES (2004,'youth', '</span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">yellow')</span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+          INTO </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">Boats<span
+            class="br0">(</span></span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">bid, </span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">bname, </span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header">color) VALUES (2102,'taimountain',
+          'green')</span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><br>
+          INTO </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">Reserves
+          (</span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">sid, </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header">bid</span></code>,
+        </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1">DAYS</span>) VALUES (11, 1002, 5)</span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+          INTO </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">Reserves
+          (</span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">sid, </span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+                class="hljs asciidoc has-numbering"
+                onclick="mdcp.copyCode(event)"><span class="hljs-header">bid</span></code></span></code>,
+        </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1">DAYS</span>) VALUES (17,2004, 4)</span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+              INTO </span></code></span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header">Reserves
+              (</span></code></span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header">sid,
+              bid, </span></code></span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+                class="kw1">DAYS</span>) VALUES (11,2004, 8)</span></code></span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+          INTO </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">Reserves
+          (</span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">sid,
+          bid, </span></code><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+            class="kw1">DAYS</span>) VALUES (98, 2102,7)</span></code><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><br>
+              INTO </span></code></span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header">Reserves
+              (</span></code></span></code><code class="hljs asciidoc
+        has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header">sid,
+              bid, </span></code></span></code><code class="hljs
+        asciidoc has-numbering" onclick="mdcp.copyCode(event)"><span
+          class="hljs-header"><code class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><span
+                class="kw1">DAYS</span>) VALUES (11, 2102, 9)</span></code></span></code><span
+        style="color: rgba(0, 0, 255, 1)"><br>
+        SELECT</span> <span style="color: rgba(128, 0, 0, 1);
+        font-weight: bold">1</span> <span style="color: rgba(0, 0, 255,
+        1)">FROM</span><span style="color: rgba(0, 0, 0, 1)"> DUAL;<br>
+      </span></p>
+    <p><span style="color: rgba(0, 0, 0, 1)">select * from </span><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+                class="hljs asciidoc has-numbering"
+                onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+                    class="hljs asciidoc has-numbering"
+                    onclick="mdcp.copyCode(event)"><span
+                      class="hljs-header">Sailors</span></code></span></code></span></code></span></code><br>
+      <span style="color: rgba(0, 0, 0, 1)">11&nbsp;&nbsp;&nbsp;
+        Jane&nbsp;&nbsp;&nbsp; 9&nbsp;&nbsp;&nbsp; 24<br>
+        22&nbsp;&nbsp;&nbsp; Gamp&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;
+        28<br>
+        25&nbsp;&nbsp;&nbsp; Trump&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;
+        19<br>
+        17&nbsp;&nbsp;&nbsp; Oska&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;
+        21<br>
+        98&nbsp;&nbsp;&nbsp; Lilian&nbsp;&nbsp;&nbsp;
+        8&nbsp;&nbsp;&nbsp; 26<br>
+        43&nbsp;&nbsp;&nbsp; Xiaoming&nbsp;&nbsp;&nbsp;
+        7&nbsp;&nbsp;&nbsp; 22<br>
+      </span></p>
+    <p><span style="color: rgba(0, 0, 0, 1)">select * from </span><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header">Boats<br>
+          1002&nbsp;&nbsp;&nbsp; dongfang&nbsp;&nbsp;&nbsp; red<br>
+          2004&nbsp;&nbsp;&nbsp; youth&nbsp;&nbsp;&nbsp; yellow<br>
+          2102&nbsp;&nbsp;&nbsp; taimountain&nbsp;&nbsp;&nbsp; green</span></code></p>
+    <p><code class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"></span></code><span
+        style="color: rgba(0, 0, 0, 1)">select * from </span><code
+        class="hljs asciidoc has-numbering"
+        onclick="mdcp.copyCode(event)"><span class="hljs-header"><code
+            class="hljs asciidoc has-numbering"
+            onclick="mdcp.copyCode(event)"><span class="hljs-header">Reserves<br>
+              11&nbsp;&nbsp;&nbsp; 1002&nbsp;&nbsp;&nbsp; 5<br>
+              17&nbsp;&nbsp;&nbsp; 2004&nbsp;&nbsp;&nbsp; 4<br>
+              11&nbsp;&nbsp;&nbsp; 2004&nbsp;&nbsp;&nbsp; 8<br>
+              98&nbsp;&nbsp;&nbsp; 2102&nbsp;&nbsp;&nbsp; 7<br>
+              11&nbsp;&nbsp;&nbsp; 2102&nbsp;&nbsp;&nbsp; 9<br>
+            </span></code></span></code> </p>
+    <br>
+    <span class="co1">-- 查所有至少预定了一个boat</span>的<span class="co1">sailors</span><br>
+    <span class="kw1">SELECT</span> <span class="kw1">DISTINCT</span>
+    sid <span class="kw1">FROM</span> Reserves&nbsp;&nbsp;&nbsp;&nbsp;
+    //11,17,98,<br>
+    MINUS <br>
+    &nbsp; <span class="co1">-- All sailors who reserved at least one
+      boat, but not all of them</span><br>
+    <span class="kw1">SELECT</span> sid <span class="kw1">FROM</span> <span
+      class="br0">(</span><span class="co1"></span><br>
+    &nbsp; <span class="kw1">SELECT</span> Reserves<span class="sy0">.</span>sid<span
+      class="sy0">,</span> Boats<span class="sy0">.</span>bid <span
+      class="kw1">FROM </span>Reserves <span class="kw1">CROSS</span>
+    <span class="kw1">JOIN </span>Boats&nbsp;&nbsp; //<span class="co1">--
+      所有组合：任意一个sailor预定任意的可预定的</span><br>
+    &nbsp; MINUS<br>
+    &nbsp; &nbsp; <span class="kw1">SELECT</span> sid<span class="sy0">,</span>
+    bid <span class="kw1">FROM</span> Reserves&nbsp;&nbsp;&nbsp; <span
+      class="co1">-- 所有的实际预定了的sailor号和boat号的组合</span><br>
+    <span class="br0">)</span> sids<br>
+    <br>
+    in sqlplus:<br>
+    SQL&gt; SELECT DISTINCT sid FROM Reserves MINUS SELECT sid FROM
+    (SELECT Reserves.sid, Boats.bid FROM Reserves CROSS JOIN Boats MINUS
+    SELECT sid, bid FROM Reserves) sids;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SID<br>
+    ----------<br>
+    &nbsp;&nbsp;&nbsp; 11<br>
+    SQL&gt; SELECT DISTINCT sid FROM Reserves MINUS SELECT sid FROM
+    (SELECT Reserves.sid, Boats.bid FROM Reserves CROSS JOIN Boats MINUS
+    SELECT sid, bid FROM Reserves) sids;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SID<br>
+    ----------<br>
+    &nbsp;&nbsp;&nbsp; 11<br>
+    <br>
+    <br>
+    分析过程:<br>
+    SQL&gt; SELECT Reserves.sid, Boats.bid FROM Reserves CROSS JOIN
+    Boats;<br>
+    <span class="co1">-- 所有组合：任意一个sailor预定任意的可预定的</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SID&nbsp;&nbsp;&nbsp; &nbsp;
+    BID<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;1002<br>
+    &nbsp;&nbsp;&nbsp; 17&nbsp;&nbsp;&nbsp; &nbsp;1002<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;1002<br>
+    &nbsp;&nbsp;&nbsp; 98&nbsp;&nbsp;&nbsp; &nbsp;1002<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;1002<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;2004<br>
+    &nbsp;&nbsp;&nbsp; 17&nbsp;&nbsp;&nbsp; &nbsp;2004<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;2004<br>
+    &nbsp;&nbsp;&nbsp; 98&nbsp;&nbsp;&nbsp; &nbsp;2004<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;2004<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;2102<br>
+    &nbsp;&nbsp;&nbsp; 17&nbsp;&nbsp;&nbsp; &nbsp;2102<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;2102<br>
+    &nbsp;&nbsp;&nbsp; 98&nbsp;&nbsp;&nbsp; &nbsp;2102<br>
+    &nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp; &nbsp;2102<br>
+    <br>
+    已选择 15 行。<br>
+    <br>
+    SELECT sid FROM (SELECT Reserves.sid, Boats.bid FROM Reserves CROSS
+    JOIN Boats&nbsp; MINUS&nbsp; SELECT sid, bid FROM Reserves)<br>
+    17<br>
+    98<br>
+    98<br>
+    17<br>
+    <br>
+    {11,17,98} - {17,98,98,17 }&nbsp;&nbsp;&nbsp; ===&nbsp;&nbsp; { 11 }<br>
+    <pre class="prettyprint"><code class="hljs sql has-numbering" onclick="mdcp.copyCode(event)"><span class="hljs-operator"></span></code></pre>
+    <h3>7. 半结构化数据（请自行学习）</h3>
     <strong><strong><strong> <strong>oracl12以上的版本支持JSON格式的数据存储和解析<br>
           </strong></strong></strong></strong><strong> <strong>oracle12.2.0.1
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3325,6 +4634,16 @@ href="https://so.csdn.net/so/search?q=varchar2&amp;spm=1001.2101.3001.7020"
         target="_blank" class="hl hl-1"
 data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.7020&quot;,&quot;dest&quot;:&quot;https://so.csdn.net/so/search?q=varchar2&amp;spm=1001.2101.3001.7020&quot;,&quot;extra&quot;:&quot;{\&quot;searchword\&quot;:\&quot;varchar2\&quot;}&quot;}"
         data-tit="varchar2" data-pretit="varchar2">varchar2</a>(400),varchar2(32676)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3477,8 +4796,28 @@ data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.7020&quot;,&quot;dest&q
 
 
 
+
+
+
+
+
+
+
+
+
+
     {"name": "Jane", "age": 30, "city": "New York"}<br>
     FAEA03700D6808CBE055000000000001,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3711,6 +5050,16 @@ src="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c7
 
 
 
+
+
+
+
+
+
+
+
+
+
       </font> </div>
     <div align="left"> <font size="2" face="Courier New"> <span
           class="090312102-15042009">************************************</span>
@@ -3846,6 +5195,16 @@ src="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c7
 
 
 
+
+
+
+
+
+
+
+
+
+
             <a
 href="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c79fe84b925_BF71/cross.jpg"><img
                 style="BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; DISPLAY:
@@ -3910,8 +5269,6 @@ src="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c7
           class="090312102-15042009"> <span class="090312102-15042009">
             <span class="090312102-15042009"> <font size="2"
                 face="Courier New"> <span class="090312102-15042009">INSERT
-
-
                   INTO C VALUES('C10','PHYSICS','YU')</span> </font> </span>
           </span> </span> </font> </div>
     <span class="090312102-15042009"> <span class="090312102-15042009">
@@ -3923,6 +5280,16 @@ src="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c7
           class="090312102-15042009"> <span class="090312102-15042009">
             <span class="090312102-15042009"> <font size="2"
                 face="Courier New"> <span class="090312102-15042009">(C<strong>∪</strong>('C10','PHYSICS','YU'))
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3966,8 +5333,6 @@ src="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c7
           class="090312102-15042009"> <span class="090312102-15042009">
             <span class="090312102-15042009"> <font size="2"
                 face="Courier New"> <span class="090312102-15042009">UPDATE
-
-
                   SC SET GRADE=85</span> </font> </span> </span> </span>
       </font> </div>
     <div align="left"> <font size="2" face="Courier New"> <span
@@ -3975,16 +5340,12 @@ src="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c7
             <span class="090312102-15042009"> <font size="2"
                 face="Courier New"> <span class="090312102-15042009">WHERE
 
-
-
                   SNO='S4'</span> </font> </span> </span> </span> </font>
     </div>
     <div align="left"> <font size="2" face="Courier New"> <span
           class="090312102-15042009"> <span class="090312102-15042009">
             <span class="090312102-15042009"> <font size="2"
                 face="Courier New"> <span class="090312102-15042009">&nbsp;&nbsp;
-
-
 
                   AND CNO='C4'</span> </font> </span> </span> </span>
       </font> </div>
@@ -4042,6 +5403,16 @@ src="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c7
       <div align="left"> <font face="Courier New"> <font size="2"> <span
               class="090312102-15042009"> <strong> <font
                   color="#800000">&nbsp; </font> </strong> </span>&nbsp;
+
+
+
+
+
+
+
+
+
+
             <strong><font color="#800000">目的</font></strong>：为了系统在执行时既省时
             间又能提高效率。<br>
             <span class="090312102-15042009">&nbsp; </span>&nbsp; <strong><font
@@ -4129,6 +5500,16 @@ href="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c
                 title="cross" alt="cross"
 src="http://www.blogjava.net/images/blogjava_net/decode360/WindowsLiveWriter/2c79fe84b925_BF71/cross_thumb.jpg"
                 width="13" height="11" border="0"></a><strong>π</strong><sub>S#</sub>(<strong>σ</strong><sub>SEX='
+
+
+
+
+
+
+
+
+
+
 
 
 
