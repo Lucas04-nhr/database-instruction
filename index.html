@@ -33,7 +33,8 @@
 
 
 
-      上机过程如有问题请看 &nbsp; <a href="./hustbiodbqaa.html"
+
+      transactions &nbsp; <a href="./hustbiodb4transactions.html"
         moz-do-not-send="true">oracle出 错集锦</a><br>
     </h2>
     <h1 align="center"><br>
@@ -146,6 +147,7 @@
 
 
 
+
             数据文件（Data File，</span><span style="color: rgb(51, 51, 51);
             font-family: Arial, &quot;PingFang SC&quot;, &quot;Microsoft
             YaHei&quot;, sans-serif; font-size: 16.5px; font-style:
@@ -169,6 +171,7 @@
               text-decoration-color: initial; display: inline
               !important; float: none;">存储数据库中的数据，如表的数据和索引数据.文件名为*.dbf</span>）；</span></h3>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -234,6 +237,7 @@
 
 
 
+
           </span><span style="color: rgb(51, 51, 51); font-family:
             Arial, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;,
             sans-serif; font-size: 16.5px; font-style: normal;
@@ -246,6 +250,7 @@
             text-decoration-color: initial; display: inline !important;
             float: none;">归档日志文件;<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -301,6 +306,7 @@
 
 
 
+
           </span><span style="color: rgb(51, 51, 51); font-family:
             Arial, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;,
             sans-serif; font-size: 16.5px; font-style: normal;
@@ -324,6 +330,7 @@
             255, 255); text-decoration-style: initial;
             text-decoration-color: initial; display: inline !important;
             float: none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -410,6 +417,7 @@
 
 
 
+
             一个数据库从逻辑上说是由一个或多个表空间所组成，表空间是数据库中物理编组的数据仓库，每一个表空间是由段(segment)
             组成，一个段是由一组区(extent)所组成，一个区是由一组连续的数据库块(database
             block)组成，而一个数据库块对应硬盘上的一个或多个物理块。一个表空间存放一个或多个数据库的物理文件（即数据文件）.一个数据库中的数据被逻辑地
@@ -458,6 +466,7 @@
         <br>
         <h2 id="oracle表段中的高水位线hwm">Oracle表段中的高水位线HWM</h2>
         <h3 id="oracle用hwm来界定一个段中使用的块和未使用的块"><font size="4" color="blue">ORACLE
+
 
 
 
@@ -603,11 +612,13 @@
 
 
 
+
             是传统的关系型数据库的主要应用，主要是基本的、日常的事务处理，例如银行交易。</a><a><br>
             &nbsp; OLTP&nbsp;系统强调数据库内存效率，强调内存各种指标的命令率，强调绑定变量，强调并发操作；</a><br>
           联机分析处理OLAP（On-Line&nbsp;Analytical&nbsp;Processing）：OLAP是数据仓
           库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。<br>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -741,6 +752,7 @@
 
 
 
+
             [100%]<br>
             [root@PC201-10-002 oci19]# rpm -vih
             oracle-instantclient19.19-odbc-19.19.0.0.0-1.x86_64.rpm&nbsp;&nbsp;
@@ -808,9 +820,11 @@
 
 
 
+
     LISTENER<br>
     版
     本&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -856,9 +870,11 @@
 
 
 
+
     07-3月 -2024 02:08:58<br>
     正常运行时
     间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -904,6 +920,7 @@
 
 
 
+
     off<br>
     安全
     性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -928,8 +945,10 @@
 
 
 
+
     ON: Local OS Authentication<br>
     SNMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -1333,6 +1352,7 @@
 
 
 
+
           </td>
           <td valign="top">
             <h4>命令行方式二: <br>
@@ -1362,6 +1382,7 @@
             SQL&gt; shutdown immediate; <br>
             ORA-01031: 权限不
             足&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -1757,8 +1778,10 @@
 
 
 
+
       数据仓库型模板<br>
       /opt/app/oracle/product/12.2.0/dbhome_1/assistants/dbca/templates/General_Purpose.dbc
+
 
 
 
@@ -1946,8 +1969,10 @@
 
 
 
+
       <br>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -2130,9 +2155,10 @@
 
 
 
+
       建库参数表及解析<br>
     </div>
-    <table width="605" height="349" cellspacing="2" cellpadding="2"
+    <table width="605" cellspacing="2" cellpadding="2" height="349"
       border="1">
       <tbody>
         <tr>
@@ -2431,6 +2457,7 @@
 
 
 
+
       //授权 schema用户</span><span style="color: rgb(33, 37, 41);
       font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe
       UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto
@@ -2455,6 +2482,7 @@
         initial; text-decoration-style: initial; text-decoration-color:
         initial;">c##biodbuser</span>连 接到数据库，并使用资源</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -2754,7 +2782,9 @@
 
 
 
+
         test_a&nbsp;LIMIT </code><code class="cpp plain">SESSIONS_PER_USER
+
 
 
 
@@ -2769,6 +2799,7 @@
     <div class="line number13 index12 alt2"><code class="cpp spaces">&nbsp;&nbsp;</code><code
         class="cpp plain">OMPOSITE_LIMIT 5000000; </code><br>
       <div class="line number1 index0 alt2"><code class="cpp plain">SQL&gt;CREATE
+
 
 
 
@@ -2802,6 +2833,7 @@
 
 
 
+
         CCCC;</code></div>
     <div class="line number2 index1 alt1"><code class="cpp plain">User&nbsp;created.</code></div>
     <div class="line number3 index2 alt2"><code class="cpp plain">SQL&gt;&nbsp;alter&nbsp;user&nbsp;c##test&nbsp;profile&nbsp;c##test_b;</code></div>
@@ -2811,6 +2843,7 @@
     <div class="line number6 index5 alt1"><code class="cpp plain">SQL&gt;&nbsp;col&nbsp;profile&nbsp;</code><code
         class="cpp keyword bold">for</code>&nbsp;<code class="cpp plain">a25</code></div>
     <div class="line number7 index6 alt2"><code class="cpp plain">SQL&gt;
+
 
 
 
@@ -3640,6 +3673,7 @@
 
 
 
+
     文件名<span style="color: rgb(171, 178, 191); font-family:
       SFMono-Regular, Menlo, Monaco, Consolas, &quot;Liberation
       Mono&quot;, &quot;Courier New&quot;, monospace; font-size: 14px;
@@ -3665,6 +3699,7 @@
         initial; text-decoration-color: initial; display: inline
         !important; float: none;"><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t.AUTOEXTENSIBLE, </span></span>--
+
 
 
 
@@ -3754,6 +3789,7 @@
 
 
 
+
     表空间初始大小<span style="color: rgb(171, 178, 191); font-family:
       SFMono-Regular, Menlo, Monaco, Consolas, &quot;Liberation
       Mono&quot;, &quot;Courier New&quot;, monospace; font-size: 14px;
@@ -3804,6 +3840,7 @@
         initial; text-decoration-color: initial; display: inline
         !important; float: none;"><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b.CONTENTS, </span></span>--
+
 
 
 
@@ -4162,6 +4199,7 @@
 ---------------------------------------------------------------------------<br>
         Hust life Database Course</span><span></span><br>
       &nbsp;&nbsp;&nbsp; （6）TRIM, LTRIM, RTRIM:<span> rtrim剪切字符及其右侧字符、 </span><span>lrtrim
+
         剪切字符及其左侧字符、 <br>
       </span></p>
     <p><span>SQL&gt; SELECT LTRIM('Hust Bio Database Course',
@@ -4311,6 +4349,7 @@
     <p><span>SQL&gt; desc MYBCLOB;<br>
         &nbsp;名
         称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
         是否为空? 类型<br>
         &nbsp;----------------------------------------- --------
         ----------------------------<br>
@@ -4386,6 +4425,7 @@ WBLOB----------------------------------------------------WCLOB------------------
         style="font-size: 16px;"><span class="ql-font-MicrosoftYaHei"
           style="font-size: 16px;">WBLOB</span> INTO l_blob FROM y</span><span
         class="ql-font-MicrosoftYaHei" style="font-size: 16px;">"C##BIODBUSER"."MYBCLOB"&nbsp;
+
         where BCID=1;</span><br>
       <span class="ql-font-MicrosoftYaHei" style="font-size: 16px;"> </span><br>
       <span class="ql-font-MicrosoftYaHei" style="font-size: 16px;"> --
@@ -4394,6 +4434,7 @@ WBLOB----------------------------------------------------WCLOB------------------
         l_bfile := BFILENAME("</span><span
         class="ql-font-MicrosoftYaHei" style="font-size: 16px;"><span
           class="ql-font-MicrosoftYaHei" style="font-size: 16px;">UTL_FILE_DIR</span>",
+
         "</span><span class="ql-font-MicrosoftYaHei" style="font-size:
         16px;"><span class="ql-font-MicrosoftYaHei" style="font-size:
           16px;">test.txt</span>");</span><br>
@@ -4536,8 +4577,10 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
           &lt;conditions&gt;] </span></span><br>
       <span><span><span>SQL&gt;delete from &lt;table_name&gt; </span><span>[where
+
 
 
 
@@ -4647,6 +4690,7 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
     ----------<br>
     /opt/oracle/oradata/FREE/system01.dbf&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -4687,9 +4731,11 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
         &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 2</b><b><br>
       </b><b>/opt/oracle/oradata/FREE/pdbseed/undotbs01.dbf&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -4729,10 +4775,12 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
         &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2</b></font><br>
     <b><font color="#ff0000">/opt/oracle/oradata/FREE/FREEPDB1/system01.dbf&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -4786,10 +4834,12 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
         &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4</b></i><i><b><br>
       </b></i><i><b>/opt/oracle/oradata/FREE/WSPDB/undotbs01.dbf&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -4840,8 +4890,10 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
     CON_ID<br>
     ----------------------------------------------------------------------------------------------------
+
 
 
 
@@ -4885,6 +4937,7 @@ WBLOB----------------------------------------------------WCLOB------------------
     NAME<br>
 --------------------------------------------------------------------------------<br>
     /opt/oracle/oradata/FREE/pdbseed/system01.dbf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -4960,6 +5013,7 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
         即</code></code><span class="content-right_8Zs40">
       <meta http-equiv="content-type" content="text/html; charset=UTF-8">
       <span class="content-right_8Zs40"><em>CDB$ROOT</em> (也称为根容器,</span></span><span
@@ -4977,6 +5031,7 @@ WBLOB----------------------------------------------------WCLOB------------------
       class="content-right_8Zs40"><span class="content-right_8Zs40"><strong><strong><br>
             &nbsp;&nbsp;&nbsp; CON_ID
             NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -5037,9 +5092,11 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
             READ ONLY<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3
             PDBDRUGDB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -5112,10 +5169,12 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
             OPEN_MODE<br>
             ---------- ------------------------------ ----------<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3
             PDBDRUGDB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -5155,6 +5214,7 @@ WBLOB----------------------------------------------------WCLOB------------------
                 class="content-right_8Zs40"><strong><strong><span
                       class="content-right_8Zs40"><span
                         class="content-right_8Zs40"><strong><strong>alter
+
 
 
 
@@ -5224,10 +5284,12 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
             OPEN_MODE<br>
             ---------- ------------------------------ ----------<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3
             PDBDRUGDB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -5296,6 +5358,7 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
                             pluggable database pdbdrugdb close;</strong></strong></span></span>）<br>
                   </strong></strong></span></span> <br>
             SQL&gt; alter pluggable database pdbdrugdb open;<br>
@@ -5304,6 +5367,7 @@ WBLOB----------------------------------------------------WCLOB------------------
             SQL&gt; select con_id,name,open_mode from v$pdbs;<br>
             &nbsp;&nbsp;&nbsp; CON_ID
             NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -5364,6 +5428,7 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
             READ WRITE&nbsp;&nbsp;
             &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; </strong></strong></span></span><span
       class="content-right_8Zs40"><span class="content-right_8Zs40"><strong><strong><span
@@ -5378,6 +5443,7 @@ WBLOB----------------------------------------------------WCLOB------------------
     <span class="content-right_8Zs40"><span class="content-right_8Zs40"><strong><strong><span
               class="content-right_8Zs40"><span
                 class="content-right_8Zs40"><strong><strong>SQL&gt;</strong></strong></span></span>create
+
 
 
 
@@ -5564,8 +5630,10 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
       PDB$SEED<br>
       3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -5616,6 +5684,7 @@ WBLOB----------------------------------------------------WCLOB------------------
                         transform: scaleX(0.893707);"
                         role="presentation" dir="ltr">temporary
                         tablespace temp</span></span></span></span></span></span></span></span></span>;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -5897,8 +5966,10 @@ WBLOB----------------------------------------------------WCLOB------------------
 
 
 
+
               <br>
               '/opt/oracle/oradata/FREE/pdbseed/sysaux01.dbf','/opt/oracle/oradata/FREE/PDBDRUGDB/sysaux.dbf',
+
 
 
 
@@ -6054,6 +6125,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
 
+
             以上部分 为FREE的<br>
             WSPDB =<br>
             (DESCRIPTION =<br>
@@ -6077,6 +6149,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             ------------------------<br>
             别
             名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -6122,9 +6195,11 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
 
+
             TNSLSNR for Linux: Version 23.0.0.0.0 - Production<br>
             启动日
             期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -6170,9 +6245,11 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
 
+
             0 天 1 小时 45 分 17 秒<br>
             跟踪级
             别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -6218,8 +6295,10 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
 
+
             ON: Local OS Authentication<br>
             SNMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -6405,6 +6484,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
 
+
                   子句。<br>
                 </span></p>
               <pre class="prettyprint lang-cpp" style="margin-top: 0px;margin-bottom: 10px;padding: 5px;border: 0px;outline: 0px;vertical-align: baseline;background-color: rgb(238, 238, 238);border-radius: 3px;overflow-x: auto">SQL&gt;CONN / AS SYSDBA<br>SQL&gt;ALTER SESSION SET PDB_FILE_NAME_CONVERT='/opt/oracle/oradata/ORCLCDB/pdbseed/','/opt/oracle/oradata/ORCLCDB/pdb4/';<br>SQL&gt;CREATE PLUGGABLE DATABASE pdb4 ADMIN USER pdb_adm IDENTIFIED BYPassword1;</pre>
@@ -6496,6 +6576,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                   transparent;color: rgb(0, 0, 0)"> </span><span
                   style="margin: 0px;padding: 0px;border: 0px;outline:
                   0px;vertical-align: baseline;background: transparent">DATABASE
+
 
 
 
@@ -6859,14 +6940,16 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
 
 
 
+
             =&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;&nbsp;
             jdbc:oracle:oci:@biohustdb<br>
             看来oci的还更加简洁，ip可以省掉不写了。</p>
           <p><br>
           </p>
           <div align="center"><img moz-do-not-send="true"
-              src="./oradir/orathinmy.png" alt=""
-              width="555" height="572">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              src="./oradir/orathinmy.png" alt="" width="555"
+              height="572">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -6932,8 +7015,8 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
 
 
             <img moz-do-not-send="true"
-              src="./oradir/oci8myeclipse15.png" alt=""
-              width="557" height="577"><br>
+              src="./oradir/oci8myeclipse15.png" alt="" width="557"
+              height="577"><br>
           </div>
           <p>分别填上以下信息:</p>
           <table width="100%" cellspacing="2" cellpadding="2" border="1">
@@ -6957,6 +7040,7 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
               <tr>
                 <td valign="top">c##biodbuser&nbsp;&nbsp; 或： system
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -7230,6 +7314,7 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
 
 
 
+
                 数据库</span>ER图方式:<br>
               1.&nbsp; </span>用Oracle SQL
             Developer来建立ER图(windows下安装Oracle时自带这个开发工具)。<br>
@@ -7239,8 +7324,8 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
           注: DBeaver 目前还不支持自己创建 ER 图，只能从现有的数据库中生成<br>
           eclipse plugin: https://dbeaver.io/update/latest/<br>
           <div align="center"><img moz-do-not-send="true"
-              src="./oradir/dbeaverdown.png" alt=""
-              width="417" height="558"><br>
+              src="./oradir/dbeaverdown.png" alt="" width="417"
+              height="558"><br>
           </div>
           <br>
           <br>
@@ -7359,8 +7444,8 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
           2.3.3 创建ER图的代码<br>
           用鼠标右键点击左侧栏，在弹出的菜单中选： 在SQL控制台中读数据：<br>
           <div align="center"><img moz-do-not-send="true"
-              src="./oradir/dbcrdbsql.png" alt=""
-              width="1178" height="508"><br>
+              src="./oradir/dbcrdbsql.png" alt="" width="1178"
+              height="508"><br>
           </div>
           <p>结果会在右侧出现可以输入SQL脚本的窗口：<br>
           </p>
@@ -7403,24 +7488,24 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
           (emp_id, dep_id),FOREIGN KEY (emp_id) REFERENCES
           emp(id),FOREIGN KEY (dep_id) REFERENCES dep(id));<br>
           <br>
-          然后点击：<img moz-do-not-send="true"
-            src="./oradir/execrdbsql.png" alt="" width="45"
-            height="93">, 即可一次性执行三条SQL语句，并创建三个表emp, dep和emp_dep。<br>
+          然后点击：<img moz-do-not-send="true" src="./oradir/execrdbsql.png"
+            alt="" width="45" height="93">, 即可一次性执行三条SQL语句，并创建三个表emp,
+          dep和emp_dep。<br>
           <br>
           <br>
           3. 图形方式创建表并显示ER图<br>
           在表上点右键： 弹出一个菜单，选其中的：&nbsp; 新建表：<br>
           <div align="center"><img moz-do-not-send="true"
-              src="./oradir/guicrtabl.png" alt=""
-              width="956" height="436"><br>
+              src="./oradir/guicrtabl.png" alt="" width="956"
+              height="436"><br>
             <br>
             <div align="left">结果会在右侧出现创建新表的窗口：<br>
               名称： myemp&nbsp;&nbsp;&nbsp; //给出表名<br>
               表空间： USERS&nbsp;&nbsp; //值出属于哪个表空间<br>
               <br>
               <div align="center"><img moz-do-not-send="true"
-                  src="./oradir/newcols.png" alt=""
-                  width="849" height="406"><br>
+                  src="./oradir/newcols.png" alt="" width="849"
+                  height="406"><br>
               </div>
             </div>
             <br>
@@ -7432,8 +7517,8 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
           <br>
           创建主键约束：<br>
           <div align="center"><img moz-do-not-send="true"
-              src="./oradir/crprimarykey.png" alt=""
-              width="1058" height="598"><br>
+              src="./oradir/crprimarykey.png" alt="" width="1058"
+              height="598"><br>
             <br>
             <br>
           </div>
@@ -7441,15 +7526,14 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
           KEY，选择一个列作为主键：COLUMN1， 点OK。<br>
           看看是不是这样的？<br>
           <div align="center">&nbsp;&nbsp;&nbsp;&nbsp; <img
-              moz-do-not-send="true"
-              src="./oradir/myprikey.png" alt="" width="933"
-              height="113"><br>
+              moz-do-not-send="true" src="./oradir/myprikey.png" alt=""
+              width="933" height="113"><br>
           </div>
           <br>
           然后点保存按钮： <br>
           <div align="center"><img moz-do-not-send="true"
-              src="./oradir/savnewtabl.png" alt=""
-              width="869" height="496"><br>
+              src="./oradir/savnewtabl.png" alt="" width="869"
+              height="496"><br>
           </div>
           <br>
           <br>
@@ -7458,15 +7542,15 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
           新建列： empid, depid<br>
           将两列都当作主属性：（empid, depid）<br>
           <div align="center"><img moz-do-not-send="true"
-              src="./oradir/doublezhuprops.png" alt=""
-              width="846" height="478"><br>
+              src="./oradir/doublezhuprops.png" alt="" width="846"
+              height="478"><br>
             <br>
             <br>
           </div>
           为表MYEMP_DEP指定外键：<br>
           <div align="center"><img moz-do-not-send="true"
-              src="./oradir/foreignkey.png" alt=""
-              width="1050" height="604"><br>
+              src="./oradir/foreignkey.png" alt="" width="1050"
+              height="604"><br>
             <br>
             <div align="left">如上图所表示的： 外键字段（EMPID），
               指向参考字段（COLUMN1，或EMP表的主键，也可以用ID）<br>
@@ -7487,22 +7571,22 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
               即可在右侧看到这个表的数据了；<br>
               在表左侧日行号上点右键， 会弹出一个菜单：选 编辑 =&gt; 添加行<br>
               <div align="center"><img moz-do-not-send="true"
-                  src="./oradir/addtablline.png" alt=""
-                  width="961" height="697"><br>
+                  src="./oradir/addtablline.png" alt="" width="961"
+                  height="697"><br>
                 <br>
               </div>
               <br>
               点完添加行后，即可新加一行，可以看到新行每个格子都标为NULL: <br>
               <div align="center"><img moz-do-not-send="true"
-                  src="./oradir/newnullgrid.png" alt=""
-                  width="131" height="120"><br>
+                  src="./oradir/newnullgrid.png" alt="" width="131"
+                  height="120"><br>
               </div>
               <br>
               <br>
               可以双击标右NULL且要填入数据的那个格子： 按要求输入相应的数据即可。<br>
               <div align="center"><img moz-do-not-send="true"
-                  src="./oradir/savenewdata.png" alt=""
-                  width="774" height="357"><br>
+                  src="./oradir/savenewdata.png" alt="" width="774"
+                  height="357"><br>
               </div>
             </div>
             <br>
@@ -7544,8 +7628,8 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
             如果在sqlplus中： ./sqlplus /nolog;&nbsp; conn as sysdba;
             后创建表，则会放到SYSTEM表空间里。<br>
             <div align="center"><img moz-do-not-send="true"
-                src="./oradir/bothtablspaces.png" alt=""
-                width="787" height="253"><br>
+                src="./oradir/bothtablspaces.png" alt="" width="787"
+                height="253"><br>
             </div>
           </div>
           <br>
@@ -7656,6 +7740,7 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
                   initSize=1<br>
                   maxSize=2</td>
                 <td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 
 
@@ -8018,7 +8103,7 @@ href="https://so.csdn.net/so/search?q=Oracle&amp;spm=1001.2101.3001.7020"
                   <br>
                   import
                   org.apache.tomcat.dbcp.dbcp2.BasicDataSource;&nbsp;&nbsp;
-                  //<a href="oradir/tomcat-dbcp.jar">tomcat-dbcp.jar</a><br>
+                  //<a href="oradir/tomcat-dbcp.jar" style="">tomcat-dbcp.jar</a><br>
                   <br>
                   public class DBUtil {<br>
                   &nbsp;&nbsp;&nbsp; // dbcp连接池<br>
